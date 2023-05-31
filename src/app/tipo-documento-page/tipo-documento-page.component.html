@@ -1,0 +1,16 @@
+<h1>Tipo Documento</h1>
+
+<p-table  [value]="tipoDocumentos" [tableStyle]="{ 'min-width': '550px' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-tipoDocumento>
+        <tr>
+            <td>{{ tipoDocumento.id }}</td>
+            <td>{{ tipoDocumento.nombre }}</td>
+        </tr>
+    </ng-template>
+</p-table>

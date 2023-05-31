@@ -5,15 +5,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TipoDocumentoPageComponent } from './tipo-documento-page/tipo-documento-page.component';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TipoDocumentoPageComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TableModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
