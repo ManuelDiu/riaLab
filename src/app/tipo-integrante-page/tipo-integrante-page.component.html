@@ -1,0 +1,143 @@
+<style>
+    .firstPart {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+  
+  <div *ngIf="isLoading; else notIsLoadingData">
+    <img
+      src="../../assets/9844-loading-40-paperplane.gif"
+      width="200px"
+      height="200px"
+    />
+  </div>
+  
+  <ng-template #notIsLoadingData>
+    <div class="firstPart">
+      <h1>Tipo Integrante</h1>
+      <div class="gap1 flex-row">
+        <p-button
+          icon="pi pi-trash"
+          (onClick)="confirmDelete()"
+          styleClass="p-button-danger"
+        ></p-button>
+        <div>
+          <p-toast></p-toast>
+          <p-confirmDialog #cd [style]="{ width: '50vw' }">
+            <ng-template pTemplate="header">
+              <h3>Eliminar TipoIntegrante</h3>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <button
+                type="button"
+                pButton
+                icon="pi pi-times"
+                label="No"
+                (click)="cd.reject()"
+              ></button>
+              <p-button
+                label="Yes"
+                icon="pi pi-check"
+                (onClick)="cd.accept()"
+                styleClass="p-button-danger"
+              ></p-button>
+            </ng-template>
+          </p-confirmDialog>
+        </div>
+        <p-button (onClick)="showDialog()" label="Agregar"></p-button>
+      </div>
+    </div>
+  
+    <p-messages
+      [(value)]="alertsTypes"
+      [enableService]="false"
+      [closable]="true"
+    ></p-messages>
+  
+    <p-table
+      [(selection)]="selectedItemsToDelete"
+      styleClass="p-datatable-striped"
+      [value]="tipoIntegrantes"
+      [tableStyle]="{ 'min-width': '800px' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>Orden</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tipoIntegrante>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="tipoIntegrante"></p-tableCheckbox>
+          </td>
+          <td>{{ tipoIntegrante.id }}</td>
+          <td>{{ tipoIntegrante.nombre }}</td>
+          <td>{{ tipoIntegrante.orden }}</td>
+          <td class="flex-row justify-end">
+            <p-button
+              icon="pi pi-pencil"
+              styleClass="p-button-success"
+              (onClick)="activeToEditItem(tipoIntegrante)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+    <p-dialog
+      (onHide)="onHide()"
+      header="Agregar Tipo Integrante"
+      [(visible)]="showAddDialog"
+      [modal]="true"
+      [style]="{ width: '650px' }"
+      [draggable]="false"
+      [resizable]="false"
+    >
+      <div class="flex-col gap1">
+        <label htmlFor="username">Nombre</label>
+        <input
+          (keyup)="onChangeNombre($event)"
+          pInputText
+          id="Nombre"
+          [value]="selectedItemToEdit ? selectedItemToEdit.nombre : ''"
+          aria-describedby="username-help"
+        />
+        <small id="username-help"
+          >Digita un tipo de Integrante valido</small
+        >
+      </div>
+      <div class="flex-col gap1">
+        <label htmlFor="username">Orden</label>
+        <input
+          (keyup)="onChangeOrden($event)"
+          pInputText
+          id="Nombre"
+          type="number"
+          [value]="selectedItemToEdit ? selectedItemToEdit.orden : ''"
+          aria-describedby="username-help"
+        />
+        <small id="username-help"
+          >Digita una orden valida</small
+        >
+      </div>
+      <div class="mt2" style="margin-top: 20px">
+        <p-button
+          [loading]="isLoadingCreate"
+          (onClick)="handleCreateTipoIntegrante()"
+          label="Guardar"
+          [style]="{ width: '100%' }"
+          styleClass="p-button-outlined"
+        ></p-button>
+      </div>
+    </p-dialog>
+  </ng-template>
+  
