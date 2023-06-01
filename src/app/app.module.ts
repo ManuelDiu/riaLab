@@ -28,10 +28,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PaginatorModule } from 'primeng/paginator';
 
-import { TipoDocumentoPageComponent } from './tipo-documento-page/tipo-documento-page.component';
+import { TipoDocumentoPageComponent } from './components/tipo-documento-page/tipo-documento-page.component';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { TipoIntegrantePageComponent } from './tipo-integrante-page/tipo-integrante-page.component';
+import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/tipo-integrante-page.component';
 
 @NgModule({
   declarations: [

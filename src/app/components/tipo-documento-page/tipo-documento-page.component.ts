@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TipoDocumentoService } from '../services/TipoDocumento/tipo-documento-service';
-import { TipoDocumento } from 'src/models/tipoDocumento';
+import { TipoDocumentoService } from '../../services/TipoDocumento/tipo-documento-service';
+import { TipoDocumento } from 'src/app/types/tipoDocumento';
 import { ConfirmationService, Message } from 'primeng/api';
 
 @Component({
@@ -115,7 +115,7 @@ export class TipoDocumentoPageComponent {
     if (this.selectedItemToEdit !== undefined) {
       console.log(this.nombreTipoDocumento);
       this.selectedItemToEdit.nombre = this.nombreTipoDocumento;
-      
+
       this.tdservice.updateTipoDocumento(this.selectedItemToEdit).subscribe({
         next: () => {
           this.alertsTypes = [ {

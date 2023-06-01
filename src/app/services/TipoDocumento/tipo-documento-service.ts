@@ -5,7 +5,7 @@ import {
   RemoveTIpoDocumentoResponse,
   TipoDocumento,
   TipoDocumentoResponse,
-} from 'src/models/tipoDocumento';
+} from 'src/app/types/tipoDocumento';
 import { environment } from 'src/utils/environment';
 
 @Injectable({
