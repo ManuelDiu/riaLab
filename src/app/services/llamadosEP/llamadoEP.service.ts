@@ -4,12 +4,13 @@ import { Observable } from "rxjs";
 
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { EstadoPosibleResponse } from "src/app/types/LlamadoEPResponse";
+import { environment } from "src/utils/environment";
 
 @Injectable({
   providedIn: "root",
 })
 export class LlamadoEPService {
-  baseURL: string = "http://localhost:5000/api/";
+  baseURL: string = `${environment.BACKEND_DOMAIN_APP}api/` || "";
 
   constructor(private http: HttpClient) {}
 

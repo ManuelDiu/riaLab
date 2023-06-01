@@ -6,11 +6,13 @@ import {
   TipoIntegrante,
   TipoIntegranteResponse,
 } from 'src/models/tipoIntegrante';
+import { environment } from 'src/utils/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TipoIntegranteService {
+  baseUrl = environment.BACKEND_DOMAIN_APP || "";
   public tipoIntegrantes: TipoIntegrante[] = [
     {
       id: 1,
@@ -30,7 +32,7 @@ export class TipoIntegranteService {
 
   getTipoIntegrantes(): Observable<HttpResponse<TipoIntegranteResponse>> {
     const response = this.http.post<TipoIntegranteResponse>(
-      `http://localhost:60720/api/TiposDeIntegrantes/Paged`,
+      `${this.baseUrl}api/TiposDeIntegrantes/Paged`,
       {
         limit: 500,
         offset: 0,
@@ -52,7 +54,7 @@ export class TipoIntegranteService {
     orden: number,
   ): Observable<HttpResponse<TipoIntegrante>> {
     const response = this.http.post<TipoIntegrante>(
-      `http://localhost:60720/api/TiposDeIntegrantes`,
+      `${this.baseUrl}api/TiposDeIntegrantes`,
       {
         id: 0,
         activo: activo,
@@ -68,7 +70,7 @@ export class TipoIntegranteService {
     id: number
   ): Observable<HttpResponse<RemoveTipoIntegranteResponse>> {
     const response = this.http.delete<RemoveTipoIntegranteResponse>(
-      `http://localhost:60720/api/TiposDeIntegrantes/${id}`,
+      `${this.baseUrl}api/TiposDeIntegrantes/${id}`,
       { observe: 'response' }
     );
     return response;
@@ -78,7 +80,7 @@ export class TipoIntegranteService {
     datos: TipoIntegrante
   ): Observable<HttpResponse<TipoIntegrante>> {
     const response = this.http.put<TipoIntegrante>(
-      `http://localhost:60720/api/TiposDeIntegrantes/${datos.id}`,
+      `${this.baseUrl}api/TiposDeIntegrantes/${datos.id}`,
       {
         ...datos,
       },

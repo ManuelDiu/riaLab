@@ -6,11 +6,13 @@ import {
   TipoDocumento,
   TipoDocumentoResponse,
 } from 'src/models/tipoDocumento';
+import { environment } from 'src/utils/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TipoDocumentoService {
+  baseUrl = environment.BACKEND_DOMAIN_APP || "";
   public tipoDocumentos: TipoDocumento[] = [
     {
       id: 1,
@@ -28,7 +30,7 @@ export class TipoDocumentoService {
 
   getTipoDocumentos(): Observable<HttpResponse<TipoDocumentoResponse>> {
     const response = this.http.post<TipoDocumentoResponse>(
-      `http://localhost:60720/api/TiposDeDocumentos/Paged`,
+      `${this.baseUrl}api/TiposDeDocumentos/Paged`,
       {
         limit: 500,
         offset: 0,
@@ -49,7 +51,7 @@ export class TipoDocumentoService {
     activo: boolean
   ): Observable<HttpResponse<TipoDocumento>> {
     const response = this.http.post<TipoDocumento>(
-      `http://localhost:60720/api/TiposDeDocumentos`,
+      `${this.baseUrl}api/TiposDeDocumentos`,
       {
         id: 0,
         activo: activo,
@@ -64,7 +66,7 @@ export class TipoDocumentoService {
     id: number
   ): Observable<HttpResponse<RemoveTIpoDocumentoResponse>> {
     const response = this.http.delete<RemoveTIpoDocumentoResponse>(
-      `http://localhost:60720/api/TiposDeDocumentos/${id}`,
+      `${this.baseUrl}api/TiposDeDocumentos/${id}`,
       { observe: 'response' }
     );
     return response;
@@ -74,7 +76,7 @@ export class TipoDocumentoService {
     datos: TipoDocumento,
   ): Observable<HttpResponse<TipoDocumento>> {
     const response = this.http.put<TipoDocumento>(
-      `http://localhost:60720/api/TiposDeDocumentos/${datos.id}`,
+      `${this.baseUrl}api/TiposDeDocumentos/${datos.id}`,
       {
         ...datos,
       },
