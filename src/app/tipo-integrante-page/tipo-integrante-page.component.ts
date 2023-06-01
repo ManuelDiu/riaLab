@@ -1,36 +1,36 @@
 import { Component } from '@angular/core';
-import { TipoDocumentoService } from '../services/TipoDocumento/tipo-documento-service';
-import { TipoDocumento } from 'src/models/tipoDocumento';
 import { ConfirmationService, Message } from 'primeng/api';
+import { TipoIntegrante } from 'src/models/tipoIntegrante';
+import { TipoIntegranteService } from '../services/TipoIntegrante/tipo-integrante-service';
 
 @Component({
-  selector: 'app-tipo-documento-page',
-  templateUrl: './tipo-documento-page.component.html',
-  styleUrls: ['./tipo-documento-page.component.scss'],
-  providers: [TipoDocumentoService],
+  selector: 'app-tipo-integrante-page',
+  templateUrl: './tipo-integrante-page.component.html',
+  styleUrls: ['./tipo-integrante-page.component.scss'],
 })
-export class TipoDocumentoPageComponent {
-  public tipoDocumentos: TipoDocumento[] = [];
-  public selectedItemsToDelete: TipoDocumento[] = [];
+export class TipoIntegrantePageComponent {
+  public tipoIntegrantes: TipoIntegrante[] = [];
+  public selectedItemsToDelete: TipoIntegrante[] = [];
   public showAddDialog = false;
   public isLoading = false;
   public isLoadingCreate = false;
   public addedSuccess = false;
   public nombreTipoDocumento = '';
+  public ordenTipoIntegrante: number = 0;
   public alertsTypes: Message[] = [];
-  public selectedItemToEdit: TipoDocumento | undefined = undefined;
+  public selectedItemToEdit: TipoIntegrante | undefined = undefined;
 
   constructor(
-    private tdservice: TipoDocumentoService,
+    private tdIntegrante: TipoIntegranteService,
     private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this.tdservice.getTipoDocumentos().subscribe({
+    this.tdIntegrante.getTipoIntegrantes().subscribe({
       next: (response) => {
         const data = response.body?.list || [];
-        this.tipoDocumentos = data;
+        this.tipoIntegrantes = data;
       },
       error: () => {
         console.log('error loading ');
@@ -48,10 +48,15 @@ export class TipoDocumentoPageComponent {
   public onChangeNombre(event: any) {
     this.nombreTipoDocumento = event.target?.value;
   }
+
+  public onChangeOrden(event: any) {
+    this.ordenTipoIntegrante = event.target?.value;
+  }
+
   public deleteTipoDocumento(response: any, id: number) {
     if (response?.body) {
-      this.tipoDocumentos = this.tipoDocumentos.filter(
-        (item: TipoDocumento) => item.id !== id
+      this.tipoIntegrantes = this.tipoIntegrantes.filter(
+        (item: TipoIntegrante) => item.id !== id
       );
     }
   }
@@ -60,11 +65,12 @@ export class TipoDocumentoPageComponent {
     this.selectedItemToEdit = undefined;
   }
 
-  public activeToEditItem(doc: TipoDocumento) {
+  public activeToEditItem(doc: TipoIntegrante) {
     if (doc) {
       this.selectedItemToEdit = doc;
       this.showAddDialog = true;
       this.nombreTipoDocumento = doc.nombre;
+      this.ordenTipoIntegrante = doc.orden;
     }
   }
 
@@ -74,26 +80,26 @@ export class TipoDocumentoPageComponent {
         {
           severity: 'error',
           summary: 'Error',
-          detail: 'Selecciona al menos un TipoDocumento',
+          detail: 'Selecciona al menos un TipoIntegrante',
         },
       ];
       return;
     }
     const stringsToDelete = this.selectedItemsToDelete?.map(
-      (item: TipoDocumento) => item.nombre
+      (item: TipoIntegrante) => item.nombre
     );
     this.confirmationService.confirm({
-      message: `Estas seguro que quieres borrar los TipoDocumento: ${String(
+      message: `Estas seguro que quieres borrar los TipoIntegrante: ${String(
         stringsToDelete
       )}`,
       accept: async () => {
         this.alertsTypes = [];
         const ids = this.selectedItemsToDelete.map(
-          (item: TipoDocumento) => item.id
+          (item: TipoIntegrante) => item.id
         );
         const successDeleted: number[] = [];
         ids.map((item: number) => {
-          const response = this.tdservice.deleteTipoDocumento(item).subscribe({
+          this.tdIntegrante.deleteTipoIntegrante(item).subscribe({
             next: (response) => this.deleteTipoDocumento(response, item),
             error: () => {
               console.log('error deleting ');
@@ -106,44 +112,49 @@ export class TipoDocumentoPageComponent {
     });
   }
 
-  public handleCreateTipoDocumento() {
-    const preparedData = {
-      nombre: this.nombreTipoDocumento,
-    };
+  public handleCreateTipoIntegrante() {
     this.isLoadingCreate = true;
 
     if (this.selectedItemToEdit !== undefined) {
       console.log(this.nombreTipoDocumento);
       this.selectedItemToEdit.nombre = this.nombreTipoDocumento;
-      
-      this.tdservice.updateTipoDocumento(this.selectedItemToEdit).subscribe({
-        next: () => {
-          this.alertsTypes = [ {
-            severity: 'success',
-            summary: 'Actualizado',
-            detail: `TipoDocumento actualizado correctamente`,
-          },];
-        },
-        complete: () => {
-          this.isLoadingCreate = false;
-          this.showAddDialog = false;
-        }
-      })
+
+      this.tdIntegrante
+        .updateTipoIntegrante(this.selectedItemToEdit)
+        .subscribe({
+          next: () => {
+            this.alertsTypes = [
+              {
+                severity: 'success',
+                summary: 'Actualizado',
+                detail: `TipoIntegrante actualizado correctamente`,
+              },
+            ];
+          },
+          complete: () => {
+            this.isLoadingCreate = false;
+            this.showAddDialog = false;
+          },
+        });
       return;
     }
 
-    this.tdservice
-      .createTipoDocumento(this.nombreTipoDocumento, true)
+    this.tdIntegrante
+      .createTipoIntegrante(
+        this.nombreTipoDocumento,
+        true,
+        this.ordenTipoIntegrante
+      )
       .subscribe({
         next: (response) => {
           if (response.body) {
-            this.tipoDocumentos.push(response.body);
+            this.tipoIntegrantes.push(response.body);
           }
           this.showAddDialog = false;
           this.alertsTypes = [
             {
               severity: 'success',
-              summary: 'TipoDocumento',
+              summary: 'TipoIntegrante',
               detail: 'Agregado correctamente',
             },
           ];

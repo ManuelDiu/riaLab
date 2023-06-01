@@ -1,13 +1,14 @@
 
 
-export type TipoDocumento = {
+export type TipoIntegrante = {
     id: string | number | any,
     activo: boolean,
     nombre: string,
+    orden: number,
 }
 
-export type TipoDocumentoResponse = {
-    list: TipoDocumento[],
+export type TipoIntegranteResponse = {
+    list: TipoIntegrante[],
     totalCount: number,
     totalPages: number,
     currentPage: number,
@@ -15,7 +16,7 @@ export type TipoDocumentoResponse = {
     limit: number,
 }
 
-export type RemoveTIpoDocumentoResponse = {
+export type RemoveTipoIntegranteResponse = {
     status: boolean,
     statusMessage: string,
     totalPages: number,
