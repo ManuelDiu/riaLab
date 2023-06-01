@@ -1,0 +1,159 @@
+<h1>Areas</h1>
+
+<div class="flex justify-content-center m-5">
+  <p-toast></p-toast>
+  <p-toolbar>
+    <ng-template pTemplate="left">
+      <div style="display: flex; gap: 1rem; ">
+        <button
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success mr-2"
+          (click)="openNew()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="Delete"
+          icon="pi pi-trash"
+          class="p-button-danger"
+          (click)="deleteSelectedAreas()"
+          [disabled]="!selectedAreas || !selectedAreas.length"
+        ></button>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-fileUpload
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="1000000"
+        label="Import"
+        chooseLabel="Import"
+        class="mr-2 inline-block"
+      ></p-fileUpload>
+      <button
+        pButton
+        pRipple
+        label="Export"
+        icon="pi pi-upload"
+        class="p-button-help"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="listaAreas"
+    [loading]="isLoading"
+    [globalFilterFields]="['nombre', 'estado']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedAreas"
+    [rowHover]="true"
+    dataKey="id"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Administrar Areas</h5>
+        <!-- <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+        </span> -->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 4rem;">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th
+          pSortableColumn="nombre"
+          style="min-width: 15rem; justify-content: center; display: flex; min-height: 55px;"
+        >
+          Nombre <p-sortIcon field="nombre"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-area>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="area"></p-tableCheckbox>
+        </td>
+        <td>{{ area.nombre }}</td>
+        <td style="justify-content: center; display: flex; gap: 5px;">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success mr-2"
+            (click)="editArea(area)"
+          ></button>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            (click)="deleteArea(area)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="currentRows"
+    [totalRecords]="totalCount"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+  ></p-paginator>
+</div>
+
+<p-dialog
+  [(visible)]="areaModal"
+  [style]="{ width: '450px' }"
+  header="Area Details"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="nombre">Nombre</label>
+      <input
+        type="text"
+        pInputText
+        id="nombre"
+        [(ngModel)]="area.nombre"
+        required
+        autofocus
+      />
+      <small class="p-error" *ngIf="submitted && !area.nombre"
+        >El nombre es requerido.</small
+      >
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveArea()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
