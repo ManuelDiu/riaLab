@@ -2,8 +2,8 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AreaComponent } from "./components/area/area.component";
 import { LlamadosEPComponent } from "./components/llamadosEstadosPosibles/llamadosEP.component";
-import { TipoDocumentoPageComponent } from './tipo-documento-page/tipo-documento-page.component';
-import { TipoIntegrantePageComponent } from './tipo-integrante-page/tipo-integrante-page.component';
+import { TipoDocumentoPageComponent } from './components/tipo-documento-page/tipo-documento-page.component';
+import { TipoIntegrantePageComponent } from "./components/tipo-integrante-page/tipo-integrante-page.component";
 
 const routes: Routes = [
   {

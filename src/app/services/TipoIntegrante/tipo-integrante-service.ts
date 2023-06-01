@@ -5,7 +5,7 @@ import {
   RemoveTipoIntegranteResponse,
   TipoIntegrante,
   TipoIntegranteResponse,
-} from 'src/models/tipoIntegrante';
+} from 'src/app/types/tipoIntegrante';
 import { environment } from 'src/utils/environment';
 
 @Injectable({

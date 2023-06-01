@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ConfirmationService, Message } from 'primeng/api';
-import { TipoIntegrante } from 'src/models/tipoIntegrante';
-import { TipoIntegranteService } from '../services/TipoIntegrante/tipo-integrante-service';
+import { TipoIntegrante } from 'src/app/types/tipoIntegrante';
+import { TipoIntegranteService } from 'src/app/services/TipoIntegrante/tipo-integrante-service';
 
 @Component({
   selector: 'app-tipo-integrante-page',

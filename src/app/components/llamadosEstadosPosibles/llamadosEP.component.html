@@ -18,7 +18,7 @@
           <button
             pButton
             pRipple
-            label="New"
+            label="Agregar"
             icon="pi pi-plus"
             class="p-button-success mr-2"
             (click)="openNew()"
@@ -85,7 +85,7 @@
           >
             Nombre <p-sortIcon field="nombre"></p-sortIcon>
           </th>
-          <th></th>
+          <th>Acciones</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-estadoP>
@@ -162,7 +162,7 @@
     <button
       pButton
       pRipple
-      label="Cancel"
+      label="Cancelar"
       icon="pi pi-times"
       class="p-button-text"
       (click)="hideDialog()"
@@ -170,7 +170,7 @@
     <button
       pButton
       pRipple
-      label="Save"
+      label="Guardar"
       icon="pi pi-check"
       class="p-button-text"
       (click)="saveEstadoPosible()"
