@@ -1,11 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AreaComponent } from "./components/area/area.component";
+import { LlamadosEPComponent } from "./components/llamadosEstadosPosibles/llamadosEP.component";
 
 const routes: Routes = [
   {
-    path: "",
-    children: [{ path: "areas", component: AreaComponent }],
+    path: "areas", component: AreaComponent
+  },
+  {
+    path: "llamadosEP", component: LlamadosEPComponent
   },
 ];
 

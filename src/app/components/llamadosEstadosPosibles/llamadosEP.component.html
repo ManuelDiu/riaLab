@@ -1,7 +1,5 @@
-<div
-  style="display: flex; flex-direction: column; align-items: center; margin: 0;"
->
-  <h1>Áreas</h1>
+<div style="display: flex; flex-direction: column; align-items: center; margin: 0;">
+  <h1>Estados</h1>
   <div
     class="flex justify-content-center m-5"
     style="
@@ -31,8 +29,8 @@
             label="Eliminar"
             icon="pi pi-trash"
             class="p-button-danger"
-            (click)="deleteSelectedAreas()"
-            [disabled]="!selectedAreas || !selectedAreas.length"
+            (click)="deleteSelectedEstados()"
+            [disabled]="!selectedEstados || !selectedEstados.length"
           ></button>
         </div>
       </ng-template>
@@ -58,20 +56,17 @@
 
     <p-table
       #dt
-      [value]="areasArr"
+      [value]="estadosArray"
       [loading]="isLoading"
       [globalFilterFields]="['nombre', 'estado']"
       [tableStyle]="{ 'min-width': '75rem' }"
-      [(selection)]="selectedAreas"
+      [(selection)]="selectedEstados"
       [rowHover]="true"
       dataKey="id"
     >
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-          <h5 class="m-0">Administrar Áreas</h5>
-          <!-- <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-        </span> -->
+          <h5 class="m-0">Administrar Estados Posibles de Llamado</h5>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -93,47 +88,41 @@
           <th></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-area>
+      <ng-template pTemplate="body" let-estadoP>
         <tr>
           <td>
-            <p-tableCheckbox [value]="area"></p-tableCheckbox>
+            <p-tableCheckbox [value]="estadoP"></p-tableCheckbox>
           </td>
-          <td>{{ area.nombre }}</td>
+          <td>{{ estadoP.nombre }}</td>
           <td style="justify-content: center; display: flex; gap: 5px;">
             <button
               pButton
               pRipple
               icon="pi pi-pencil"
               class="p-button-rounded p-button-success mr-2"
-              (click)="editArea(area)"
+              (click)="editEstado(estadoP)"
             ></button>
             <button
               pButton
               pRipple
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger"
-              (click)="deleteArea(area)"
+              (click)="deleteEstado(estadoP)"
             ></button>
           </td>
         </tr>
       </ng-template>
     </p-table>
     <div
-      *ngIf="!isLoading && areasArr.length < 1"
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 5rem;
-        height: 5rem;
-      "
+      *ngIf="!isLoading && estadosArray.length < 1"
+      style="display: flex; justify-content: center; align-items: center; min-height: 5rem; height: 5rem"
     >
       <h3>
-        Lo sentimos, pero no contamos con áreas disponibles para listar.
+        Lo sentimos, pero no contamos con estados disponibles para listar.
       </h3>
     </div>
     <p-paginator
-      *ngIf="!isLoading && areasArr.length > 0"
+      *ngIf="!isLoading && estadosArray.length > 0"
       (onPageChange)="onPageChange($event)"
       [first]="first"
       [rows]="currentRows"
@@ -146,9 +135,9 @@
 </div>
 
 <p-dialog
-  [(visible)]="areaModal"
+  [(visible)]="estadoModal"
   [style]="{ width: '450px' }"
-  header="Detalles del Área"
+  header="Detalles del Estado Posible"
   [modal]="true"
   styleClass="p-fluid"
 >
@@ -159,11 +148,11 @@
         type="text"
         pInputText
         id="nombre"
-        [(ngModel)]="area.nombre"
+        [(ngModel)]="currentEstadoPosible.nombre"
         required
         autofocus
       />
-      <small class="p-error" *ngIf="submitted && !area.nombre"
+      <small class="p-error" *ngIf="submitted && !currentEstadoPosible.nombre"
         >El nombre es requerido.</small
       >
     </div>
@@ -184,7 +173,7 @@
       label="Save"
       icon="pi pi-check"
       class="p-button-text"
-      (click)="saveArea()"
+      (click)="saveEstadoPosible()"
     ></button>
   </ng-template>
 </p-dialog>

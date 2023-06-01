@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Area } from "../models/area";
+import { Area } from "src/app/models/area/area";
 import { Observable } from "rxjs";
 
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { AreaResponse } from "../types/AreaResponse";
+import { AreaResponse } from "src/app/types/AreaResponse";
 
 @Injectable({
   providedIn: "root",

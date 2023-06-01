@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Area } from "src/app/models/area";
-import { AreaService } from "src/app/services/area.service";
+import { Area } from "src/app/models/area/area";
+import { AreaService } from "src/app/services/areas/area.service";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { AreaResponse } from "src/app/types/AreaResponse";
 
@@ -11,7 +11,7 @@ import { AreaResponse } from "src/app/types/AreaResponse";
   providers: [MessageService, ConfirmationService],
 })
 export class AreaComponent implements OnInit {
-  listaAreas: Area[] = [];
+  areasArr: Area[] = [];
   area: Area = {};
   visible: boolean = false;
   submitted: boolean = false;
@@ -40,16 +40,16 @@ export class AreaComponent implements OnInit {
     this.areaService
       .getAreasPaged(this.currentRows, this.first)
       .subscribe((data: AreaResponse) => {
-        this.listaAreas = data.list;
+        this.areasArr = data.list;
         this.totalCount = data.totalCount;
         console.log("data del get:", data);
         this.isLoading = false;
       });
-    console.log("cant areas: ", this.listaAreas.length == 0);
+    console.log("cant areas: ", this.areasArr.length == 0);
   }
 
   openNew() {
-    console.log("current areas: ", this.listaAreas);
+    console.log("current areas: ", this.areasArr);
     this.area = {};
     this.submitted = false;
     this.areaModal = true;
@@ -57,7 +57,7 @@ export class AreaComponent implements OnInit {
 
   deleteSelectedAreas() {
     this.confirmationService.confirm({
-      message: "Are you sure you want to delete the selected products?",
+      message: "¿Estás seguro de que quieres eliminar las áreas seleccionadas?",
       header: "Confirmar",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
@@ -67,10 +67,10 @@ export class AreaComponent implements OnInit {
             this.messageService.add({
               severity: "success",
               summary: "¡Éxito!",
-              detail: "Area Eliminada",
+              detail: 'Área "' + area.nombre + '" eliminada',
               life: 2000,
             });
-            // this.listaAreas = this.listaAreas.filter(
+            // this.areasArr = this.areasArr.filter(
             //   (val) => val.id !== area.id
             // );
             // this.totalCount -= 1;
@@ -91,7 +91,8 @@ export class AreaComponent implements OnInit {
 
   deleteArea(area: Area) {
     this.confirmationService.confirm({
-      message: "Are you sure you want to delete " + area.nombre + "?",
+      message:
+        "¿Estás seguro de que deseas eliminar el área " + area.nombre + "?",
       header: "Confirmar",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
@@ -100,10 +101,10 @@ export class AreaComponent implements OnInit {
           this.messageService.add({
             severity: "success",
             summary: "¡Éxito!",
-            detail: "Area Eliminada",
+            detail: 'Área "' + area.nombre + '" eliminada',
             life: 2000,
           });
-          // this.listaAreas = this.listaAreas.filter((val) => val.id !== area.id);
+          // this.areasArr = this.areasArr.filter((val) => val.id !== area.id);
           // this.totalCount -= 1;
           this.refreshTable();
         });
@@ -123,9 +124,8 @@ export class AreaComponent implements OnInit {
     this.areaService
       .getAreasPaged(this.currentRows, this.first)
       .subscribe((data: AreaResponse) => {
-        this.listaAreas = data.list;
+        this.areasArr = data.list;
         this.totalCount = data.totalCount;
-        console.log("data del get:", data);
         this.isLoading = false;
       });
   }
@@ -135,28 +135,30 @@ export class AreaComponent implements OnInit {
     this.area.activo = true;
     if (this.isModifying) {
       if (this.area?.nombre) {
-        this.areaService.updateArea(this.area.id as number, this.area).subscribe(
-          (data) => {
-            this.refreshTable();
-            this.messageService.add({
-              severity: "success",
-              summary: "¡Éxito!",
-              detail: "Area Actualizada",
-              life: 2000,
-            });
-            this.isModifying = false;
-          },
-          (error) => {
-            this.messageService.add({
-              severity: "error",
-              summary: "Error",
-              detail: "Error al crear el Area " + this.area.nombre,
-              life: 4000,
-            });
-            console.log(error);
-            this.isModifying = false;
-          }
-        );
+        this.areaService
+          .updateArea(this.area.id as number, this.area)
+          .subscribe(
+            (data) => {
+              this.refreshTable();
+              this.messageService.add({
+                severity: "success",
+                summary: "¡Éxito!",
+                detail: "Area Actualizada",
+                life: 2000,
+              });
+              this.isModifying = false;
+            },
+            (error) => {
+              this.messageService.add({
+                severity: "error",
+                summary: "Error",
+                detail: "Error al crear el Area " + this.area.nombre,
+                life: 4000,
+              });
+              console.log(error);
+              this.isModifying = false;
+            }
+          );
         this.areaModal = false;
         this.area = {};
       }
@@ -168,7 +170,7 @@ export class AreaComponent implements OnInit {
             this.messageService.add({
               severity: "success",
               summary: "¡Éxito!",
-              detail: "Area Creada",
+              detail: "Área creada",
               life: 2000,
             });
           },
@@ -176,14 +178,14 @@ export class AreaComponent implements OnInit {
             this.messageService.add({
               severity: "error",
               summary: "Error",
-              detail: "Error al crear el Area " + this.area.nombre,
+              detail: "Error al crear el Área " + this.area.nombre,
               life: 4000,
             });
             console.log(error);
           }
         );
         // if (this.totalCount < 5) {
-        //   this.listaAreas.push(this.area);
+        //   this.areasArr.push(this.area);
         // }
         // this.totalCount += 1;
         this.areaModal = false;
@@ -192,23 +194,12 @@ export class AreaComponent implements OnInit {
     }
   }
 
-  findIndexById(id: number): number {
-    let index = -1;
-    for (let i = 0; i < this.listaAreas.length; i++) {
-      if (this.listaAreas[i].id === id) {
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
-
   onPageChange(event: any) {
     this.isLoading = true;
     this.areaService
       .getAreasPaged(event.rows, event.first)
       .subscribe((data: AreaResponse) => {
-        this.listaAreas = data.list;
+        this.areasArr = data.list;
         this.totalCount = data.totalCount;
         console.log("data del get:", data);
         this.isLoading = false;
@@ -219,11 +210,5 @@ export class AreaComponent implements OnInit {
 
   showDialog() {
     this.visible = true;
-  }
-
-  createArea() {
-    this.areaService.createArea(this.area).subscribe((data) => {
-      console.log(data);
-    });
   }
 }

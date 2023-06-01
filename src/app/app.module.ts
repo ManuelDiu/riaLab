@@ -4,10 +4,12 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
 
 import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
-import { AreaComponent } from "./components/area/area.component";
 import { HttpClientModule } from "@angular/common/http";
 
+// Components
+import { AppComponent } from "./app.component";
+import { AreaComponent } from "./components/area/area.component";
+import { LlamadosEPComponent } from "./components/llamadosEstadosPosibles/llamadosEP.component";
 // PrimeNG
 import { ButtonModule } from "primeng/button";
 import { DialogModule } from "primeng/dialog";
@@ -27,7 +29,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
-  declarations: [AppComponent, AreaComponent],
+  declarations: [AppComponent, AreaComponent, LlamadosEPComponent,],
   imports: [
     BrowserModule,
     AppRoutingModule,

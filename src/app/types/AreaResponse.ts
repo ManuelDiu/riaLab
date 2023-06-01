@@ -1,4 +1,4 @@
-import { Area } from "../models/area"
+import { Area } from "../models/area/area"
 
 export type AreaResponse = {
   list: Area[],
