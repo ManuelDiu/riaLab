@@ -3,6 +3,11 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
+* {
+    padding: 0;
+    margin: 0;
+}
+
 .flex-col {
     display: flex;
     flex-direction: column;

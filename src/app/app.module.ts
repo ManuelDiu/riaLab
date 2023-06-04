@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 // Components
 import { AppComponent } from './app.component';
@@ -32,6 +32,9 @@ import { TipoDocumentoPageComponent } from './components/tipo-documento-page/tip
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/tipo-integrante-page.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthInterceptor } from './interceptors/AuthInterceptor';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -40,6 +43,7 @@ import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/t
     TipoIntegrantePageComponent,
     AreaComponent,
     LlamadosEPComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,8 +68,12 @@ import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/t
     InputTextareaModule,
     PaginatorModule,
     MessagesModule,
+    NgxSpinnerModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

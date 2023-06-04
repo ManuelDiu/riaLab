@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
     "font-awesome": "^4.7.0",
+    "ngx-spinner": "^16.0.2",
     "primeicons": "^6.0.1",
     "primeng": "^16.0.0-rc.2",
     "process": "^0.11.10",

@@ -1,0 +1,57 @@
+<div
+  style="height: 100vh"
+  class="w-12 bg-green-100 flex flex-row align-items-center justify-content-center"
+>
+  <div
+    class="flex-grow-1 h-12 w-full h-full flex flex-row align-items-center justify-content-center"
+  >
+    <img src="../../../assets//LoginImage.png" class="w-[] h-auto" />
+  </div>
+  <div
+    class="flex-grow-1 h-12 p-7 w-full gap-6 h-full bg-white flex flex-col align-items-center justify-content-center"
+  >
+    <span class="text-3xl text-black font-semibold">Login</span>
+    <span class="text-xl text-black font-semibold text-left"
+      >Accede Con tus credenciales para iniciar sesion</span
+    >
+    <div
+      class="w-full h-auto flex flex-col align-items-center jsutify-content-center gap-6"
+    >
+      <p-messages
+        [(value)]="alertsTypes"
+        [enableService]="false"
+        [closable]="true"
+        class="my-2 w-full"
+      ></p-messages>
+      <span class="p-float-label w-full">
+        <input
+          type="email"
+          class="w-full p-3 text-xl"
+          pInputText
+          id="username"
+          [(ngModel)]="email"
+        />
+        <label htmlFor="username">Email</label>
+      </span>
+      <span class="p-float-label w-full">
+        <input
+          type="password"
+          class="w-full p-3 text-xl"
+          pInputText
+          id="password"
+          [(ngModel)]="password"
+        />
+        <label htmlFor="password">Password</label>
+      </span>
+
+      <button
+        (click)="handleLogin()"
+        style="background-color: #003443"
+        pButton
+        pRipple
+        label="Iniciar Sesion"
+        class="p-button-success w-full py-3"
+      ></button>
+    </div>
+  </div>
+</div>

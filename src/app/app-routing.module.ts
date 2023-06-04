@@ -4,6 +4,7 @@ import { AreaComponent } from "./components/area/area.component";
 import { LlamadosEPComponent } from "./components/llamadosEstadosPosibles/llamadosEP.component";
 import { TipoDocumentoPageComponent } from './components/tipo-documento-page/tipo-documento-page.component';
 import { TipoIntegrantePageComponent } from "./components/tipo-integrante-page/tipo-integrante-page.component";
+import { LoginComponent } from "./components/login/login.component";
 
 const routes: Routes = [
   {
@@ -13,7 +14,8 @@ const routes: Routes = [
     path: "llamadosEP", component: LlamadosEPComponent
   },
   { path: 'tipoDocumento', component: TipoDocumentoPageComponent },
-  { path: 'tipoIntegrante', component: TipoIntegrantePageComponent }
+  { path: 'tipoIntegrante', component: TipoIntegrantePageComponent },
+  { path: 'auth/login', component: LoginComponent }
 ];
 
 @NgModule({
