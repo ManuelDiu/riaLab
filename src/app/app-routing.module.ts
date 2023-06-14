@@ -5,6 +5,7 @@ import { LlamadosEPComponent } from "./components/llamadosEstadosPosibles/llamad
 import { TipoDocumentoPageComponent } from './components/tipo-documento-page/tipo-documento-page.component';
 import { TipoIntegrantePageComponent } from "./components/tipo-integrante-page/tipo-integrante-page.component";
 import { LoginComponent } from "./components/login/login.component";
+import { RegisterComponent } from "./components/register/register.component";
 
 const routes: Routes = [
   {
@@ -15,7 +16,8 @@ const routes: Routes = [
   },
   { path: 'tipoDocumento', component: TipoDocumentoPageComponent },
   { path: 'tipoIntegrante', component: TipoIntegrantePageComponent },
-  { path: 'auth/login', component: LoginComponent }
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
 ];
 
 @NgModule({

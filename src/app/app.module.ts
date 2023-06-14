@@ -35,6 +35,7 @@ import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/t
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     AreaComponent,
     LlamadosEPComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

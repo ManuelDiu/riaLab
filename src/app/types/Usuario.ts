@@ -19,3 +19,21 @@ export interface HandleLoginData {
   username: string;
   password: string,
 }
+
+export interface HandleRegisterData {
+  id: string
+  tipoDocumentoId: number
+  documento: string
+  primerNombre: string
+  segundoNombre: string
+  primerApellido: string
+  segundoApellido: string
+  email: string
+  imagen: string
+  activo: boolean
+}
+
+export interface RegisterResponse {
+  status: boolean
+  mensaje: string
+}
