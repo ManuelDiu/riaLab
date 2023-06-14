@@ -37,6 +37,7 @@ import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CheckboxModule } from 'primeng/checkbox';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     AreaComponent,
     LlamadosEPComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
