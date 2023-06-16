@@ -337,7 +337,7 @@
   }
 
   #buttonOptions {
-    color: white!important;
+    color: white !important;
   }
 </style>
 <div *ngIf="isChecking; else noChecking">
@@ -352,50 +352,110 @@
   >
     <div
       style="min-width: 300px; background-color: #161a23"
-      class=" w-20rem min-w-[300px] p-5  flex flex-col items-center justify-start"
+      class="w-20rem min-w-[300px] p-5 flex flex-col items-center justify-start"
       role=""
     >
-      <div class="w-full h-auto py-5 flex flex-row items-start justify-start gap-3">
-        <img style="background-color: white; min-width: 48px;" [src]="userInfo?.imagen || 'https://img.freepik.com/free-icon/user_318-563642.jpg'" class="w-3rem h-3rem border-circle overflow-hidden bg-white" />
-        <div class="flex p-1 flex-col gap-1 w-full flex-grow-1 max-w-full overflow-hidden">
-          <span class="text-white font-medium text-xs text-500">{{ userInfo?.roles[0] || "No Rol" }}</span>
-          <span class="text-white font-medium text-sm">{{ userInfo?.nombre }}</span>
+      <div
+        class="w-full h-auto py-5 flex flex-row items-start justify-start gap-3"
+      >
+        <img
+          style="background-color: white; min-width: 48px"
+          [src]="
+            userInfo?.imagen ||
+            'https://img.freepik.com/free-icon/user_318-563642.jpg'
+          "
+          class="w-3rem h-3rem border-circle overflow-hidden bg-white"
+        />
+        <div
+          class="flex p-1 flex-col gap-1 w-full flex-grow-1 max-w-full overflow-hidden"
+        >
+          <span class="text-white font-medium text-xs text-500">{{
+            userInfo?.roles[0] || "No Rol"
+          }}</span>
+          <span class="text-white font-medium text-sm">{{
+            userInfo?.nombre
+          }}</span>
         </div>
-      
       </div>
 
-      <div style="width: 100%; height: 2px; background-color: #2D2F39; border-radius: 5px;" class="divider my-5"></div>
+      <div
+        style="
+          width: 100%;
+          height: 2px;
+          background-color: #2d2f39;
+          border-radius: 5px;
+        "
+        class="divider my-5"
+      ></div>
 
       <div
-        style="margin-top: 40px;"
+        style="margin-top: 40px"
         class="h-auto w-full flex flex-col items-center justify-center gap-2"
       >
-        <a routerLink="/areas" [ngClass]="['itemNav', activePath == '/areas' && 'active' || '']">
+        <a
+          routerLink="/usuarios"
+          [ngClass]="['itemNav', (activePath == '/usuarios' && 'active') || '']"
+        >
+          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
+          <span>Usuarios</span></a
+        >
+        <a
+          routerLink="/areas"
+          [ngClass]="['itemNav', (activePath == '/areas' && 'active') || '']"
+        >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>Areas</span></a
         >
-        <a routerLink="/llamadosEP" [ngClass]="['itemNav', activePath == '/llamadosEP' && 'active' || '']">
+        <a
+          routerLink="/llamadosEP"
+          [ngClass]="[
+            'itemNav',
+            (activePath == '/llamadosEP' && 'active') || ''
+          ]"
+        >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>Llamados estados</span></a
         >
-        <a routerLink="/tipoDocumento" [ngClass]="['itemNav', activePath == '/tipoDocumento' && 'active' || '']">
+        <a
+          routerLink="/tipoDocumento"
+          [ngClass]="[
+            'itemNav',
+            (activePath == '/tipoDocumento' && 'active') || ''
+          ]"
+        >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>TipoDocumento</span></a
         >
-        <a routerLink="/tipoIntegrante" [ngClass]="['itemNav', activePath == '/tipoIntegrante' && 'active' || '']">
+        <a
+          routerLink="/tipoIntegrante"
+          [ngClass]="[
+            'itemNav',
+            (activePath == '/tipoIntegrante' && 'active') || ''
+          ]"
+        >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>TipoIntergante</span></a
         >
       </div>
 
-      <div style="width: 100%; height: 2px; background-color: #2D2F39; border-radius: 5px;" class="divider my-5"></div>
+      <div
+        style="
+          width: 100%;
+          height: 2px;
+          background-color: #2d2f39;
+          border-radius: 5px;
+        "
+        class="divider my-5"
+      ></div>
 
-      <div class="w-full h-auto p-2 flex flex-row gap-3 items-center justify-start">
+      <div
+        class="w-full h-auto p-2 flex flex-row gap-3 items-center justify-start"
+      >
         <i class="pi pi-spin pi-cog text-white" style="font-size: 20px"></i>
         <span class="text-white text-sm font-medium">Configuracion</span>
-        
+
         <div class="w-full flex-grow-1"></div>
-<!--         
+        <!--         
           <p-overlayPanel #op>
             <ng-template pTemplate="content">
                 <h4>Custom Content</h4>
@@ -406,20 +466,30 @@
         </i> -->
         <div class="">
           <p-overlayPanel #op>
-             <div class="flex flex-col items-start justify-start gap-2" style="width: 200px;height: auto; background-color: white;">
-                <button (click)="handleLogout();" class="flex cursor-pointer flex-row w-full items-center justify-start gap-3">
-                  <i class="pi pi-sign-out text-600" style="font-size: 20px;" ></i>
-                  <span class="text-600 font-medium ">Logout</span>
-                </button>
-             </div>
+            <div
+              class="flex flex-col items-start justify-start gap-2"
+              style="width: 200px; height: auto; background-color: white"
+            >
+              <button
+                (click)="handleLogout()"
+                class="flex cursor-pointer flex-row w-full items-center justify-start gap-3"
+              >
+                <i class="pi pi-sign-out text-600" style="font-size: 20px"></i>
+                <span class="text-600 font-medium">Logout</span>
+              </button>
+            </div>
           </p-overlayPanel>
-          <p-button id="buttonOptions" class="text-white" (click)="op.toggle($event)" icon="pi pi-ellipsis-v" styleClass="p-button-rounded p-button-danger p-button-text text-white"></p-button>
+          <p-button
+            id="buttonOptions"
+            class="text-white"
+            (click)="op.toggle($event)"
+            icon="pi pi-ellipsis-v"
+            styleClass="p-button-rounded p-button-danger p-button-text text-white"
+          ></p-button>
         </div>
-
-        
       </div>
     </div>
-    <div class="content" role="main" style="min-width: auto; flex-grow: 1;">
+    <div class="content" role="main" style="min-width: auto; flex-grow: 1">
       <router-outlet></router-outlet>
     </div>
   </div>

@@ -27,6 +27,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PaginatorModule } from 'primeng/paginator';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { TipoDocumentoPageComponent } from './components/tipo-documento-page/tipo-documento-page.component';
 import { MessagesModule } from 'primeng/messages';
@@ -35,9 +36,10 @@ import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/t
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
-import { CheckboxModule } from 'primeng/checkbox';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RegisterComponent } from './components/register/register.component';
+import { UsuarioComponent } from './components/usuarios/usuario.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,7 @@ import { RegisterComponent } from './components/register/register.component';
     AreaComponent,
     LlamadosEPComponent,
     LoginComponent,
-    RegisterComponent,
+    UsuarioComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +77,8 @@ import { RegisterComponent } from './components/register/register.component';
     NgxSpinnerModule,
     OverlayPanelModule,
     CheckboxModule,
+    CheckboxModule,
+    ReactiveFormsModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
   providers: [ConfirmationService, MessageService,
