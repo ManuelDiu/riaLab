@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Message } from 'primeng/api';
 import { LoginService } from 'src/app/services/login/login.service';
+import { LoggedUserService } from 'src/app/services/usuario/loggedUserService';
 import { HandleLoginData, Usuario } from 'src/app/types/Usuario';
 import { storageToken } from 'src/app/utils/tokenUtils';
 
@@ -26,6 +27,9 @@ export class LoginComponent {
         next: (response: any) => {
           const userInfo = response?.body as Usuario;
           if (userInfo?.token) {
+            console.log("userInfo is", userInfo)
+            const lus = new LoggedUserService();
+            lus.handleStorageUserInfo(userInfo);
             storageToken(userInfo?.token);
             window.location.reload();
           }

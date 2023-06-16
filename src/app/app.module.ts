@@ -36,6 +36,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CheckboxModule } from 'primeng/checkbox';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     PaginatorModule,
     MessagesModule,
     NgxSpinnerModule,
+    OverlayPanelModule,
     CheckboxModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],

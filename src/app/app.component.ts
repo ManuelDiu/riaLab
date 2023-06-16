@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { getToken } from './utils/tokenUtils';
+import { NavigationStart, Router } from '@angular/router';
+import { clearToken, getToken } from './utils/tokenUtils';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { LoggedUserService } from './services/usuario/loggedUserService';
 
 const listofPublicPaths = [
   "/auth/login",
@@ -17,10 +18,29 @@ export class AppComponent {
   public currentPathname: string = window.location.pathname || "";
   title = 'riaLab';
   public isChecking = true;
-  constructor(private spinner: NgxSpinnerService) {}
+  constructor(private spinner: NgxSpinnerService, private router: Router) {
+    router.events.subscribe(val => {
+      if (val instanceof NavigationStart){
+        console.log(val.url)
+        this.activePath = val.url;
+        // this.routerChangeMethod(event.url);
+     }
+      // console.log(location)
+    });
 
+  }
+  public userInfo: any = null;
+  public activePath = '/';
+  
+  
 
   ngOnInit() {
+    this.activePath = this.router.url;
+    console.log(this.activePath)
+    const lus = new LoggedUserService();
+    lus.handleLoadUserInfo();
+    this.userInfo = LoggedUserService.userInfo;
+
     this.spinner.show();
     const currentPathName = window.location.pathname;
     const token = getToken();
@@ -32,6 +52,14 @@ export class AppComponent {
       window.location.pathname = "/"; // dashboard
     }
     this.isChecking = false;
+  }
+
+  public handleLogout() {
+    const loggedUserService = new LoggedUserService();
+    loggedUserService.handleClearStoreInfo();
+    clearToken();
+    this.router.navigate(["/auth/login"]);
+    window.location.pathname = "/auth/login"
   }
   
 }

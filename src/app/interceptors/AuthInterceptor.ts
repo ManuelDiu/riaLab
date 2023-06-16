@@ -5,9 +5,11 @@ import {
   HttpResponse,
   HttpRequest,
   HttpHandler,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, finalize, tap, throwError } from 'rxjs';
 import { getToken } from '../utils/tokenUtils';
+import { request } from 'http';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -25,7 +27,22 @@ export class AuthInterceptor implements HttpInterceptor {
       httpRequest = httpRequest.clone({
         setHeaders: { Authorization: `Bearer ${token}` },
       });
-      return next.handle(httpRequest);
+
+      return next.handle(httpRequest).pipe(
+        catchError(
+          (err) =>
+            new Observable<HttpEvent<any>>((observer) => {
+              if (err instanceof HttpErrorResponse) {
+                const errResp = <HttpErrorResponse>err;
+                if (errResp.status === 401 || err.status === 403) {
+                  window.location.pathname = '/auth/login';
+                }
+              }
+              observer.error(err);
+              observer.complete();
+            })
+        )
+      );
     } catch (error) {
       window.location.pathname = '/auth/login';
       return next.handle(httpRequest);
