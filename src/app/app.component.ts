@@ -5,7 +5,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 const listofPublicPaths = [
   "/auth/login",
-  "/auth/register"
 ]
 
 @Component({
@@ -33,5 +32,5 @@ export class AppComponent {
     }
     this.isChecking = false;
   }
-  
+
 }

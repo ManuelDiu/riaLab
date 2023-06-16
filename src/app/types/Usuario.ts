@@ -1,4 +1,15 @@
+import { Persona } from './Persona';
 import { TipoDocumento } from './tipoDocumento';
+
+export interface UsuarioInfo {
+  id: string;
+  username: string;
+  email: string;
+  persona: Persona;
+  imagen: string;
+  activo: boolean;
+  roles: string[];
+}
 
 export interface Usuario {
   statusOk: boolean;

@@ -45,11 +45,9 @@ export class AreaComponent implements OnInit {
         console.log("data del get:", data);
         this.isLoading = false;
       });
-    console.log("cant areas: ", this.areasArr.length == 0);
   }
 
   openNew() {
-    console.log("current areas: ", this.areasArr);
     this.area = {};
     this.submitted = false;
     this.areaModal = true;
@@ -152,7 +150,7 @@ export class AreaComponent implements OnInit {
               this.messageService.add({
                 severity: "error",
                 summary: "Error",
-                detail: "Error al crear el Area " + this.area.nombre,
+                detail: "Error al modificar el Area " + this.area.nombre,
                 life: 4000,
               });
               console.log(error);
