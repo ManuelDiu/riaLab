@@ -6,7 +6,6 @@ import { LoggedUserService } from './services/usuario/loggedUserService';
 
 const listofPublicPaths = [
   "/auth/login",
-  "/auth/register"
 ]
 
 @Component({
