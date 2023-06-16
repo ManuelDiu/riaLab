@@ -26,6 +26,11 @@
     margin: 8px 0;
   }
 
+  .ng-star-inserted {
+    width: 100%!important;
+    min-width: 500px!important;
+  }
+
   p {
     margin: 0;
   }
@@ -68,11 +73,11 @@
 
   .content {
     display: flex;
-    margin: 82px auto 32px;
+    margin: 0px;
     padding: 0 16px;
-    max-width: 960px;
     flex-direction: column;
     align-items: center;
+    margin-top: 100px;
   }
 
   svg.material-icons {
@@ -305,16 +310,10 @@
   <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 </div>
 
-<ng-template #noChecking>
+<ng-template style="min-width: 900px" #noChecking>
 <!-- Toolbar -->
 <div *ngIf="!this.currentPathname?.includes('auth'); else noLayout">
   <div class="toolbar" role="banner">
-    <img
-      width="40"
-      alt="Angular Logo"
-      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-    />
-    <span>Bienvenido</span>
       <a href="/areas" style="color:white; margin-left: 3rem;">Areas</a>
       <a href="/llamadosEP" style="color:white; margin-left: 3rem;">Llamados estados posibles</a>
       <a href="/tipoDocumento" style="color:white; margin-left: 3rem;">TipoDocumento</a>
@@ -334,13 +333,13 @@
         </svg>
       </a>
   </div>
-  <div class="content" role="main">
+  <div class="content" role="main" style="min-width: 100%;">
     <router-outlet></router-outlet>
   </div>
 </div>
 
 
-<ng-template #noLayout>
+<ng-template #noLayout style="min-width: '100%';margin-top: 60px;">
     <router-outlet></router-outlet>
 </ng-template>
 

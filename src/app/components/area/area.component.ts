@@ -9,6 +9,7 @@ import { AreaResponse } from "src/app/types/AreaResponse";
   templateUrl: "./area.component.html",
   styleUrls: ["./area.component.scss"],
   providers: [MessageService, ConfirmationService],
+  host: {'class': 'w-full'}
 })
 export class AreaComponent implements OnInit {
   areasArr: Area[] = [];
@@ -42,7 +43,6 @@ export class AreaComponent implements OnInit {
       .subscribe((data: AreaResponse) => {
         this.areasArr = data.list;
         this.totalCount = data.totalCount;
-        console.log("data del get:", data);
         this.isLoading = false;
       });
     console.log("cant areas: ", this.areasArr.length == 0);
@@ -53,6 +53,12 @@ export class AreaComponent implements OnInit {
     this.area = {};
     this.submitted = false;
     this.areaModal = true;
+  }
+
+  public handleChangeEstado(event:any) {
+    if (this.area) {
+      this.area.activo = event?.checked;
+    }
   }
 
   deleteSelectedAreas() {
@@ -132,7 +138,6 @@ export class AreaComponent implements OnInit {
 
   saveArea() {
     this.submitted = true;
-    this.area.activo = true;
     if (this.isModifying) {
       if (this.area?.nombre) {
         this.areaService
@@ -201,7 +206,6 @@ export class AreaComponent implements OnInit {
       .subscribe((data: AreaResponse) => {
         this.areasArr = data.list;
         this.totalCount = data.totalCount;
-        console.log("data del get:", data);
         this.isLoading = false;
       });
     this.first = event.first;

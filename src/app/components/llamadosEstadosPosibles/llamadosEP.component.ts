@@ -9,6 +9,7 @@ import { EstadoPosibleResponse } from "src/app/types/LlamadoEPResponse";
   templateUrl: "./llamadosEP.component.html",
   styleUrls: ["./llamadosEP.component.scss"],
   providers: [MessageService, ConfirmationService],
+  host: {'class': 'w-full'}
 })
 export class LlamadosEPComponent implements OnInit {
   estadosArray: LlamadoEstadoPosible[] = [];
@@ -84,6 +85,13 @@ export class LlamadosEPComponent implements OnInit {
     this.estadoModal = true;
   }
 
+  public handleChangeEstado(event:any) {
+    if (this.currentEstadoPosible) {
+      console.log("event.checked", event?.checked)
+      this.currentEstadoPosible.activo = event?.checked;
+    }
+  }
+
   deleteEstado(estadoP: LlamadoEstadoPosible) {
     this.confirmationService.confirm({
       message:
@@ -128,9 +136,9 @@ export class LlamadosEPComponent implements OnInit {
 
   saveEstadoPosible() {
     this.submitted = true;
-    this.currentEstadoPosible.activo = true;
     if (this.isModifying) {
       if (this.currentEstadoPosible?.nombre) {
+        console.log("currentEstadoPosible", this.currentEstadoPosible)
         this.llamadoEPService
           .updateEstadoPosible(
             this.currentEstadoPosible.id as number,

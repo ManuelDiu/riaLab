@@ -35,6 +35,7 @@ import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/t
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     PaginatorModule,
     MessagesModule,
     NgxSpinnerModule,
+    CheckboxModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
   providers: [ConfirmationService, MessageService,

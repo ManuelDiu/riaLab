@@ -8,6 +8,7 @@ import { ConfirmationService, Message } from 'primeng/api';
   templateUrl: './tipo-documento-page.component.html',
   styleUrls: ['./tipo-documento-page.component.scss'],
   providers: [TipoDocumentoService],
+  host: {'class': 'w-full'}
 })
 export class TipoDocumentoPageComponent {
   public tipoDocumentos: TipoDocumento[] = [];
@@ -19,6 +20,12 @@ export class TipoDocumentoPageComponent {
   public nombreTipoDocumento = '';
   public alertsTypes: Message[] = [];
   public selectedItemToEdit: TipoDocumento | undefined = undefined;
+  public estadoTipodocumento = false;
+
+  first: number = 0;
+  currentRows: number = 5;
+  totalCount: number = 0;
+  rowsPerPageOptions: number[] = [5, 10, 25, 50];
 
   constructor(
     private tdservice: TipoDocumentoService,
@@ -27,10 +34,11 @@ export class TipoDocumentoPageComponent {
 
   ngOnInit() {
     this.isLoading = true;
-    this.tdservice.getTipoDocumentos().subscribe({
+    this.tdservice.getTipoDocumentos(this.currentRows, this.first).subscribe({
       next: (response) => {
         const data = response.body?.list || [];
         this.tipoDocumentos = data;
+        this.totalCount = response?.body?.totalCount || 0;
       },
       error: () => {
         console.log('error loading ');
@@ -42,7 +50,16 @@ export class TipoDocumentoPageComponent {
   }
 
   public showDialog() {
+    if (this.showAddDialog == false) {
+      this.estadoTipodocumento = true;
+    }
     this.showAddDialog = !this.showAddDialog;
+  }
+
+  public handleChangeEstado(event:any) {
+    if (this.selectedItemToEdit) {
+      this.selectedItemToEdit.activo = event?.checked;
+    }
   }
 
   public onChangeNombre(event: any) {
@@ -65,6 +82,7 @@ export class TipoDocumentoPageComponent {
       this.selectedItemToEdit = doc;
       this.showAddDialog = true;
       this.nombreTipoDocumento = doc.nombre;
+      this.estadoTipodocumento = doc.activo;
     }
   }
 
@@ -133,7 +151,7 @@ export class TipoDocumentoPageComponent {
     }
 
     this.tdservice
-      .createTipoDocumento(this.nombreTipoDocumento, true)
+      .createTipoDocumento(this.nombreTipoDocumento, this.estadoTipodocumento)
       .subscribe({
         next: (response) => {
           if (response.body) {
@@ -156,5 +174,18 @@ export class TipoDocumentoPageComponent {
           this.isLoadingCreate = false;
         },
       });
+  }
+
+  onPageChange(event: any) {
+
+    this.isLoading = true;
+    this.tdservice.getTipoDocumentos(event.rows, event.first)
+      .subscribe((data: any) => {
+        this.tipoDocumentos = data?.body.list || [];
+        this.totalCount = data?.body?.totalCount;
+        this.isLoading = false;
+      });
+    this.first = event.first;
+    this.currentRows = event.rows;
   }
 }
