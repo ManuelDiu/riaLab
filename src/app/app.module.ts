@@ -37,7 +37,6 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { RegisterComponent } from './components/register/register.component';
 import { UsuarioComponent } from './components/usuarios/usuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
