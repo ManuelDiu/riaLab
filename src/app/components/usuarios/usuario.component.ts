@@ -21,6 +21,7 @@ import { FormControl } from "@angular/forms";
   templateUrl: "./usuario.component.html",
   styleUrls: ["./usuario.component.scss"],
   providers: [TipoDocumentoService],
+  host: {'class': 'w-full'},
 })
 export class UsuarioComponent implements OnInit {
   // Atribs para el modal
