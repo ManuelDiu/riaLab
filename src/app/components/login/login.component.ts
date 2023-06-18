@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
 import { LoginService } from 'src/app/services/login/login.service';
 import { LoggedUserService } from 'src/app/services/usuario/loggedUserService';
@@ -14,8 +15,9 @@ export class LoginComponent {
   public email: string = '';
   public password: string = '';
   public alertsTypes: Message[] = [];
+  public isLoading = false;
 
-  constructor(public loginService: LoginService) {}
+  constructor(public loginService: LoginService, public router: Router) {}
 
   public handleLogin() {
     if (this.email.trim() != '' && this.password.trim() != '') {
@@ -23,6 +25,7 @@ export class LoginComponent {
         username: this.email,
         password: this.password,
       };
+      this.isLoading = true;
       this.loginService.handleLogin(dataToSend).subscribe({
         next: (response: any) => {
           const userInfo = response?.body as Usuario;
@@ -45,6 +48,9 @@ export class LoginComponent {
             ];
           }
         },
+        complete: () => {
+          this.isLoading = false;
+        }
       });
       //call to endpoint
     } else {
@@ -56,5 +62,9 @@ export class LoginComponent {
         },
       ];
     }
+  }
+  
+  public handleGoingToResetPassword() {
+    this.router.navigate(["/auth/forgot-password"])
   }
 }

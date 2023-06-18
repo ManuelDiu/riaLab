@@ -356,7 +356,7 @@
   <div
     class="flex flex-row w-full h-screen"
     style="background-color: #f5f0fa;"
-    *ngIf="!this.currentPathname?.includes('auth'); else noLayout"
+    *ngIf="!isPublicPath; else noLayout"
   >
     <div
       style="min-width: 300px; background-color: #161a23"
@@ -489,12 +489,12 @@
         </div>
       </div>
     </div>
-    <div class="content" role="main" style="min-width: auto; flex-grow: 1">
+    <div class="content" role="main" style="min-width: auto; flex-grow: 1; max-height: 100vh; overflow: auto;">
       <router-outlet></router-outlet>
     </div>
   </div>
 
-  <ng-template #noLayout style="min-width: '100%'; margin-top: 60px;">
+  <ng-template #noLayout style="min-width: '100%'; margin-top: 60px; max-height: 100vh; overflow: auto">
     <router-outlet></router-outlet>
   </ng-template>
 </ng-template>
