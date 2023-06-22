@@ -336,6 +336,13 @@
     cursor: pointer;
   }
 
+  .active:hover {
+    transition: all .3s linear;
+    background-color: #2d2f3927 !important;
+    color: gray;
+    cursor: pointer;
+  }
+
   #buttonOptions {
     color: white !important;
   }
@@ -348,7 +355,8 @@
   <!-- Toolbar -->
   <div
     class="flex flex-row w-full h-screen"
-    *ngIf="!this.currentPathname?.includes('auth'); else noLayout"
+    style="background-color: #f5f0fa;"
+    *ngIf="!isPublicPath; else noLayout"
   >
     <div
       style="min-width: 300px; background-color: #161a23"
@@ -455,15 +463,7 @@
         <span class="text-white text-sm font-medium">Configuracion</span>
 
         <div class="w-full flex-grow-1"></div>
-        <!--
-          <p-overlayPanel #op>
-            <ng-template pTemplate="content">
-                <h4>Custom Content</h4>
-            </ng-template>
-        </p-overlayPanel>
-        <i onclick="op.toggle($event)" style="cursor: pointer;" class="pi pi-ellipsis-v text-white" style="font-size: 20px">
 
-        </i> -->
         <div class="">
           <p-overlayPanel #op>
             <div
@@ -489,12 +489,12 @@
         </div>
       </div>
     </div>
-    <div class="content" role="main" style="min-width: auto; flex-grow: 1">
+    <div class="content" role="main" style="min-width: auto; flex-grow: 1; max-height: 100vh; overflow: auto;">
       <router-outlet></router-outlet>
     </div>
   </div>
 
-  <ng-template #noLayout style="min-width: '100%'; margin-top: 60px">
+  <ng-template #noLayout style="min-width: '100%'; margin-top: 60px; max-height: 100vh; overflow: auto">
     <router-outlet></router-outlet>
   </ng-template>
 </ng-template>

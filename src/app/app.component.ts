@@ -6,6 +6,8 @@ import { LoggedUserService } from './services/usuario/loggedUserService';
 
 const listofPublicPaths = [
   "/auth/login",
+  "/auth/forgot-password",
+  "/restore-password"
 ]
 
 @Component({
@@ -30,6 +32,7 @@ export class AppComponent {
   }
   public userInfo: any = null;
   public activePath = '/';
+  public isPublicPath = false;
 
 
 
@@ -44,6 +47,7 @@ export class AppComponent {
     const currentPathName = window.location.pathname;
     const token = getToken();
     const isInPublicPath = listofPublicPaths.includes(currentPathName);
+    this.isPublicPath = isInPublicPath;
     if (!token && !isInPublicPath) {
       window.location.pathname = "/auth/login";
     }

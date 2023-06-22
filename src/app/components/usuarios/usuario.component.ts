@@ -21,6 +21,7 @@ import { FormControl } from "@angular/forms";
   templateUrl: "./usuario.component.html",
   styleUrls: ["./usuario.component.scss"],
   providers: [TipoDocumentoService],
+  host: {'class': 'w-full'},
 })
 export class UsuarioComponent implements OnInit {
   // Atribs para el modal
@@ -99,7 +100,7 @@ export class UsuarioComponent implements OnInit {
         this.isUsuariosLoading = false;
       });
     this.isTDocLoading = true;
-    this.tdocservice.getTipoDocumentos().subscribe({
+    this.tdocservice.getTipoDocumentos(500, 0).subscribe({
       next: (response) => {
         const data = response.body?.list || [];
         this.tiposDocumentos = data;

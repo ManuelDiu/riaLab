@@ -39,6 +39,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { UsuarioComponent } from './components/usuarios/usuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     LlamadosEPComponent,
     LoginComponent,
     UsuarioComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
