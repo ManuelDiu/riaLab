@@ -24,7 +24,8 @@ export class LlamadoEPService {
 
   getEstadosPosiblesPaged(
     limit: number,
-    offset: number
+    offset: number,
+    query: string = "",
   ): Observable<EstadoPosibleResponse> {
     const headers = { "content-type": "application/json" };
     let body = {
@@ -33,7 +34,7 @@ export class LlamadoEPService {
       id: 0,
       filters: {
         activo: null,
-        nombre: "",
+        nombre: query,
       },
       orders: [""],
     };

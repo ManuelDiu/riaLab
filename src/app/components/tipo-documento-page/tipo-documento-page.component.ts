@@ -3,6 +3,7 @@ import { TipoDocumentoService } from '../../services/TipoDocumento/tipo-document
 import { TipoDocumento } from 'src/app/types/tipoDocumento';
 import { ConfirmationService, Message } from 'primeng/api';
 
+let intervalSearch: any = null;
 @Component({
   selector: 'app-tipo-documento-page',
   templateUrl: './tipo-documento-page.component.html',
@@ -21,6 +22,7 @@ export class TipoDocumentoPageComponent {
   public alertsTypes: Message[] = [];
   public selectedItemToEdit: TipoDocumento | undefined = undefined;
   public estadoTipodocumento = false;
+  public query: string = "";
 
   first: number = 0;
   currentRows: number = 5;
@@ -32,9 +34,10 @@ export class TipoDocumentoPageComponent {
     private confirmationService: ConfirmationService
   ) {}
 
-  ngOnInit() {
+
+  public handleLoad = (query: string = "") => {
     this.isLoading = true;
-    this.tdservice.getTipoDocumentos(this.currentRows, this.first).subscribe({
+    this.tdservice.getTipoDocumentos(this.currentRows, this.first, query).subscribe({
       next: (response) => {
         const data = response.body?.list || [];
         this.tipoDocumentos = data;
@@ -47,6 +50,10 @@ export class TipoDocumentoPageComponent {
         this.isLoading = false;
       },
     });
+  }
+
+  ngOnInit() {
+    this.handleLoad("");
   }
 
   public showDialog() {
@@ -187,5 +194,14 @@ export class TipoDocumentoPageComponent {
       });
     this.first = event.first;
     this.currentRows = event.rows;
+  }
+
+  public handleSearch(event: any) {
+    const text = event?.target?.value;
+    this.query = text;
+    clearTimeout(intervalSearch);
+    intervalSearch = setTimeout(() => {
+      this.handleLoad(text);
+    }, 1000);
   }
 }

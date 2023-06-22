@@ -14,7 +14,7 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) {}
 
-  getUsuariosPaged(limit: number, offset: number): Observable<UsuarioResponse> {
+  getUsuariosPaged(limit: number, offset: number, query: string = ""): Observable<UsuarioResponse> {
     // term = term.trim();
     const headers = { "content-type": "application/json" };
     let body = {
@@ -23,11 +23,11 @@ export class UsuarioService {
       id: 0,
       filters: {
         activo: true,
-        nombre: "",
-        idUsuario: "",
-        username: "",
-        email: "",
-        documento: "",
+        nombre: query,
+        idUsuario: query,
+        username: query,
+        email: query,
+        documento: query,
       },
       orders: [""],
     };

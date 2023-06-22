@@ -4,6 +4,8 @@ import { LlamadoEPService } from "src/app/services/llamadosEP/llamadoEP.service"
 import { ConfirmationService, MessageService } from "primeng/api";
 import { EstadoPosibleResponse } from "src/app/types/LlamadoEPResponse";
 
+let timeoutInterval: any = null;
+
 @Component({
   selector: "app-llamadosEP",
   templateUrl: "./llamadosEP.component.html",
@@ -18,6 +20,7 @@ export class LlamadosEPComponent implements OnInit {
   submitted: boolean = false;
   estadoModal: boolean = false;
   isModifying: boolean = false;
+  public query: string = "";
 
   selectedEstados: LlamadoEstadoPosible[] = [];
 
@@ -36,15 +39,19 @@ export class LlamadosEPComponent implements OnInit {
     public confirmationService: ConfirmationService
   ) {}
 
-  ngOnInit() {
+  public handleLoad = (query: string = "") => {
     this.isLoading = true;
     this.llamadoEPService
-      .getEstadosPosiblesPaged(this.currentRows, this.first)
+      .getEstadosPosiblesPaged(this.currentRows, this.first, query)
       .subscribe((data: EstadoPosibleResponse) => {
         this.estadosArray = data.list;
         this.totalCount = data.totalCount;
         this.isLoading = false;
       });
+  }
+
+  ngOnInit() {
+    this.handleLoad("");
   }
 
   openNew() {
@@ -212,6 +219,15 @@ export class LlamadosEPComponent implements OnInit {
       });
     this.first = event.first;
     this.currentRows = event.rows;
+  }
+
+  public handleSearch = (event: any) => {
+    const text = event?.target?.value;
+    this.query = text;
+    clearTimeout(timeoutInterval);
+    timeoutInterval = setTimeout(() => {
+      this.handleLoad(text);
+    }, 1000);
   }
 
   showDialog() {

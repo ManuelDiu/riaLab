@@ -15,6 +15,16 @@
     <p-toolbar>
       <ng-template pTemplate="left">
         <div style="display: flex; gap: 1rem;">
+          <span class="p-input-icon-left mx-2">
+            <i class="pi pi-search"></i>
+            <input
+              placeholder="Buscar"
+              (keyup)="handleSearch($event)"
+              [value]="query"
+              type="text"
+              pInputText
+            />
+          </span>
           <button
             pButton
             pRipple
@@ -78,17 +88,13 @@
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
           <th
-            pSortableColumn="nombre"
-            style="
-              min-width: 100%;
-              justify-content: center;
-              display: flex;
-              min-height: 55px;
-            "
           >
-            Nombre <p-sortIcon field="nombre"></p-sortIcon>
+            Nombre 
+            <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
           </th>
-          <th class="" style="">Activo</th>
+          <th class="" style="">Activo
+            <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
+          </th>
           <th class="" style="text-align: right;">Acciones</th>
         </tr>
       </ng-template>

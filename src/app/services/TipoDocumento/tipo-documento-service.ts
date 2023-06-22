@@ -28,7 +28,7 @@ export class TipoDocumentoService {
 
   constructor(private http: HttpClient) {}
 
-  getTipoDocumentos(limit: number, offset: number): Observable<HttpResponse<TipoDocumentoResponse>> {
+  getTipoDocumentos(limit: number, offset: number, query: string = ""): Observable<HttpResponse<TipoDocumentoResponse>> {
     const response = this.http.post<TipoDocumentoResponse>(
       `${this.baseUrl}api/TiposDeDocumentos/Paged`,
       {
@@ -37,7 +37,7 @@ export class TipoDocumentoService {
         id: 0,
         filters: {
           activo: null,
-          nombre: '',
+          nombre: query,
         },
         orders: [''],
       },
