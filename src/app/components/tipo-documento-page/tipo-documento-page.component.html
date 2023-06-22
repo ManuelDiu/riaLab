@@ -30,7 +30,17 @@ style="
 <ng-template #notIsLoadingData>
   <div class="firstPart">
     <h1>Tipo Documento</h1>
-    <div class="gap1 flex-row">
+    <div class="gap1 flex-row py-2">
+      <span class="p-input-icon-left mx-2">
+        <i class="pi pi-search"></i>
+        <input
+          placeholder="Buscar"
+          (keyup)="handleSearch($event)"
+          [value]="query"
+          type="text"
+          pInputText
+        />
+      </span>
       <p-button
         icon="pi pi-trash"
         (onClick)="confirmDelete()"
@@ -81,8 +91,13 @@ style="
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
         <th>Id</th>
-        <th>Nombre</th>
-        <th>Activo</th>
+        <th>Nombre
+          <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+
+        </th>
+        <th>Activo
+          <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
+        </th>
         <th>Actions</th>
       </tr>
     </ng-template>

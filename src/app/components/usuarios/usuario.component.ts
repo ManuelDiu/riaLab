@@ -17,6 +17,8 @@ import { Persona } from "src/app/types/Persona";
 import { FormControl } from "@angular/forms";
 import { RoleService } from "src/app/services/roles/role.service";
 
+let intervalSearch: any = null;
+
 @Component({
   selector: "app-usuario",
   templateUrl: "./usuario.component.html",
@@ -83,6 +85,7 @@ export class UsuarioComponent implements OnInit {
   currentRows: number = 5;
   totalCount: number = 0;
   rowsPerPageOptions: number[] = [5, 10, 25, 50];
+  public query: string = "";
 
   emailRegex = new RegExp(
     /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
@@ -98,10 +101,10 @@ export class UsuarioComponent implements OnInit {
     private roleService: RoleService
   ) {}
 
-  ngOnInit() {
+  public handleLoadData = (query: string = "") => {
     this.isUsuariosLoading = true;
     this.usuarioService
-      .getUsuariosPaged(this.currentRows, this.first)
+      .getUsuariosPaged(this.currentRows, this.first, query)
       .subscribe((data: UsuarioResponse) => {
         this.usuariosArr = data.list;
         this.totalCount = data.totalCount;
@@ -133,6 +136,10 @@ export class UsuarioComponent implements OnInit {
         this.isRolesLoading = false;
       },
     });
+  }
+
+  ngOnInit() {
+    this.handleLoadData("");
   }
 
   refreshTable() {
@@ -404,5 +411,14 @@ export class UsuarioComponent implements OnInit {
 
   showDialog() {
     this.visible = true;
+  }
+  
+  public handleSearch = (event: any) => {
+    const text = event?.target?.value;
+    this.query = text;
+    clearTimeout(intervalSearch);
+    intervalSearch = setTimeout(() => {
+      this.handleLoadData(text);
+    }, 1000);
   }
 }

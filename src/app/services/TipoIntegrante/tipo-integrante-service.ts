@@ -30,7 +30,7 @@ export class TipoIntegranteService {
 
   constructor(private http: HttpClient) {}
 
-  getTipoIntegrantes(limit: number, offset:number): Observable<HttpResponse<TipoIntegranteResponse>> {
+  getTipoIntegrantes(limit: number, offset:number, query: string = ""): Observable<HttpResponse<TipoIntegranteResponse>> {
     const response = this.http.post<TipoIntegranteResponse>(
       `${this.baseUrl}api/TiposDeIntegrantes/Paged`,
       {
@@ -39,7 +39,7 @@ export class TipoIntegranteService {
         id: 0,
         filters: {
           activo: true,
-          nombre: '',
+          nombre: query,
         },
         orders: [''],
       },

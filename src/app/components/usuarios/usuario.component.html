@@ -15,6 +15,16 @@
     <p-toolbar>
       <ng-template pTemplate="left">
         <div style="display: flex; gap: 1rem;">
+          <span class="p-input-icon-left mx-2">
+            <i class="pi pi-search"></i>
+            <input
+              placeholder="Buscar"
+              (keyup)="handleSearch($event)"
+              [value]="query"
+              type="text"
+              pInputText
+            />
+          </span>
           <button
             pButton
             pRipple
@@ -69,19 +79,21 @@
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
           <th pSortableColumn="persona.primerNombre" style="min-height: 55px;">
-            Primer Nombre <p-sortIcon field="primerNombre"></p-sortIcon>
+            Primer Nombre 
+            <p-columnFilter type="text" field="persona.primerNombre" display="menu"></p-columnFilter>
+
           </th>
-          <th
-            pSortableColumn="persona.primerApellido"
-            style="min-height: 55px;"
-          >
-            Primer Apellido <p-sortIcon field="primerApellido"></p-sortIcon>
+          <th pSortableColumn="persona.primerApellido" style="min-height: 55px;">
+            Primer Apellido
+            <p-columnFilter type="text" field="persona.primerApellido" display="menu"></p-columnFilter>
           </th>
           <th pSortableColumn="persona.documento" style="min-height: 55px;">
-            Documento<p-sortIcon field="documento"></p-sortIcon>
+            Documento
+            <p-columnFilter type="text" field="documento" display="menu"></p-columnFilter>
           </th>
           <th pSortableColumn="activo" style="min-height: 55px;">
-            Estado<p-sortIcon field="estado"></p-sortIcon>
+            Estado
+            <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
           </th>
           <th class="text-center">Acciones</th>
         </tr>

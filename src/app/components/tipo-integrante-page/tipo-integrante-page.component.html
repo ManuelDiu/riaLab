@@ -9,17 +9,23 @@
 </style>
 
 <div *ngIf="isLoading; else notIsLoadingData">
-  <img
-    src="../../assets/9844-loading-40-paperplane.gif"
-    width="200px"
-    height="200px"
-  />
+  <span>Loading...</span>
 </div>
 
 <ng-template #notIsLoadingData>
   <div class="firstPart">
     <h1>Tipo Integrante</h1>
-    <div class="gap1 flex-row">
+    <div class="gap1 py-2 flex-row">
+      <span class="p-input-icon-left mx-2">
+        <i class="pi pi-search"></i>
+        <input
+          placeholder="Buscar"
+          (keyup)="handleSearch($event)"
+          [value]="query"
+          type="text"
+          pInputText
+        />
+      </span>
       <p-button
         icon="pi pi-trash"
         (onClick)="confirmDelete()"
@@ -63,6 +69,7 @@
     styleClass="p-datatable-striped"
     [value]="tipoIntegrantes"
     [tableStyle]="{ 'min-width': '100%' }"
+    [globalFilterFields]="['nombre', 'orden', 'activo']"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -70,9 +77,15 @@
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
         <th>Id</th>
-        <th>Nombre</th>
-        <th>Orden</th>
-        <th>Activo</th>
+        <th>Nombre
+          <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+        </th>
+        <th>Orden
+          <p-columnFilter type="text" field="orden" display="menu"></p-columnFilter>
+        </th>
+        <th>Activo
+          <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
+        </th>
         <th>Actions</th>
       </tr>
     </ng-template>
@@ -97,15 +110,15 @@
   </p-table>
 
   <p-paginator
-  *ngIf="!isLoading && tipoIntegrantes.length > 0"
-  (onPageChange)="onPageChange($event)"
-  [first]="first"
-  [rows]="currentRows"
-  [totalRecords]="totalCount"
-  [rowsPerPageOptions]="rowsPerPageOptions"
-  [showCurrentPageReport]="true"
-  currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
-></p-paginator>
+    *ngIf="!isLoading && tipoIntegrantes.length > 0"
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="currentRows"
+    [totalRecords]="totalCount"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+  ></p-paginator>
 
   <p-dialog
     (onHide)="onHide()"

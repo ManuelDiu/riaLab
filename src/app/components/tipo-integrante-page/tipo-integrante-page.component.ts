@@ -3,11 +3,13 @@ import { ConfirmationService, Message } from 'primeng/api';
 import { TipoIntegrante } from 'src/app/types/tipoIntegrante';
 import { TipoIntegranteService } from 'src/app/services/TipoIntegrante/tipo-integrante-service';
 
+var intervalSearch: any = 0;
+
 @Component({
   selector: 'app-tipo-integrante-page',
   templateUrl: './tipo-integrante-page.component.html',
   styleUrls: ['./tipo-integrante-page.component.scss'],
-  host: {'class': 'w-full'}
+  host: { class: 'w-full' },
 })
 export class TipoIntegrantePageComponent {
   public tipoIntegrantes: TipoIntegrante[] = [];
@@ -25,27 +27,34 @@ export class TipoIntegrantePageComponent {
   currentRows: number = 5;
   totalCount: number = 0;
   rowsPerPageOptions: number[] = [5, 10, 25, 50];
+  public query: String = '';
 
   constructor(
     private tdIntegrante: TipoIntegranteService,
     private confirmationService: ConfirmationService
   ) {}
 
-  ngOnInit() {
+  public handleLoadData(query: string = '') {
     this.isLoading = true;
-    this.tdIntegrante.getTipoIntegrantes(this.currentRows, this.first).subscribe({
-      next: (response) => {
-        const data = response.body?.list || [];
-        this.tipoIntegrantes = data;
-        this.totalCount = response?.body?.totalCount || 0;
-      },
-      error: () => {
-        console.log('error loading ');
-      },
-      complete: () => {
-        this.isLoading = false;
-      },
-    });
+    this.tdIntegrante
+      .getTipoIntegrantes(this.currentRows, this.first, query)
+      .subscribe({
+        next: (response) => {
+          const data = response.body?.list || [];
+          this.tipoIntegrantes = data;
+          this.totalCount = response?.body?.totalCount || 0;
+        },
+        error: () => {
+          console.log('error loading ');
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
+  }
+
+  ngOnInit() {
+    this.handleLoadData('');
   }
 
   public showDialog() {
@@ -71,8 +80,8 @@ export class TipoIntegrantePageComponent {
     }
   }
 
-  public handleChangeEstado(event:any) {
-    console.log(event)
+  public handleChangeEstado(event: any) {
+    console.log(event);
     if (this.selectedItemToEdit) {
       this.selectedItemToEdit.activo = event?.checked;
     }
@@ -84,7 +93,7 @@ export class TipoIntegrantePageComponent {
 
   public activeToEditItem(doc: TipoIntegrante) {
     if (doc) {
-      console.log("doc.activo", doc.activo)
+      console.log('doc.activo', doc.activo);
       this.selectedItemToEdit = doc;
       this.showAddDialog = true;
       this.nombreTipoDocumento = doc.nombre;
@@ -136,7 +145,7 @@ export class TipoIntegrantePageComponent {
 
     if (this.selectedItemToEdit !== undefined) {
       this.selectedItemToEdit.nombre = this.nombreTipoDocumento;
-      console.log("estadoTipoIntegrante", this.estadoTipoIntegrante)
+      console.log('estadoTipoIntegrante', this.estadoTipoIntegrante);
 
       this.tdIntegrante
         .updateTipoIntegrante(this.selectedItemToEdit)
@@ -163,7 +172,7 @@ export class TipoIntegrantePageComponent {
         this.nombreTipoDocumento,
         true,
         this.ordenTipoIntegrante,
-        this.estadoTipoIntegrante,
+        this.estadoTipoIntegrante
       )
       .subscribe({
         next: (response) => {
@@ -189,9 +198,9 @@ export class TipoIntegrantePageComponent {
   }
 
   onPageChange(event: any) {
-
     this.isLoading = true;
-    this.tdIntegrante.getTipoIntegrantes(event.rows, event.first)
+    this.tdIntegrante
+      .getTipoIntegrantes(event.rows, event.first)
       .subscribe((data: any) => {
         this.tipoIntegrantes = data?.body.list || [];
         this.totalCount = data?.body?.totalCount;
@@ -199,5 +208,14 @@ export class TipoIntegrantePageComponent {
       });
     this.first = event.first;
     this.currentRows = event.rows;
+  }
+
+  public handleSearch(event: any) {
+    const text = event?.target?.value;
+    this.query = text;
+    clearTimeout(intervalSearch);
+    intervalSearch = setTimeout(() => {
+      this.handleLoadData(text);
+    }, 1000);
   }
 }

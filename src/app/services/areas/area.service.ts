@@ -21,7 +21,7 @@ export class AreaService {
     return this.http.post(this.baseURL + "Areas", body, { headers: headers });
   }
 
-  getAreasPaged(limit: number, offset: number): Observable<AreaResponse> {
+  getAreasPaged(limit: number, offset: number, query: string = ""): Observable<AreaResponse> {
     // term = term.trim();
     const headers = { "content-type": "application/json" };
     let body = {
@@ -30,7 +30,7 @@ export class AreaService {
       id: 0,
       filters: {
         activo: null,
-        nombre: "",
+        nombre: query,
       },
       orders: [""],
     };
