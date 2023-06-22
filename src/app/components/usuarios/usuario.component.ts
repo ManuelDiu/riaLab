@@ -15,16 +15,17 @@ import {
 } from "src/app/types/tipoDocumento";
 import { Persona } from "src/app/types/Persona";
 import { FormControl } from "@angular/forms";
+import { RoleService } from "src/app/services/roles/role.service";
 
 @Component({
   selector: "app-usuario",
   templateUrl: "./usuario.component.html",
   styleUrls: ["./usuario.component.scss"],
   providers: [TipoDocumentoService],
-  host: {'class': 'w-full'},
+  host: { class: "w-full" },
 })
 export class UsuarioComponent implements OnInit {
-  // Atribs para el modal
+  // Atribs para el modal de registrar/editar user
   registerModal: boolean = false;
   documento: string = "";
   primerNombre: string = "";
@@ -37,6 +38,11 @@ export class UsuarioComponent implements OnInit {
   alertsTypes: Message[] = [];
   tiposDocumentos: TipoDocumento[] = [];
   selectedTDoc: number | undefined = undefined;
+
+  // Mantenimiento de roles de usuario
+  roleModal: boolean = false;
+  rolesArr: string[] = []; // todos los roles de la base.
+  selectedRole: string = "";
 
   // Atributos para la tabla
   usuariosArr: UsuarioInfo[] = [];
@@ -70,6 +76,7 @@ export class UsuarioComponent implements OnInit {
   // Estados de Services
   isUsuariosLoading: boolean = false;
   isTDocLoading = false;
+  isRolesLoading = false;
 
   // Paginación
   first: number = 0;
@@ -87,7 +94,8 @@ export class UsuarioComponent implements OnInit {
     public confirmationService: ConfirmationService,
     private registerService: RegisterService,
     private tdocservice: TipoDocumentoService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private roleService: RoleService
   ) {}
 
   ngOnInit() {
@@ -110,6 +118,19 @@ export class UsuarioComponent implements OnInit {
       },
       complete: () => {
         this.isTDocLoading = false;
+      },
+    });
+    this.isRolesLoading = true;
+    this.roleService.getRoles().subscribe({
+      next: (response) => {
+        const data = response || [];
+        this.rolesArr = data;
+      },
+      error: () => {
+        console.log("error loading ");
+      },
+      complete: () => {
+        this.isRolesLoading = false;
       },
     });
   }
@@ -157,6 +178,56 @@ export class UsuarioComponent implements OnInit {
     this.isModifying = true;
     this.usuario = { ...user };
     this.registerModal = true;
+  }
+
+  addRole() {
+    console.log("aaa", this.selectedRole);
+    this.roleService.addRole(this.usuario.id, this.selectedRole).subscribe({
+      next: (response) => {
+        this.usuario.roles.push(this.selectedRole);
+        this.messageService.add({
+          severity: "success",
+          summary: "¡Éxito!",
+          detail: "¡Rol agregado!",
+          life: 2000,
+        });
+      },
+      error: () => {
+        console.log(this.usuario.id, this.selectedRole);
+        console.log("error loading ");
+      },
+    });
+  }
+
+  deleteRole(nombre: string) {
+    this.roleService.deleteRole(this.usuario.id, nombre).subscribe({
+      next: (response) => {
+        this.messageService.add({
+          severity: "success",
+          summary: "¡Éxito!",
+          detail: "¡Rol Eliminado!",
+          life: 2000,
+        });
+        let refresh = this.usuario.roles.filter((rol) => rol !== nombre);
+        console.log(refresh)
+        this.usuario.roles = refresh;
+      },
+      error: () => {
+        console.log(this.usuario.id, this.selectedRole);
+        console.log("error loading ");
+      },
+    });
+    // this.rolesArr = rolesSinSeleccionar;
+    // this.roleModal = true;
+  }
+
+  editRoles(user: UsuarioInfo) {
+    this.usuario = { ...user };
+    let rolesSinSeleccionar = this.rolesArr.filter(
+      (role) => !user.roles.includes(role)
+    );
+    this.rolesArr = rolesSinSeleccionar;
+    this.roleModal = true;
   }
 
   hideDialog() {

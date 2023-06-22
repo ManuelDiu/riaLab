@@ -71,7 +71,10 @@
           <th pSortableColumn="persona.primerNombre" style="min-height: 55px;">
             Primer Nombre <p-sortIcon field="primerNombre"></p-sortIcon>
           </th>
-          <th pSortableColumn="persona.primerApellido" style="min-height: 55px;">
+          <th
+            pSortableColumn="persona.primerApellido"
+            style="min-height: 55px;"
+          >
             Primer Apellido <p-sortIcon field="primerApellido"></p-sortIcon>
           </th>
           <th pSortableColumn="persona.documento" style="min-height: 55px;">
@@ -96,8 +99,16 @@
             <button
               pButton
               pRipple
+              title="Modificar Roles"
+              icon="pi pi-cog"
+              class="p-button-rounded p-button-warning mr-2"
+              (click)="editRoles(usuario)"
+            ></button>
+            <button
+              pButton
+              pRipple
               title="Editar"
-              icon="pi pi-pencil"
+              icon="pi pi-user-edit"
               class="p-button-rounded p-button-success mr-2"
               (click)="editUsuario(usuario)"
             ></button>
@@ -279,14 +290,12 @@
             [disabled]="isModifying"
             [(ngModel)]="usuario.email"
             required
-            />
+          />
           <label htmlFor="email"
             >Email <span class="text-red-500">*</span></label
           >
         </span>
-        <small
-          class="p-error"
-          *ngIf="submitted && (!usuario.email)"
+        <small class="p-error" *ngIf="submitted && (!usuario.email)"
           >El Email es requerido.</small
         >
       </div>
@@ -309,6 +318,96 @@
         [label]="isModifying ? 'Guardar' : 'Registrar Usuario'"
         class="p-button-text w-full py-3"
       ></button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="roleModal"
+  [style]="{ width: '1000px' }"
+  header="Gestión de Roles"
+  [modal]="true"
+  styleClass="p-fluid"
+  class="w-12 bg-green-100 flex flex-row align-items-center justify-content-center"
+>
+  <div
+    class="flex-grow-1 h-12 w-full h-full flex flex-col align-items-center justify-content-center p-5"
+  >
+    <span class="text-3xl text-black font-semibold">
+      Gestionar Roles del Usuario
+    </span>
+    <div
+      class="w-full h-auto flex flex-col align-items-center jsutify-content-center gap-4"
+    >
+      <p-messages
+        [(value)]="alertsTypes"
+        [enableService]="false"
+        [closable]="true"
+        class="my-2 w-full"
+      ></p-messages>
+      <div class="flex gap-4 w-full align-items-center">
+        <span class="p-float-label">
+          <p-dropdown
+            [options]="rolesArr"
+            [(ngModel)]="selectedRole"
+            inputId="float-label"
+          ></p-dropdown>
+          <label for="float-label">Roles</label>
+        </span>
+        <button
+          pButton
+          pRipple
+          label="Agregar"
+          class="p-button-success"
+          (click)="addRole()"
+        ></button>
+      </div>
+      <div class="w-full">
+        <p-table
+          [value]="usuario.roles"
+          [globalFilterFields]="['nombre', 'id',]"
+          [tableStyle]="{ 'min-width': '100%' }"
+          [rowHover]="true"
+          dataKey="id"
+        >
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+              <h5 class="m-0">Roles actuales</h5>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="rol" style="min-height: 55px;">
+                Nombre <p-sortIcon field="rol"></p-sortIcon>
+              </th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rol>
+            <tr>
+              <td>{{ rol }}</td>
+              <td style="justify-content: center; display: flex; gap: 5px;">
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger"
+                  (click)="deleteRole(rol)"
+                ></button>
+              </td>
+              <!-- <td>{{ usuario.persona.primerApellido }}</td> -->
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <!-- <button
+        style="background-color: #003443;"
+        pButton
+        pRipple
+        label="Registrar"
+        [label]="isModifying ? 'Guardar' : 'Registrar Usuario'"
+        class="p-button-text w-full py-3"
+      ></button> -->
     </div>
   </div>
 </p-dialog>
