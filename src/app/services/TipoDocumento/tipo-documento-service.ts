@@ -28,18 +28,18 @@ export class TipoDocumentoService {
 
   constructor(private http: HttpClient) {}
 
-  getTipoDocumentos(): Observable<HttpResponse<TipoDocumentoResponse>> {
+  getTipoDocumentos(limit: number, offset: number): Observable<HttpResponse<TipoDocumentoResponse>> {
     const response = this.http.post<TipoDocumentoResponse>(
       `${this.baseUrl}api/TiposDeDocumentos/Paged`,
       {
-        limit: 500,
-        offset: 0,
+        limit: limit,
+        offset: offset,
         id: 0,
         filters: {
-          activo: true,
+          activo: null,
           nombre: '',
         },
-        orders: ['string'],
+        orders: [''],
       },
       { observe: 'response' }
     );

@@ -30,18 +30,18 @@ export class TipoIntegranteService {
 
   constructor(private http: HttpClient) {}
 
-  getTipoIntegrantes(): Observable<HttpResponse<TipoIntegranteResponse>> {
+  getTipoIntegrantes(limit: number, offset:number): Observable<HttpResponse<TipoIntegranteResponse>> {
     const response = this.http.post<TipoIntegranteResponse>(
       `${this.baseUrl}api/TiposDeIntegrantes/Paged`,
       {
-        limit: 500,
-        offset: 0,
+        limit: limit,
+        offset: offset,
         id: 0,
         filters: {
           activo: true,
           nombre: '',
         },
-        orders: ['string'],
+        orders: [''],
       },
       { observe: 'response' }
     );
@@ -52,6 +52,7 @@ export class TipoIntegranteService {
     nombre: string,
     activo: boolean,
     orden: number,
+    estado: boolean,
   ): Observable<HttpResponse<TipoIntegrante>> {
     const response = this.http.post<TipoIntegrante>(
       `${this.baseUrl}api/TiposDeIntegrantes`,
@@ -60,6 +61,7 @@ export class TipoIntegranteService {
         activo: activo,
         nombre: nombre,
         orden: orden,
+        estado: estado,
       },
       { observe: 'response' }
     );

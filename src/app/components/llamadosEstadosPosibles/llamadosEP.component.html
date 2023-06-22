@@ -9,6 +9,7 @@
       max-width: 100rem;
       border: 1px solid rgb(219, 219, 219);
       border-radius: 7px;
+      width: 100%;
     "
   >
     <p-toast></p-toast>
@@ -59,7 +60,7 @@
       [value]="estadosArray"
       [loading]="isLoading"
       [globalFilterFields]="['nombre', 'estado']"
-      [tableStyle]="{ 'min-width': '75rem' }"
+      [tableStyle]="{ 'min-width': '100%' }"
       [(selection)]="selectedEstados"
       [rowHover]="true"
       dataKey="id"
@@ -77,7 +78,7 @@
           <th
             pSortableColumn="nombre"
             style="
-              min-width: 15rem;
+              min-width: 100%;
               justify-content: center;
               display: flex;
               min-height: 55px;
@@ -85,7 +86,8 @@
           >
             Nombre <p-sortIcon field="nombre"></p-sortIcon>
           </th>
-          <th>Acciones</th>
+          <th>Activo</th>
+          <th style="text-align: end;">Acciones</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-estadoP>
@@ -94,7 +96,8 @@
             <p-tableCheckbox [value]="estadoP"></p-tableCheckbox>
           </td>
           <td>{{ estadoP.nombre }}</td>
-          <td style="justify-content: center; display: flex; gap: 5px;">
+          <td>{{ estadoP.activo === true ? "Si" : "No" }}</td>
+          <td style="justify-content: end; display: flex; gap: 5px;">
             <button
               pButton
               pRipple
@@ -156,6 +159,16 @@
         >El nombre es requerido.</small
       >
     </div>
+    <div class="flex flex-row mt-4 gap-2 items-center">
+      <p-checkbox
+        (onChange)="handleChangeEstado($event)"
+        inputId="estado"
+        [value]="currentEstadoPosible?.activo"
+        [binary]="true"
+        [(ngModel)]="currentEstadoPosible.activo"
+      ></p-checkbox>
+      <label for="estado">Activo</label>
+    </div>
   </ng-template>
 
   <ng-template pTemplate="footer">
@@ -176,6 +189,7 @@
       (click)="saveEstadoPosible()"
     ></button>
   </ng-template>
+  
 </p-dialog>
 
 <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

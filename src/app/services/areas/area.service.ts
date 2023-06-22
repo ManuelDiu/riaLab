@@ -29,7 +29,7 @@ export class AreaService {
       offset: offset,
       id: 0,
       filters: {
-        activo: true,
+        activo: null,
         nombre: "",
       },
       orders: [""],

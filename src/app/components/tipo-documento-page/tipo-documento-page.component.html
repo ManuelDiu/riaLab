@@ -4,8 +4,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
+
   }
 </style>
+
 
 <div *ngIf="isLoading; else notIsLoadingData">
   <img
@@ -15,6 +18,15 @@
   />
 </div>
 
+<div
+class="flex flex-col justify-content-center m-5"
+style="
+  max-width: 100%;
+  width: 100%;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 7px;
+"
+>
 <ng-template #notIsLoadingData>
   <div class="firstPart">
     <h1>Tipo Documento</h1>
@@ -61,7 +73,7 @@
     [(selection)]="selectedItemsToDelete"
     styleClass="p-datatable-striped"
     [value]="tipoDocumentos"
-    [tableStyle]="{ 'min-width': '800px' }"
+    [tableStyle]="{ 'min-width': '100%' }"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -70,6 +82,7 @@
         </th>
         <th>Id</th>
         <th>Nombre</th>
+        <th>Activo</th>
         <th>Actions</th>
       </tr>
     </ng-template>
@@ -80,6 +93,7 @@
         </td>
         <td>{{ tipoDocumento.id }}</td>
         <td>{{ tipoDocumento.nombre }}</td>
+        <td>{{ tipoDocumento.activo === true ? "Si" : "No" }}</td>
         <td class="flex-row justify-end">
           <p-button
             icon="pi pi-pencil"
@@ -90,7 +104,16 @@
       </tr>
     </ng-template>
   </p-table>
-
+  <p-paginator
+  *ngIf="!isLoading && tipoDocumentos.length > 0"
+  (onPageChange)="onPageChange($event)"
+  [first]="first"
+  [rows]="currentRows"
+  [totalRecords]="totalCount"
+  [rowsPerPageOptions]="rowsPerPageOptions"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+></p-paginator>
   <p-dialog
     (onHide)="onHide()"
     header="Agregar Tipo Documento"
@@ -122,5 +145,17 @@
         styleClass="p-button-outlined"
       ></p-button>
     </div>
+    <div class="flex flex-row mt-4 gap-2 items-center">
+      <p-checkbox
+        (onChange)="handleChangeEstado($event)"
+        inputId="estado"
+        [value]="estadoTipodocumento"
+        [binary]="true"
+        [(ngModel)]="estadoTipodocumento"
+      ></p-checkbox>
+      <label for="estado">Activo</label>
+    </div>
   </p-dialog>
 </ng-template>
+
+</div>

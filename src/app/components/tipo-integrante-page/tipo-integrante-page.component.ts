@@ -7,6 +7,7 @@ import { TipoIntegranteService } from 'src/app/services/TipoIntegrante/tipo-inte
   selector: 'app-tipo-integrante-page',
   templateUrl: './tipo-integrante-page.component.html',
   styleUrls: ['./tipo-integrante-page.component.scss'],
+  host: {'class': 'w-full'}
 })
 export class TipoIntegrantePageComponent {
   public tipoIntegrantes: TipoIntegrante[] = [];
@@ -16,9 +17,14 @@ export class TipoIntegrantePageComponent {
   public isLoadingCreate = false;
   public addedSuccess = false;
   public nombreTipoDocumento = '';
+  public estadoTipoIntegrante = false;
   public ordenTipoIntegrante: number = 0;
   public alertsTypes: Message[] = [];
   public selectedItemToEdit: TipoIntegrante | undefined = undefined;
+  first: number = 0;
+  currentRows: number = 5;
+  totalCount: number = 0;
+  rowsPerPageOptions: number[] = [5, 10, 25, 50];
 
   constructor(
     private tdIntegrante: TipoIntegranteService,
@@ -27,10 +33,11 @@ export class TipoIntegrantePageComponent {
 
   ngOnInit() {
     this.isLoading = true;
-    this.tdIntegrante.getTipoIntegrantes().subscribe({
+    this.tdIntegrante.getTipoIntegrantes(this.currentRows, this.first).subscribe({
       next: (response) => {
         const data = response.body?.list || [];
         this.tipoIntegrantes = data;
+        this.totalCount = response?.body?.totalCount || 0;
       },
       error: () => {
         console.log('error loading ');
@@ -42,6 +49,9 @@ export class TipoIntegrantePageComponent {
   }
 
   public showDialog() {
+    if (!this.showAddDialog) {
+      this.estadoTipoIntegrante = true;
+    }
     this.showAddDialog = !this.showAddDialog;
   }
 
@@ -61,16 +71,25 @@ export class TipoIntegrantePageComponent {
     }
   }
 
+  public handleChangeEstado(event:any) {
+    console.log(event)
+    if (this.selectedItemToEdit) {
+      this.selectedItemToEdit.activo = event?.checked;
+    }
+  }
+
   public onHide() {
     this.selectedItemToEdit = undefined;
   }
 
   public activeToEditItem(doc: TipoIntegrante) {
     if (doc) {
+      console.log("doc.activo", doc.activo)
       this.selectedItemToEdit = doc;
       this.showAddDialog = true;
       this.nombreTipoDocumento = doc.nombre;
       this.ordenTipoIntegrante = doc.orden;
+      this.estadoTipoIntegrante = doc.activo;
     }
   }
 
@@ -116,8 +135,8 @@ export class TipoIntegrantePageComponent {
     this.isLoadingCreate = true;
 
     if (this.selectedItemToEdit !== undefined) {
-      console.log(this.nombreTipoDocumento);
       this.selectedItemToEdit.nombre = this.nombreTipoDocumento;
+      console.log("estadoTipoIntegrante", this.estadoTipoIntegrante)
 
       this.tdIntegrante
         .updateTipoIntegrante(this.selectedItemToEdit)
@@ -143,7 +162,8 @@ export class TipoIntegrantePageComponent {
       .createTipoIntegrante(
         this.nombreTipoDocumento,
         true,
-        this.ordenTipoIntegrante
+        this.ordenTipoIntegrante,
+        this.estadoTipoIntegrante,
       )
       .subscribe({
         next: (response) => {
@@ -158,7 +178,6 @@ export class TipoIntegrantePageComponent {
               detail: 'Agregado correctamente',
             },
           ];
-          console.log('xd2');
         },
         error: () => {
           console.log('error agregndo un tipo documento ');
@@ -167,5 +186,18 @@ export class TipoIntegrantePageComponent {
           this.isLoadingCreate = false;
         },
       });
+  }
+
+  onPageChange(event: any) {
+
+    this.isLoading = true;
+    this.tdIntegrante.getTipoIntegrantes(event.rows, event.first)
+      .subscribe((data: any) => {
+        this.tipoIntegrantes = data?.body.list || [];
+        this.totalCount = data?.body?.totalCount;
+        this.isLoading = false;
+      });
+    this.first = event.first;
+    this.currentRows = event.rows;
   }
 }

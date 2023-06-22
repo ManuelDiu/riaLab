@@ -36,6 +36,7 @@ import { TipoIntegrantePageComponent } from './components/tipo-integrante-page/t
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { UsuarioComponent } from './components/usuarios/usuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -73,9 +74,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     PaginatorModule,
     MessagesModule,
     NgxSpinnerModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
+    OverlayPanelModule,
+    CheckboxModule,
     CheckboxModule,
     ReactiveFormsModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
   providers: [ConfirmationService, MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
