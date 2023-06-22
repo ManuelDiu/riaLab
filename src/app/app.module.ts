@@ -82,7 +82,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     CheckboxModule,
     CheckboxModule,
     ReactiveFormsModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
   providers: [ConfirmationService, MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

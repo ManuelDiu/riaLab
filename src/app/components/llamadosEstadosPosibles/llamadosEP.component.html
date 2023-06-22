@@ -172,7 +172,7 @@
       <p-checkbox
         (onChange)="handleChangeEstado($event)"
         inputId="estado"
-        [value]="currentEstadoPosible?.activo"
+        [value]="currentEstadoPosible.activo"
         [binary]="true"
         [(ngModel)]="currentEstadoPosible.activo"
       ></p-checkbox>
@@ -198,7 +198,7 @@
       (click)="saveEstadoPosible()"
     ></button>
   </ng-template>
-  
+
 </p-dialog>
 
 <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
