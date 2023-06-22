@@ -33,8 +33,8 @@ export class AppComponent {
   public userInfo: any = null;
   public activePath = '/';
   public isPublicPath = false;
-  
-  
+
+
 
   ngOnInit() {
     this.activePath = this.router.url;
@@ -64,5 +64,5 @@ export class AppComponent {
     this.router.navigate(["/auth/login"]);
     window.location.pathname = "/auth/login"
   }
-  
+
 }
