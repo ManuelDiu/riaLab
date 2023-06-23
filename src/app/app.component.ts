@@ -16,6 +16,7 @@ const listofPublicPaths = [
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  public isAdmin: boolean = false;
   public currentPathname: string = window.location.pathname || "";
   title = 'riaLab';
   public isChecking = true;
@@ -42,6 +43,10 @@ export class AppComponent {
     const lus = new LoggedUserService();
     lus.handleLoadUserInfo();
     this.userInfo = LoggedUserService.userInfo;
+    if(this.userInfo?.roles?.includes("ADMIN")){
+      this.isAdmin = true;
+    }
+    console.log("asdasd", this.isAdmin)
 
     this.spinner.show();
     const currentPathName = window.location.pathname;

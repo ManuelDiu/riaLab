@@ -6,7 +6,7 @@ let DEFAULT_USER_DATA_VARIABLE = "USERINFO"
   providedIn: 'root',
 })
 export class LoggedUserService {
-  
+
   public static userInfo: any = null;
 
   public handleSetUserInfo(data: any) {

@@ -41,6 +41,7 @@ import { UsuarioComponent } from './components/usuarios/usuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     UsuarioComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

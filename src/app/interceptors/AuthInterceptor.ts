@@ -34,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
             new Observable<HttpEvent<any>>((observer) => {
               if (err instanceof HttpErrorResponse) {
                 const errResp = <HttpErrorResponse>err;
-                if (errResp.status === 401 || err.status === 403) {
+                if (errResp.status === 401) {
                   window.location.pathname = '/auth/login';
                 }
               }
