@@ -396,8 +396,8 @@
         class="divider my-5"
       ></div>
 
-      <div
-        style="margin-top: 40px"
+      <div *ngIf="isAdmin"
+        style="margin-top: 40px; min-width: 100% !important;"
         class="h-auto w-full flex flex-col items-center justify-center gap-2"
       >
         <a

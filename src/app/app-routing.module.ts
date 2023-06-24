@@ -8,20 +8,25 @@ import { LoginComponent } from "./components/login/login.component";
 import { UsuarioComponent } from "./components/usuarios/usuario.component";
 import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
+import { permissionGuard } from "./interceptors/PermissionInterceptor";
+import { HomeComponent } from "./components/home/home.component";
 
 const routes: Routes = [
   {
-    path: "areas", component: AreaComponent
+    path: "", component: HomeComponent
   },
   {
-    path: "llamadosEP", component: LlamadosEPComponent
+    path: "areas", component: AreaComponent, canActivate: [permissionGuard]
   },
-  { path: 'tipoDocumento', component: TipoDocumentoPageComponent },
-  { path: 'tipoIntegrante', component: TipoIntegrantePageComponent },
+  {
+    path: "llamadosEP", component: LlamadosEPComponent, canActivate: [permissionGuard]
+  },
+  { path: 'tipoDocumento', component: TipoDocumentoPageComponent, canActivate: [permissionGuard] },
+  { path: 'tipoIntegrante', component: TipoIntegrantePageComponent, canActivate: [permissionGuard] },
   { path: 'auth/login', component: LoginComponent },
-  { path: 'auth/forgot-password', component: ForgotPasswordComponent },
+  { path: 'auth/forgot-password', component: ForgotPasswordComponent, },
   { path: 'restore-password', component: ResetPasswordComponent },
-  { path: 'usuarios', component: UsuarioComponent },
+  { path: 'usuarios', component: UsuarioComponent, canActivate: [permissionGuard] },
 ];
 
 @NgModule({
