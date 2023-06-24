@@ -3,5 +3,5 @@ type environmentType = {
 }
 
 export const environment: environmentType = {
-    BACKEND_DOMAIN_APP: "http://localhost:60070/"
+    BACKEND_DOMAIN_APP: "http://localhost:65428/"
 }

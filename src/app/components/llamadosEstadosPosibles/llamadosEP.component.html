@@ -1,70 +1,40 @@
+<style>
+  .firstPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+  }
+</style>
+
 <div style="display: flex; flex-direction: column; align-items: center; margin: 0;">
-  <h1>Estados</h1>
   <div
-    class="flex justify-content-center m-5"
-    style="
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      max-width: 100rem;
-      border: 1px solid rgb(219, 219, 219);
-      border-radius: 7px;
-      width: 100%;
-    "
+    class="flex flex-col w-full justify-content-center"
   >
-    <p-toast></p-toast>
-    <p-toolbar>
-      <ng-template pTemplate="left">
-        <div style="display: flex; gap: 1rem;">
-          <span class="p-input-icon-left mx-2">
-            <i class="pi pi-search"></i>
-            <input
-              placeholder="Buscar"
-              (keyup)="handleSearch($event)"
-              [value]="query"
-              type="text"
-              pInputText
-            />
-          </span>
-          <button
-            pButton
-            pRipple
-            label="Agregar"
-            icon="pi pi-plus"
-            class="p-button-success mr-2"
-            (click)="openNew()"
-          ></button>
-          <button
-            pButton
-            pRipple
-            label="Eliminar"
-            icon="pi pi-trash"
-            class="p-button-danger"
-            (click)="deleteSelectedEstados()"
-            [disabled]="!selectedEstados || !selectedEstados.length"
-          ></button>
-        </div>
-      </ng-template>
-
-      <!-- <ng-template pTemplate="right">
-        <p-fileUpload
-          mode="basic"
-          accept="image/*"
-          [maxFileSize]="1000000"
-          label="Import"
-          chooseLabel="Import"
-          class="mr-2 inline-block"
-        ></p-fileUpload>
-        <button
-          pButton
-          pRipple
-          label="Export"
-          icon="pi pi-upload"
-          class="p-button-help"
-        ></button>
-      </ng-template> -->
-    </p-toolbar>
-
+  <div class="firstPart flex flex-row ">
+    <h1>Llamado estados </h1>
+    <div class="gap1 flex-row py-2">
+      <span class="p-input-icon-left mx-2">
+        <i class="pi pi-search"></i>
+        <input
+          placeholder="Buscar"
+          (keyup)="handleSearch($event)"
+          [value]="query"
+          type="text"
+          pInputText
+        />
+      </span>
+      <p-button
+        icon="pi pi-trash"
+        (onClick)="deleteSelectedEstados()"
+        styleClass="p-button-danger"
+      ></p-button>
+      <p-button (onClick)="openNew()" label="Agregar"></p-button>
+    </div>
+  </div>
+    
     <p-table
       #dt
       [value]="estadosArray"
@@ -75,11 +45,6 @@
       [rowHover]="true"
       dataKey="id"
     >
-      <ng-template pTemplate="caption">
-        <div class="flex align-items-center justify-content-between">
-          <h5 class="m-0">Administrar Estados Posibles de Llamado</h5>
-        </div>
-      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 4rem;">
@@ -113,13 +78,6 @@
               icon="pi pi-pencil"
               class="p-button-rounded p-button-success mr-2"
               (click)="editEstado(estadoP)"
-            ></button>
-            <button
-              pButton
-              pRipple
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger"
-              (click)="deleteEstado(estadoP)"
             ></button>
           </td>
         </tr>

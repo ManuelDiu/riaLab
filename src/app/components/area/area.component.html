@@ -1,68 +1,44 @@
+<style>
+  .firstPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+  }
+</style>
+
 <div
   style="display: flex; flex-direction: column; align-items: center; margin: 0;"
 >
-  <h1>Áreas</h1>
   <div
-    class="flex flex-col justify-content-center m-5"
+    class="flex flex-col justify-content-center w-full"
     style="
-      max-width: 100%;
-      width: 100%;
-      border: 1px solid rgb(219, 219, 219);
-      border-radius: 7px;
     "
   >
     <p-toast></p-toast>
-    <p-toolbar>
-      <ng-template pTemplate="left">
-        <div style="display: flex; gap: 1rem;">
-          <span class="p-input-icon-left mx-2">
-            <i class="pi pi-search"></i>
-            <input
-              placeholder="Buscar"
-              (keyup)="handleSearch($event)"
-              [value]="query"
-              type="text"
-              pInputText
-            />
-          </span>
-          <button
-            pButton
-            pRipple
-            label="Agregar"
-            icon="pi pi-plus"
-            class="p-button-success mr-2"
-            (click)="openNew()"
-          ></button>
-          <button
-            pButton
-            pRipple
-            label="Eliminar"
-            icon="pi pi-trash"
-            class="p-button-danger"
-            (click)="deleteSelectedAreas()"
-            [disabled]="!selectedAreas || !selectedAreas.length"
-          ></button>
-        </div>
-      </ng-template>
-
-      <!-- <ng-template pTemplate="right">
-        <p-fileUpload
-          mode="basic"
-          accept="image/*"
-          [maxFileSize]="1000000"
-          label="Import"
-          chooseLabel="Import"
-          class="mr-2 inline-block"
-        ></p-fileUpload>
-        <button
-          pButton
-          pRipple
-          label="Export"
-          icon="pi pi-upload"
-          class="p-button-help"
-        ></button>
-      </ng-template> -->
-    </p-toolbar>
+    <div class="firstPart flex flex-row ">
+    <h1>Areas </h1>.
+      <div class="gap1 flex-row py-2">
+        <span class="p-input-icon-left mx-2">
+          <i class="pi pi-search"></i>
+          <input
+            placeholder="Buscar"
+            (keyup)="handleSearch($event)"
+            [value]="query"
+            type="text"
+            pInputText
+          />
+        </span>
+        <p-button
+          icon="pi pi-trash"
+          (onClick)="deleteSelectedAreas()"
+          styleClass="p-button-danger"
+        ></p-button>
+        <p-button (onClick)="openNew()" label="Agregar"></p-button>
+      </div>
+    </div>
 
     <p-table
       #dt
@@ -112,13 +88,6 @@
               icon="pi pi-pencil"
               class="p-button-rounded p-button-success mr-2"
               (click)="editArea(area)"
-            ></button>
-            <button
-              pButton
-              pRipple
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger"
-              (click)="deleteArea(area)"
             ></button>
           </td>
         </tr>
