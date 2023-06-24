@@ -28,9 +28,11 @@
           pInputText
         />
       </span>
-      <p-button (onClick)="showDialog()" label="Agregar"></p-button>
+      <p-button (onClick)="openNew()" label="Agregar"></p-button>
     </div>
   </div>
+
+  <div class="table">
 
     <p-table
       #dt
@@ -129,6 +131,7 @@
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
     ></p-paginator>
+    </div>
   </div>
 </div>
 
@@ -351,7 +354,7 @@
           (click)="addRole()"
         ></button>
       </div>
-      <div class="w-full">
+      <div class="table">
         <p-table
           [value]="usuario.roles"
           [globalFilterFields]="['nombre', 'id',]"

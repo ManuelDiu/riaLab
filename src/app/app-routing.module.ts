@@ -10,6 +10,7 @@ import { ForgotPasswordComponent } from "./components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
 import { permissionGuard } from "./interceptors/PermissionInterceptor";
 import { HomeComponent } from "./components/home/home.component";
+import { LlamadoComponent } from "./components/llamados/llamado.component";
 
 const routes: Routes = [
   {
@@ -27,6 +28,8 @@ const routes: Routes = [
   { path: 'auth/forgot-password', component: ForgotPasswordComponent, },
   { path: 'restore-password', component: ResetPasswordComponent },
   { path: 'usuarios', component: UsuarioComponent, canActivate: [permissionGuard] },
+  { path: 'llamados', component: LlamadoComponent, canActivate: [permissionGuard] },
+
 ];
 
 @NgModule({

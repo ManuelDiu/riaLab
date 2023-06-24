@@ -71,7 +71,6 @@ export class AreaComponent implements OnInit {
       header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedAreas);
         this.selectedAreas.forEach((area: Area) => {
           this.areaService.deleteArea(area.id as number).subscribe((data) => {
             this.messageService.add({
@@ -106,7 +105,6 @@ export class AreaComponent implements OnInit {
       header: 'Confirmar',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedAreas);
         this.areaService.deleteArea(area.id as number).subscribe((data) => {
           this.messageService.add({
             severity: 'success',

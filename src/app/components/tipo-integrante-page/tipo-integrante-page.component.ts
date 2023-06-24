@@ -81,7 +81,6 @@ export class TipoIntegrantePageComponent {
   }
 
   public handleChangeEstado(event: any) {
-    console.log(event);
     if (this.selectedItemToEdit) {
       this.selectedItemToEdit.activo = event?.checked;
     }
@@ -93,7 +92,6 @@ export class TipoIntegrantePageComponent {
 
   public activeToEditItem(doc: TipoIntegrante) {
     if (doc) {
-      console.log('doc.activo', doc.activo);
       this.selectedItemToEdit = doc;
       this.showAddDialog = true;
       this.nombreTipoDocumento = doc.nombre;
@@ -145,7 +143,6 @@ export class TipoIntegrantePageComponent {
 
     if (this.selectedItemToEdit !== undefined) {
       this.selectedItemToEdit.nombre = this.nombreTipoDocumento;
-      console.log('estadoTipoIntegrante', this.estadoTipoIntegrante);
 
       this.tdIntegrante
         .updateTipoIntegrante(this.selectedItemToEdit)

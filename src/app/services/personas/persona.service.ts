@@ -42,7 +42,6 @@ export class PersonaService {
   }
 
   deletePersona(id: number): Observable<any> {
-    console.log("id que llega al delete: " + id)
     const header = { "content-type": "application/json" };
     return this.http.delete(this.baseURL + "Personas/" + id, { headers: header });
   }

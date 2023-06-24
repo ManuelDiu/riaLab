@@ -64,6 +64,8 @@
     [closable]="true"
   ></p-messages>
 
+  <div class="table">
+
   <p-table
     [(selection)]="selectedItemsToDelete"
     styleClass="p-datatable-striped"
@@ -119,6 +121,7 @@
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
   ></p-paginator>
+  </div>
 
   <p-dialog
     (onHide)="onHide()"

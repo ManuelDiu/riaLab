@@ -1,0 +1,290 @@
+<style>
+  .firstPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+</style>
+
+<div
+  style="display: flex; flex-direction: column; align-items: center; margin: 0"
+>
+  <div class="flex flex-col justify-content-center w-full" style="">
+    <p-toast></p-toast>
+    <div class="firstPart flex flex-row">
+      <h1>Llamados</h1>
+      .
+      <div class="gap1 flex-row py-2">
+        <span class="p-input-icon-left mx-2">
+          <i class="pi pi-search"></i>
+          <input
+            placeholder="Buscar"
+            (keyup)="handleSearch($event)"
+            [value]="query"
+            type="text"
+            pInputText
+          />
+        </span>
+        <p-button
+          icon="pi pi-trash"
+          (onClick)="deleteselectedLlamados()"
+          styleClass="p-button-danger"
+        ></p-button>
+        <p-button (onClick)="openNew()" label="Agregar"></p-button>
+      </div>
+    </div>
+
+    <div class="table">
+      <p-table
+      #dt
+      [value]="llamadosArr"
+      [loading]="isLoading"
+      [globalFilterFields]="['nombre', 'estado']"
+      [tableStyle]="{ 'min-width': '100%' }"
+      [(selection)]="selectedLlamados"
+      [rowHover]="true"
+      dataKey="id"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          <h5 class="m-0">Administrar Áreas</h5>
+          <!-- <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+        </span> -->
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>
+            Nombre
+            <p-columnFilter
+              type="text"
+              field="nombre"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="" style="">
+            Identificador
+            <p-columnFilter
+              type="text"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="" style="">
+            Link Acta
+            <p-columnFilter
+              type="text"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="" style="">
+            Minutos Entrevista
+            <p-columnFilter
+              type="text"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="" style="">
+            Link Plan.Puntaje
+            <p-columnFilter
+              type="text"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="" style="">
+            Area
+            <p-columnFilter
+              type="text"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="" style="">
+            Activo
+            <p-columnFilter
+              type="boolean"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="" style="text-align: right">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-llamado>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="llamado"></p-tableCheckbox>
+          </td>
+          <td>{{ llamado.nombre }}</td>
+          <td>{{ llamado.identificador }}</td>
+          <td><a style="color: green;" target="_blank" href="{{ llamado.linkActa }}">Link</a></td>
+          <td>{{ llamado.minutosEntrevista }}</td>
+          <td><a style="color: green;" target="_blank" href="{{ llamado.linkPlanillaPuntajes }}">Link</a></td>
+          <td>{{ llamado.area.nombre }}</td>
+
+          <td>{{ llamado.activo === true ? "Si" : "No" }}</td>
+          <td style="justify-content: end; display: flex; gap: 5px">
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-success mr-2"
+              (click)="editLlamado(llamado)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div
+      *ngIf="!isLoading && llamadosArr.length < 1"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 5rem;
+        height: 5rem;
+      "
+    >
+      <h3>Lo sentimos, pero no contamos con áreas disponibles para listar.</h3>
+    </div>
+    <p-paginator
+      *ngIf="!isLoading && llamadosArr.length > 0"
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="currentRows"
+      [totalRecords]="totalCount"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+    ></p-paginator>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  [(visible)]="areaModal"
+  [style]="{ width: '450px' }"
+  header="Detalles del Llamado"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content" style="overflow: visible">
+    <div class="field">
+      <label for="area">Area</label>
+      <p-dropdown
+        *ngIf="!isModifying"
+        id="area"
+        [options]="areas"
+        optionValue="id"
+        [(ngModel)]="selectedArea"
+        optionLabel="nombre"
+        inputId="float-label"
+        [required]="true"
+        placeholder="Area"
+      ></p-dropdown>
+      <small class="p-error" *ngIf="submitted && !selectedArea"
+        >El area es requerida.</small
+      >
+    </div>
+    <div class="field">
+      <label for="nombre">Nombre</label>
+      <input
+        type="text"
+        pInputText
+        id="nombre"
+        [(ngModel)]="llamado.nombre"
+        required
+        autofocus
+      />
+      <small class="p-error" *ngIf="submitted && !llamado.nombre"
+        >El nombre es requerido.</small
+      >
+    </div>
+    <div class="field">
+      <label for="identificador">Identificador</label>
+      <input
+        type="text"
+        pInputText
+        id="identificador"
+        [(ngModel)]="llamado.identificador"
+        required
+      />
+      <small class="p-error" *ngIf="submitted && !llamado.identificador"
+        >El identificador es requerido.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="linkPlanillaPuntajes">Link Plantilla Puntaje</label>
+      <input
+        type="text"
+        pInputText
+        id="linkPlanillaPuntajes"
+        [(ngModel)]="llamado.linkPlanillaPuntajes"
+      />
+    </div>
+
+    <div class="field">
+      <label for="linkActa">Link Acta</label>
+      <input
+        type="text"
+        pInputText
+        id="linkActa"
+        [(ngModel)]="llamado.linkActa"
+      />
+    </div>
+
+    <div class="field">
+      <label for="linkActa">Minutos Entrevista</label>
+      <input
+        type="number"
+        pInputText
+        id="linkActa"
+        [(ngModel)]="llamado.minutosEntrevista"
+        [defaultValue]="0"
+      />
+    </div>
+
+    <div class="flex flex-row mt-4 gap-2 items-center">
+      <p-checkbox
+        (onChange)="handleChangeEstado($event)"
+        inputId="estado"
+        [value]="llamado.activo"
+        [binary]="true"
+        [(ngModel)]="llamado.activo"
+      ></p-checkbox>
+      <label for="estado">Activo</label>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveLlamado()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

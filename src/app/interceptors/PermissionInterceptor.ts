@@ -8,8 +8,6 @@ export const permissionGuard = (route: ActivatedRouteSnapshot, state: RouterStat
   const userInfo = sessionStorage.getItem("USERINFO");
   const requestPath = route.routeConfig?.path || '';
 
-  console.log("llego", route, state);
-  console.log("curr url ", requestPath)
   // const isPublicPath = listOfPublicPath.includes(pathname);
 
   if (userInfo && userInfo !== "") {
@@ -19,7 +17,6 @@ export const permissionGuard = (route: ActivatedRouteSnapshot, state: RouterStat
     }
 
     if (userRoles.includes("COORDINADOR")) {
-      console.log(coordinadorPaths.includes(requestPath))
       if (coordinadorPaths.includes(requestPath)) {
         return true;
       } else {
@@ -31,10 +28,8 @@ export const permissionGuard = (route: ActivatedRouteSnapshot, state: RouterStat
       // algo
       return true;
     }
-    console.log(userRoles);
     return false;
   } else {
-    console.log("no hay userInfo.");
     // router.navigateByUrl("/auth/login");
     return false;
   }

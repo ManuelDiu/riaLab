@@ -30,7 +30,6 @@ export class LoginComponent {
         next: (response: any) => {
           const userInfo = response?.body as Usuario;
           if (userInfo?.token) {
-            console.log("userInfo is", userInfo)
             const lus = new LoggedUserService();
             lus.handleStorageUserInfo(userInfo);
             storageToken(userInfo?.token);
