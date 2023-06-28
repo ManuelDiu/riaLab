@@ -3,7 +3,7 @@
 >
   <h1>Usuarios</h1>
   <div
-    class="flex flex-col justify-content-center m-5"
+    class="flex flex-col justify-content-center m-5 mb-2"
     style="
       border: 1px solid rgb(219, 219, 219);
       border-radius: 7px;
@@ -78,22 +78,43 @@
           <th style="width: 4rem;">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th pSortableColumn="persona.primerNombre" style="min-height: 55px;">
-            Primer Nombre 
-            <p-columnFilter type="text" field="persona.primerNombre" display="menu"></p-columnFilter>
-
+          <th style="min-height: 55px;">
+            Imagen
           </th>
-          <th pSortableColumn="persona.primerApellido" style="min-height: 55px;">
+          <th pSortableColumn="persona.primerNombre" style="min-height: 55px;">
+            Primer Nombre
+            <p-columnFilter
+              type="text"
+              field="persona.primerNombre"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th
+            pSortableColumn="persona.primerApellido"
+            style="min-height: 55px;"
+          >
             Primer Apellido
-            <p-columnFilter type="text" field="persona.primerApellido" display="menu"></p-columnFilter>
+            <p-columnFilter
+              type="text"
+              field="persona.primerApellido"
+              display="menu"
+            ></p-columnFilter>
           </th>
           <th pSortableColumn="persona.documento" style="min-height: 55px;">
             Documento
-            <p-columnFilter type="text" field="documento" display="menu"></p-columnFilter>
+            <p-columnFilter
+              type="text"
+              field="documento"
+              display="menu"
+            ></p-columnFilter>
           </th>
           <th pSortableColumn="activo" style="min-height: 55px;">
             Estado
-            <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
+            <p-columnFilter
+              type="boolean"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
           </th>
           <th class="text-center">Acciones</th>
         </tr>
@@ -103,11 +124,29 @@
           <td>
             <p-tableCheckbox [value]="usuario"></p-tableCheckbox>
           </td>
+          <td *ngIf="usuario.imagen !== ''">
+            <img
+              [src]="usuario.imagen"
+              [alt]="'imagen de ' + usuario.persona.primerNombre"
+              width="55"
+              height="55"
+              class="shadow-4 border-circle"
+            />
+          </td>
+          <td *ngIf="usuario.imagen === ''">
+            <img
+              [src]="defaultImage"
+              [alt]="'imagen de ' + usuario.persona.primerNombre"
+              width="55"
+              height="55"
+              class="shadow-4 border-circle"
+            />
+          </td>
           <td>{{ usuario.persona.primerNombre }}</td>
           <td>{{ usuario.persona.primerApellido }}</td>
           <td>{{ usuario.persona.documento }}</td>
           <td>{{ usuario.activo === true ? "Activo" : "Inactivo" }}</td>
-          <td style="justify-content: center; display: flex; gap: 5px;">
+          <td style="min-height: 95px;" class="justify-center flex gap-5">
             <button
               pButton
               pRipple
@@ -311,16 +350,27 @@
           >El Email es requerido.</small
         >
       </div>
-      <span class="p-float-label w-full">
-        <input
-          type="imagen"
-          class="w-full p-3 text-xl"
-          pInputText
-          id="imagen"
-          [(ngModel)]="usuario.imagen"
+      <div class="flex w-full items-center gap-5">
+        <img
+          [src]="usuario.imagen"
+          alt="Foto de perfil"
+          width="100"
+          height="100"
+          class="shadow-4"
         />
-        <label htmlFor="imagen">Imagen</label>
-      </span>
+        <div>
+          <span class="w-full">
+            <label htmlFor="imagen">Imagen</label>
+            <input
+              type="file"
+              class="w-full p-3"
+              pInputText
+              id="imagen"
+              (change)="imageToBase64($event)"
+            />
+          </span>
+        </div>
+      </div>
       <button
         (click)="saveUsuario()"
         style="background-color: #003443;"

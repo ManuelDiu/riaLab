@@ -13,8 +13,6 @@ import {
   TipoDocumento,
   TipoDocumentoResponse,
 } from "src/app/types/tipoDocumento";
-import { Persona } from "src/app/types/Persona";
-import { FormControl } from "@angular/forms";
 import { RoleService } from "src/app/services/roles/role.service";
 
 let intervalSearch: any = null;
@@ -40,6 +38,8 @@ export class UsuarioComponent implements OnInit {
   alertsTypes: Message[] = [];
   tiposDocumentos: TipoDocumento[] = [];
   selectedTDoc: number | undefined = undefined;
+
+  defaultImage: string | "" = "";
 
   // Mantenimiento de roles de usuario
   roleModal: boolean = false;
@@ -107,6 +107,7 @@ export class UsuarioComponent implements OnInit {
       .getUsuariosPaged(this.currentRows, this.first, query)
       .subscribe((data: UsuarioResponse) => {
         this.usuariosArr = data.list;
+        console.log("RESSS", data.list[0].imagen);
         this.totalCount = data.totalCount;
         this.isUsuariosLoading = false;
       });
@@ -136,9 +137,12 @@ export class UsuarioComponent implements OnInit {
         this.isRolesLoading = false;
       },
     });
-  }
+  };
 
   ngOnInit() {
+    this.getBase64FromUrl(
+      "https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg"
+    );
     this.handleLoadData("");
   }
 
@@ -173,7 +177,7 @@ export class UsuarioComponent implements OnInit {
         primerApellido: "",
         segundoApellido: "",
       },
-      imagen: "",
+      imagen: this.defaultImage,
       activo: false,
       roles: [],
     };
@@ -216,7 +220,7 @@ export class UsuarioComponent implements OnInit {
           life: 2000,
         });
         let refresh = this.usuario.roles.filter((rol) => rol !== nombre);
-        console.log(refresh)
+        console.log(refresh);
         this.usuario.roles = refresh;
       },
       error: () => {
@@ -240,6 +244,28 @@ export class UsuarioComponent implements OnInit {
   hideDialog() {
     this.registerModal = false;
     this.submitted = false;
+    this.usuario = {
+      id: "",
+      username: "",
+      email: "",
+      persona: {
+        id: 0,
+        activo: false,
+        tipoDeDocumento: {
+          id: undefined,
+          activo: false,
+          nombre: "",
+        },
+        documento: "",
+        primerNombre: "",
+        segundoNombre: "",
+        primerApellido: "",
+        segundoApellido: "",
+      },
+      imagen: "",
+      activo: false,
+      roles: [],
+    };
     // this.isModifying = false;
   }
 
@@ -304,6 +330,9 @@ export class UsuarioComponent implements OnInit {
         };
         return;
       } else {
+        let defaultImage: any = this.getBase64FromUrl(
+          "https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg"
+        );
         if (this.validateFields()) {
           const dataToSend: HandleRegisterData = {
             id: this.usuario.id,
@@ -314,7 +343,7 @@ export class UsuarioComponent implements OnInit {
             primerApellido: this.usuario.persona.primerApellido,
             segundoApellido: this.usuario.persona.segundoApellido,
             email: this.usuario.email, // no es modificable
-            imagen: this.usuario.imagen,
+            imagen: this.usuario.imagen ? this.usuario.imagen : defaultImage,
             activo: this.usuario.activo,
           };
           this.usuarioService.updateUsuario(dataToSend).subscribe(
@@ -412,7 +441,30 @@ export class UsuarioComponent implements OnInit {
   showDialog() {
     this.visible = true;
   }
-  
+
+  imageToBase64(event: any) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.usuario.imagen = reader.result as string;
+      // console.log(reader.result);
+    };
+  }
+
+  getBase64FromUrl = async (url: string) => {
+    const data = await fetch(url);
+    const blob = await data.blob();
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        resolve(base64data);
+      };
+    }).then((response) => (this.defaultImage = response as string));
+  };
+
   public handleSearch = (event: any) => {
     const text = event?.target?.value;
     this.query = text;
@@ -420,5 +472,5 @@ export class UsuarioComponent implements OnInit {
     intervalSearch = setTimeout(() => {
       this.handleLoadData(text);
     }, 1000);
-  }
+  };
 }
