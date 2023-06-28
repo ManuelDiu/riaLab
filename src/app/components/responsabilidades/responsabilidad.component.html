@@ -1,7 +1,7 @@
 <div
   style="display: flex; flex-direction: column; align-items: center; margin: 0;"
 >
-  <h1>Áreas</h1>
+  <h1>Responsabilidades</h1>
   <div
     class="flex flex-col justify-content-center m-5"
     style="
@@ -39,44 +39,26 @@
             label="Eliminar"
             icon="pi pi-trash"
             class="p-button-danger"
-            (click)="deleteSelectedAreas()"
-            [disabled]="!selectedAreas || !selectedAreas.length"
+            (click)="deleteSelectedResponsabilidades()"
+            [disabled]="!selectedResponsabilidades || !selectedResponsabilidades.length"
           ></button>
         </div>
       </ng-template>
-
-      <!-- <ng-template pTemplate="right">
-        <p-fileUpload
-          mode="basic"
-          accept="image/*"
-          [maxFileSize]="1000000"
-          label="Import"
-          chooseLabel="Import"
-          class="mr-2 inline-block"
-        ></p-fileUpload>
-        <button
-          pButton
-          pRipple
-          label="Export"
-          icon="pi pi-upload"
-          class="p-button-help"
-        ></button>
-      </ng-template> -->
     </p-toolbar>
 
     <p-table
       #dt
-      [value]="areasArr"
+      [value]="responsabilidadesArray"
       [loading]="isLoading"
       [globalFilterFields]="['nombre', 'estado']"
       [tableStyle]="{ 'min-width': '100%' }"
-      [(selection)]="selectedAreas"
+      [(selection)]="selectedResponsabilidades"
       [rowHover]="true"
       dataKey="id"
     >
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-          <h5 class="m-0">Administrar Áreas</h5>
+          <h5 class="m-0">Administrar Responsabilidades</h5>
           <!-- <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
         </span> -->
@@ -87,45 +69,62 @@
           <th style="width: 4rem;">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th
-          >
+          <th>
             Nombre
-            <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+            <p-columnFilter
+              type="text"
+              field="nombre"
+              display="menu"
+            ></p-columnFilter>
           </th>
-          <th class="">Activo
-            <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
+          <th class="">
+            Area
+            <p-columnFilter
+              type="text"
+              field="area.nombre"
+              display="menu"
+            ></p-columnFilter>
+          </th>
+          <th class="">
+            Activo
+            <p-columnFilter
+              type="boolean"
+              field="activo"
+              display="menu"
+            ></p-columnFilter>
           </th>
           <th class="text-center">Acciones</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-area>
+      <ng-template pTemplate="body" let-respo>
         <tr>
           <td>
-            <p-tableCheckbox [value]="area"></p-tableCheckbox>
+            <p-tableCheckbox [value]="respo"></p-tableCheckbox>
           </td>
-          <td>{{ area.nombre }}</td>
-          <td>{{ area.activo === true ? "Si" : "No" }}</td>
+          <td>{{ respo.nombre }}</td>
+          <td>{{ respo.area.nombre }}</td>
+          <td>{{ respo.activo === true ? "Si" : "No" }}</td>
           <td style="justify-content: center; display: flex; gap: 5px;">
             <button
               pButton
               pRipple
               icon="pi pi-pencil"
               class="p-button-rounded p-button-success mr-2"
-              (click)="editArea(area)"
+              (click)="editResponsabilidad(respo)"
             ></button>
             <button
               pButton
               pRipple
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger"
-              (click)="deleteArea(area)"
+              (click)="deleteResponsabilidad(respo)"
             ></button>
           </td>
         </tr>
       </ng-template>
     </p-table>
     <div
-      *ngIf="!isLoading && areasArr.length < 1"
+      *ngIf="!isLoading && responsabilidadesArray.length < 1"
       style="
         display: flex;
         justify-content: center;
@@ -135,11 +134,12 @@
       "
     >
       <h3>
-        Lo sentimos, pero no contamos con áreas disponibles para listar.
+        Lo sentimos, pero no contamos con responsabilidades disponibles para
+        listar.
       </h3>
     </div>
     <p-paginator
-      *ngIf="!isLoading && areasArr.length > 0"
+      *ngIf="!isLoading && responsabilidadesArray.length > 0"
       (onPageChange)="onPageChange($event)"
       [first]="first"
       [rows]="currentRows"
@@ -152,34 +152,69 @@
 </div>
 
 <p-dialog
-  [(visible)]="areaModal"
-  [style]="{ width: '450px' }"
-  header="Detalles del Área"
+  [(visible)]="responsabilidadModal"
+  [style]="{ width: '450px', }"
+  header="Crear Responsabilidad"
   [modal]="true"
   styleClass="p-fluid"
 >
   <ng-template pTemplate="content">
+    <div class="field">
+      <label for="area">Area</label>
+      <p-dropdown
+        [options]="areasArray"
+        [(ngModel)]="responsabilidad.area"
+        optionLabel="nombre"
+        inputId="float-label"
+        placeholder="Seleccione un área"
+        ></p-dropdown>
+      <!-- <p-dropdown
+        *ngIf="isModifying"
+        [options]="areasArray"
+        [(ngModel)]="responsabilidad.area"
+        optionLabel="nombre"
+        inputId="float-label"
+        [disabled]="true"
+      ></p-dropdown> -->
+      <small class="p-error" *ngIf="submitted && !responsabilidad.area">
+        Es necesario seleccionar un área.
+      </small>
+    </div>
     <div class="field">
       <label for="nombre">Nombre</label>
       <input
         type="text"
         pInputText
         id="nombre"
-        [(ngModel)]="area.nombre"
+        [(ngModel)]="responsabilidad.nombre"
         required
         autofocus
       />
-      <small class="p-error" *ngIf="submitted && !area.nombre"
+      <small class="p-error" *ngIf="submitted && !responsabilidad.nombre"
         >El nombre es requerido.</small
       >
     </div>
-    <div class="flex flex-row mt-4 gap-2 items-center">
+    <div class="field">
+      <label for="nombre">Descripción</label>
+      <textarea
+        type="text"
+        pInputText
+        id="description"
+        [(ngModel)]="responsabilidad.descripcion"
+        required
+        autofocus
+      ></textarea>
+      <small class="p-error" *ngIf="submitted && !responsabilidad.descripcion"
+        >La descripción es requerida.</small
+      >
+    </div>
+    <div class="flex flex-row mt-4 gap-2 items-center max-h-5">
       <p-checkbox
         (onChange)="handleChangeEstado($event)"
         inputId="estado"
-        [value]="area.activo"
+        [value]="responsabilidad.activo"
         [binary]="true"
-        [(ngModel)]="area.activo"
+        [(ngModel)]="responsabilidad.activo"
       ></p-checkbox>
       <label for="estado">Activo</label>
     </div>
@@ -200,7 +235,7 @@
       label="Guardar"
       icon="pi pi-check"
       class="p-button-text"
-      (click)="saveArea()"
+      (click)="saveResponsabilidad()"
     ></button>
   </ng-template>
 </p-dialog>
