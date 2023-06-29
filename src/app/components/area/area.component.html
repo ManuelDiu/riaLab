@@ -67,13 +67,13 @@
           </th>
           <th
           >
-            Nombre 
+            Nombre
             <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
           </th>
-          <th class="" style="">Activo
+          <th class="">Activo
             <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
           </th>
-          <th class="" style="text-align: right;">Acciones</th>
+          <th class="text-center">Acciones</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-area>
@@ -83,7 +83,7 @@
           </td>
           <td>{{ area.nombre }}</td>
           <td>{{ area.activo === true ? "Si" : "No" }}</td>
-          <td style="justify-content: end; display: flex; gap: 5px;">
+          <td style="justify-content: center; display: flex; gap: 5px;">
             <button
               pButton
               pRipple

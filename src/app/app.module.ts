@@ -42,8 +42,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { HomeComponent } from './components/home/home.component';
+import { ResponsabilidadComponent } from './components/responsabilidades/responsabilidad.component';
 import { LlamadoComponent } from './components/llamados/llamado.component';
-
 
 @NgModule({
   declarations: [
@@ -57,6 +57,7 @@ import { LlamadoComponent } from './components/llamados/llamado.component';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     HomeComponent,
+    ResponsabilidadComponent,
     LlamadoComponent,
   ],
   imports: [
