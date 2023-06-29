@@ -414,14 +414,11 @@
         class="h-auto w-full flex flex-col items-center justify-center gap-2"
       >
         <a
-          routerLink="/llamadosEP"
-          [ngClass]="[
-            'itemNav',
-            (activePath == '/llamadosEP' && 'active') || ''
-          ]"
+          routerLink="/llamados"
+          [ngClass]="['itemNav', (activePath == '/llamados' && 'active') || '']"
         >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
-          <span>Llamados estados</span></a
+          <span>Llamados</span></a
         >
         <a
           routerLink="/usuarios"
@@ -439,7 +436,10 @@
         >
         <a
           routerLink="/responsabilidades"
-          [ngClass]="['itemNav', (activePath == '/responsabilidades' && 'active') || '']"
+          [ngClass]="[
+            'itemNav',
+            (activePath == '/responsabilidades' && 'active') || ''
+          ]"
         >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>Responsabilidades</span></a
@@ -453,13 +453,6 @@
         >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>Estados Posibles</span></a
-        >
-        <a
-          routerLink="/llamados"
-          [ngClass]="['itemNav', (activePath == '/llamados' && 'active') || '']"
-        >
-          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
-          <span>Llamados</span></a
         >
         <a
           routerLink="/tipoDocumento"

@@ -299,6 +299,9 @@ export class UsuarioComponent implements OnInit {
             this.selectedTDoc = undefined;
           },
           error: (response: any) => {},
+          complete: () => {
+            this.handleLoadData("");
+          }
         });
       }
     } else {
@@ -366,6 +369,9 @@ export class UsuarioComponent implements OnInit {
                 life: 4000,
               });
               console.log(error);
+            },
+            () => {
+            this.handleLoadData("");
             }
           );
           this.registerModal = false;
