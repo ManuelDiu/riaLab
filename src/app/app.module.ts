@@ -42,11 +42,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { HomeComponent } from './components/home/home.component';
+import { ResponsabilidadComponent } from './components/responsabilidades/responsabilidad.component';
 import { LlamadoComponent } from './components/llamados/llamado.component';
 import { LlamadoEstadoModalComponent } from './components/llamado-estado-modal/llamado-estado-modal.component';
 import { CalendarModule } from 'primeng/calendar';
 import { LlamadoMiembroTribunalModal } from './components/llamado-miembros-tribunal-modal/llamado-miembros-tribunal-modal';
-
 
 @NgModule({
   declarations: [
@@ -60,6 +60,7 @@ import { LlamadoMiembroTribunalModal } from './components/llamado-miembros-tribu
     ForgotPasswordComponent,
     ResetPasswordComponent,
     HomeComponent,
+    ResponsabilidadComponent,
     LlamadoComponent,
     LlamadoEstadoModalComponent,
     LlamadoMiembroTribunalModal,

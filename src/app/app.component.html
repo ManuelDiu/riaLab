@@ -438,6 +438,23 @@
           <span>Areas</span></a
         >
         <a
+          routerLink="/responsabilidades"
+          [ngClass]="['itemNav', (activePath == '/responsabilidades' && 'active') || '']"
+        >
+          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
+          <span>Responsabilidades</span></a
+        >
+        <a
+          routerLink="/llamadosEP"
+          [ngClass]="[
+            'itemNav',
+            (activePath == '/llamadosEP' && 'active') || ''
+          ]"
+        >
+          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
+          <span>Estados Posibles</span></a
+        >
+        <a
           routerLink="/llamados"
           [ngClass]="['itemNav', (activePath == '/llamados' && 'active') || '']"
         >
@@ -492,7 +509,7 @@
             >
               <button
                 (click)="handleLogout()"
-                class="flex cursor-pointer flex-row w-full items-center justify-start gap-3"
+                class="flex cursor-pointer flex-row w-full items-center justify-start gap-3 border-none bg-white"
               >
                 <i class="pi pi-sign-out text-600" style="font-size: 20px"></i>
                 <span class="text-600 font-medium">Logout</span>
