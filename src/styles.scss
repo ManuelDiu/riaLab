@@ -53,3 +53,15 @@
 .mt3 {
     margin-top: 12px;
 }
+
+
+
+
+.table {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.165);
+    border-radius: 10px;
+    transition: all .3s ease;
+}

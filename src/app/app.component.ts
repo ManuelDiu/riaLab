@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { clearToken, getToken } from './utils/tokenUtils';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { LoggedUserService } from './services/usuario/loggedUserService';
@@ -23,7 +23,6 @@ export class AppComponent {
   constructor(private spinner: NgxSpinnerService, private router: Router) {
     router.events.subscribe(val => {
       if (val instanceof NavigationStart){
-        console.log(val.url)
         this.activePath = val.url;
         // this.routerChangeMethod(event.url);
      }
@@ -38,16 +37,21 @@ export class AppComponent {
 
 
   ngOnInit() {
+
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.activePath = event?.url;
+      }
+    });
+
+
     this.activePath = this.router.url;
-    console.log(this.activePath)
     const lus = new LoggedUserService();
     lus.handleLoadUserInfo();
     this.userInfo = LoggedUserService.userInfo;
     if(this.userInfo?.roles?.includes("ADMIN")){
       this.isAdmin = true;
     }
-    console.log("asdasd", this.isAdmin)
-
     this.spinner.show();
     const currentPathName = window.location.pathname;
     const token = getToken();

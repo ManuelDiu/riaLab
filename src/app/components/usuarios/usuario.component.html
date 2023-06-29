@@ -1,7 +1,17 @@
+<style>
+  .firstPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+  }
+</style>
+
 <div
   style="display: flex; flex-direction: column; align-items: center; margin: 0;"
 >
-  <h1>Usuarios</h1>
   <div
     class="flex flex-col justify-content-center m-5 mb-2"
     style="
@@ -11,49 +21,24 @@
       width: 100%;
     "
   >
-    <p-toast></p-toast>
-    <p-toolbar>
-      <ng-template pTemplate="left">
-        <div style="display: flex; gap: 1rem;">
-          <span class="p-input-icon-left mx-2">
-            <i class="pi pi-search"></i>
-            <input
-              placeholder="Buscar"
-              (keyup)="handleSearch($event)"
-              [value]="query"
-              type="text"
-              pInputText
-            />
-          </span>
-          <button
-            pButton
-            pRipple
-            label="Agregar"
-            icon="pi pi-plus"
-            class="p-button-success mr-2"
-            (click)="openNew()"
-          ></button>
-        </div>
-      </ng-template>
+  <div class="firstPart">
+    <h1>Usuarios</h1>
+    <div class="gap1 py-2 flex-row">
+      <span class="p-input-icon-left mx-2">
+        <i class="pi pi-search"></i>
+        <input
+          placeholder="Buscar"
+          (keyup)="handleSearch($event)"
+          [value]="query"
+          type="text"
+          pInputText
+        />
+      </span>
+      <p-button (onClick)="openNew()" label="Agregar"></p-button>
+    </div>
+  </div>
 
-      <!-- <ng-template pTemplate="right">
-        <p-fileUpload
-          mode="basic"
-          accept="image/*"
-          [maxFileSize]="1000000"
-          label="Import"
-          chooseLabel="Import"
-          class="mr-2 inline-block"
-        ></p-fileUpload>
-        <button
-          pButton
-          pRipple
-          label="Export"
-          icon="pi pi-upload"
-          class="p-button-help"
-        ></button>
-      </ng-template> -->
-    </p-toolbar>
+  <div class="table">
 
     <p-table
       #dt
@@ -191,6 +176,7 @@
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
     ></p-paginator>
+    </div>
   </div>
 </div>
 
@@ -424,7 +410,7 @@
           (click)="addRole()"
         ></button>
       </div>
-      <div class="w-full">
+      <div class="table">
         <p-table
           [value]="usuario.roles"
           [globalFilterFields]="['nombre', 'id',]"

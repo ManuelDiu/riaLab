@@ -126,7 +126,6 @@ export class TipoDocumentoPageComponent {
           });
         });
 
-        // console.log("success deleted" , successDeleted)
       },
     });
   }
@@ -138,7 +137,6 @@ export class TipoDocumentoPageComponent {
     this.isLoadingCreate = true;
 
     if (this.selectedItemToEdit !== undefined) {
-      console.log(this.nombreTipoDocumento);
       this.selectedItemToEdit.nombre = this.nombreTipoDocumento;
 
       this.tdservice.updateTipoDocumento(this.selectedItemToEdit).subscribe({
@@ -172,7 +170,6 @@ export class TipoDocumentoPageComponent {
               detail: 'Agregado correctamente',
             },
           ];
-          console.log('xd2');
         },
         error: () => {
           console.log('error agregndo un tipo documento ');

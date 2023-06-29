@@ -192,7 +192,6 @@ export class UsuarioComponent implements OnInit {
   }
 
   addRole() {
-    console.log("aaa", this.selectedRole);
     this.roleService.addRole(this.usuario.id, this.selectedRole).subscribe({
       next: (response) => {
         this.usuario.roles.push(this.selectedRole);
@@ -205,7 +204,6 @@ export class UsuarioComponent implements OnInit {
       },
       error: () => {
         console.log(this.usuario.id, this.selectedRole);
-        console.log("error loading ");
       },
     });
   }
@@ -225,7 +223,6 @@ export class UsuarioComponent implements OnInit {
       },
       error: () => {
         console.log(this.usuario.id, this.selectedRole);
-        console.log("error loading ");
       },
     });
     // this.rolesArr = rolesSinSeleccionar;

@@ -94,7 +94,6 @@ export class LlamadosEPComponent implements OnInit {
 
   public handleChangeEstado(event:any) {
     if (this.currentEstadoPosible) {
-      console.log("event.checked", event?.checked)
       this.currentEstadoPosible.activo = event?.checked;
     }
   }
@@ -106,7 +105,6 @@ export class LlamadosEPComponent implements OnInit {
       header: "Confirmar",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
-        console.log(this.selectedEstados);
         this.llamadoEPService
           .deleteEstadoPosible(estadoP.id as number)
           .subscribe((data) => {
@@ -136,7 +134,6 @@ export class LlamadosEPComponent implements OnInit {
       .subscribe((data: EstadoPosibleResponse) => {
         this.estadosArray = data.list;
         this.totalCount = data.totalCount;
-        console.log("data del get:", data);
         this.isLoading = false;
       });
   }
@@ -145,7 +142,6 @@ export class LlamadosEPComponent implements OnInit {
     this.submitted = true;
     if (this.isModifying) {
       if (this.currentEstadoPosible?.nombre) {
-        console.log("currentEstadoPosible", this.currentEstadoPosible)
         this.llamadoEPService
           .updateEstadoPosible(
             this.currentEstadoPosible.id as number,
@@ -214,7 +210,6 @@ export class LlamadosEPComponent implements OnInit {
       .subscribe((data: EstadoPosibleResponse) => {
         this.estadosArray = data.list;
         this.totalCount = data.totalCount;
-        console.log("data del get:", data);
         this.isLoading = false;
       });
     this.first = event.first;

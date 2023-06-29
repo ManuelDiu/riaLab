@@ -64,6 +64,8 @@
     [closable]="true"
   ></p-messages>
 
+  <div class="table">
+
   <p-table
     [(selection)]="selectedItemsToDelete"
     styleClass="p-datatable-striped"
@@ -101,7 +103,7 @@
         <td class="flex-row justify-end">
           <p-button
             icon="pi pi-pencil"
-            styleClass="p-button-success"
+            styleClass="p-button-success p-button-rounded"
             (onClick)="activeToEditItem(tipoIntegrante)"
           ></p-button>
         </td>
@@ -119,6 +121,7 @@
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
   ></p-paginator>
+  </div>
 
   <p-dialog
     (onHide)="onHide()"

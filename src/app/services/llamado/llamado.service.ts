@@ -5,23 +5,24 @@ import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AreaResponse } from "src/app/types/AreaResponse";
 import { environment } from "src/utils/environment";
+import { Llamado } from "src/app/models/llamado/llamado";
 
 @Injectable({
   providedIn: "root",
 })
-export class AreaService {
+export class LlamadoService {
   baseURL: string = `${environment.BACKEND_DOMAIN_APP}api/` || "";
 
   constructor(private http: HttpClient) {}
 
-  createArea(area: Area): Observable<any> {
+  createLlamado(llamado: Llamado): Observable<any> {
     const headers = { "content-type": "application/json" };
     // console.log("areea: " + area);
-    const body = JSON.stringify(area);
-    return this.http.post(this.baseURL + "Areas", body, { headers: headers });
+    const body = JSON.stringify(llamado);
+    return this.http.post(this.baseURL + "Llamados", body, { headers: headers });
   }
 
-  getAreasPaged(limit: number, offset: number, query: string = ""): Observable<AreaResponse> {
+  getLlamadosPaged(limit: number, offset: number, query: string = ""): Observable<any> {
     // term = term.trim();
     const headers = { "content-type": "application/json" };
     let body = {
@@ -37,20 +38,20 @@ export class AreaService {
 
     const bodyFormatted = JSON.stringify(body);
 
-    return this.http.post<AreaResponse>(this.baseURL + "Areas/Paged", bodyFormatted, {
+    return this.http.post<any>(this.baseURL + "Llamados/Paged", bodyFormatted, {
       headers: headers,
     });
   }
 
-  updateArea(id: number, area: Area): Observable<any> {
+  updateLlamado(id: number, llamado: Llamado): Observable<any> {
     const headers = { "content-type": "application/json" };
-    const body = JSON.stringify(area);
-    return this.http.put(this.baseURL + "Areas/" + id, body, { headers: headers });
+    const body = JSON.stringify(llamado);
+    return this.http.put(this.baseURL + "Llamados/" + id, body, { headers: headers });
   }
 
-  deleteArea(id: number): Observable<any> {
+  deleteLlamado(id: number): Observable<any> {
     const header = { "content-type": "application/json" };
-    return this.http.delete(this.baseURL + "Areas/" + id, { headers: header });
+    return this.http.delete(this.baseURL + "Llamados/" + id, { headers: header });
   }
 
 }

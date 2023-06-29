@@ -43,6 +43,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { HomeComponent } from './components/home/home.component';
 import { ResponsabilidadComponent } from './components/responsabilidades/responsabilidad.component';
+import { LlamadoComponent } from './components/llamados/llamado.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ResponsabilidadComponent } from './components/responsabilidades/respons
     ResetPasswordComponent,
     HomeComponent,
     ResponsabilidadComponent,
+    LlamadoComponent,
   ],
   imports: [
     BrowserModule,

@@ -34,7 +34,6 @@ export class ForgotPasswordComponent {
     this.isLoading = true;
     this.forgotPasswordService.handleForgotPassword(this.email).subscribe({
       next: (response: any) => {
-        console.log("response is", response)
         // this.alertsTypes.
         this.alertsTypes = [
           {

@@ -309,6 +309,7 @@
   }
 
   .itemNav {
+    transition: all .3s ease;
     width: 100% !important;
     color: white !important;
     font-size: 16px;
@@ -331,13 +332,20 @@
   }
 
   .itemNav.active {
+    transition: all .3s ease;
     background-color: #2d2f39 !important;
     color: rgba(255, 255, 255, 0.584);
     cursor: pointer;
+    transition: all .3s ease;
+  }
+
+  .active .pi-chevron-down {
+    transition: all .3s ease;
+    transform: rotate(-90deg);
   }
 
   .active:hover {
-    transition: all .3s linear;
+    transition: all 0.3s linear;
     background-color: #2d2f3927 !important;
     color: gray;
     cursor: pointer;
@@ -355,11 +363,11 @@
   <!-- Toolbar -->
   <div
     class="flex flex-row w-full h-screen"
-    style="background-color: #f5f0fa;"
+    style="background-color: #f5f0fa"
     *ngIf="!isPublicPath; else noLayout"
   >
     <div
-      style="min-width: 300px; background-color: #161a23"
+      style="min-width: 300px;max-width: 300px!important; background-color: #161a23"
       class="w-20rem min-w-[300px] p-5 flex flex-col items-center justify-start"
       role=""
     >
@@ -396,8 +404,9 @@
         class="divider my-5"
       ></div>
 
-      <div *ngIf="isAdmin"
-        style="margin-top: 40px; min-width: 100% !important;"
+      <div
+        *ngIf="isAdmin"
+        style="margin-top: 40px; min-width: 100% !important"
         class="h-auto w-full flex flex-col items-center justify-center gap-2"
       >
         <a
@@ -430,6 +439,13 @@
         >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>Estados Posibles</span></a
+        >
+        <a
+          routerLink="/llamados"
+          [ngClass]="['itemNav', (activePath == '/llamados' && 'active') || '']"
+        >
+          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
+          <span>Llamados</span></a
         >
         <a
           routerLink="/tipoDocumento"
@@ -496,12 +512,24 @@
         </div>
       </div>
     </div>
-    <div class="content" role="main" style="min-width: auto; flex-grow: 1; max-height: 100vh; overflow: auto;">
+    <div
+      class="content"
+      role="main"
+      style="min-width: auto; flex-grow: 1; max-height: 100vh; overflow: auto"
+    >
       <router-outlet></router-outlet>
     </div>
   </div>
 
-  <ng-template #noLayout style="min-width: '100%'; margin-top: 60px; max-height: 100vh; overflow: auto">
+  <ng-template
+    #noLayout
+    style="
+      min-width: '100%';
+      margin-top: 60px;
+      max-height: 100vh;
+      overflow: auto;
+    "
+  >
     <router-outlet></router-outlet>
   </ng-template>
 </ng-template>
