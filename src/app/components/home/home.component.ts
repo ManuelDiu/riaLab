@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
+  ngOnInit(){
+    window.location.pathname = "/llamados";
+  }
 }

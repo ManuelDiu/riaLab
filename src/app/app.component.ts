@@ -17,6 +17,9 @@ const listofPublicPaths = [
 })
 export class AppComponent {
   public isAdmin: boolean = false;
+  public isTribunal: boolean = false;
+  public isCordinador: boolean = false;
+
   public currentPathname: string = window.location.pathname || "";
   title = 'riaLab';
   public isChecking = true;
@@ -35,7 +38,6 @@ export class AppComponent {
   public isPublicPath = false;
 
 
-
   ngOnInit() {
 
     this.router.events.subscribe((event: any) => {
@@ -51,6 +53,12 @@ export class AppComponent {
     this.userInfo = LoggedUserService.userInfo;
     if(this.userInfo?.roles?.includes("ADMIN")){
       this.isAdmin = true;
+    }
+    if(this.userInfo?.roles?.includes("TRIBUNAL")){
+      this.isTribunal = true;
+    }
+    if(this.userInfo?.roles?.includes("CORDINADOR")){
+      this.isCordinador = true;
     }
     this.spinner.show();
     const currentPathName = window.location.pathname;

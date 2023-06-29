@@ -1,0 +1,168 @@
+<p-dialog
+  [(visible)]="this.openModal"
+  [style]="{ width: '1000px' }"
+  header="Estados del llamado"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="handleCloseModal()"
+>
+  <ng-template pTemplate="content" style="overflow: visible">
+    <div class="w-full mb-4 flex flex-row items-center justify-content-between">
+      <h1
+        style="
+          color: black;
+          font-size: 24;
+          font-weight: 500;
+          margin-bottom: 14px;
+        "
+      >
+        Llamado: {{ llamadoInfo.nombre }}
+      </h1>
+      <p-button (onClick)="openNew()" label="Agregar"></p-button>
+    </div>
+    <div style="max-height: 500px; overflow: auto" class="w-full h-auto table">
+      <p-table
+        #dt
+        [value]="llamadoInfo?.miembrosTribunal"
+        [loading]="false"
+        [globalFilterFields]="['nombre', 'estado']"
+        [tableStyle]="{ 'min-width': '100%' }"
+        [(selection)]="selectMiembrosTribunal"
+        [rowHover]="true"
+        dataKey="id"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Miembros Tribunal</h5>
+            <!-- <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+        </span> -->
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              Nombre
+              <p-columnFilter
+                type="text"
+                field="observacion"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th>
+              Documento
+              <p-columnFilter
+                type="text"
+                field="fechaHora"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+
+            <th>
+              Renuncia
+              <p-columnFilter
+                type="text"
+                field="usuarioTransicion"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+
+            <th>
+              Tipo Integrante
+              <p-columnFilter
+                type="text"
+                field="usuarioTransicion"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-llamadoEstado>
+          <tr>
+            <td>{{ llamadoEstado.observacion }}</td>
+            <td>{{ llamadoEstado.fechaHora }}</td>
+            <td>{{ llamadoEstado.usuarioTransicion }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer"> </ng-template>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="openNewModal"
+  [style]="{ width: '450px' }"
+  header="Agregar estado al llamado"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content" style="overflow: visible">
+    <div class="field">
+      <label for="estado">Estado Posible</label>
+      <p-dropdown
+        id="estado"
+        [options]="allEstadosPosibles"
+        optionValue="id"
+        [(ngModel)]="selectedLlamadoEstadoPosible"
+        optionLabel="nombre"
+        inputId="float-label"
+        [required]="true"
+        placeholder="Estado posible"
+      ></p-dropdown>
+      <small class="p-error" *ngIf="submitted && !selectedLlamadoEstadoPosible"
+        >El estado es requerida.</small
+      >
+    </div>
+    <div class="field">
+      <label for="observ">Observacion</label>
+      <input
+        type="text"
+        pInputText
+        id="observ"
+        [(ngModel)]="llamadoEstadoNuevo.observacion"
+        required
+        autofocus
+      />
+      <small
+        class="p-error"
+        *ngIf="submitted && !llamadoEstadoNuevo.observacion"
+        >La observacion es requerida.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="observ">Fecha y hora</label>
+      <p-calendar
+        [(ngModel)]="llamadoEstadoNuevo.fechaHora"
+        [showTime]="true"
+      ></p-calendar>
+
+      <small
+        class="p-error"
+        *ngIf="submitted && !llamadoEstadoNuevo.observacion"
+        >La fecha y hora es requerida.</small
+      >
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="handleSubmit()"
+    ></button>
+  </ng-template>
+</p-dialog>

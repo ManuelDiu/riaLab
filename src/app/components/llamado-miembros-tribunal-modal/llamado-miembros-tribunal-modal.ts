@@ -1,0 +1,93 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Llamado } from 'src/app/models/llamado/llamado';
+import { LlamadoEstado } from 'src/app/types/LlamadoPosible';
+import { LlamadoEstadoPosible } from '../../models/llamadoEP/estadoPosible';
+import { LlamadoEPService } from 'src/app/services/llamadosEP/llamadoEP.service';
+import { EstadoPosibleResponse } from 'src/app/types/LlamadoEPResponse';
+import { LoggedUserService } from 'src/app/services/usuario/loggedUserService';
+import { LlamadoService } from 'src/app/services/llamado/llamado.service';
+import { MessageService } from 'primeng/api';
+import { MiembroTribunal } from 'src/app/types/MiembroTribunal';
+
+@Component({
+  selector: 'lamado-miembros-tribunal-modal',
+  templateUrl: './llamado-miembros-tribunal-modal.html',
+  styleUrls: ['./llamado-miembros-tribunal-modal.scss']
+})
+export class LlamadoMiembroTribunalModal {
+  @Input() llamadoInfo: Llamado | any = null;
+  @Input() openModal: boolean = false;
+  @Output() toggleOpen = new EventEmitter();
+  public llamadoEstadoNuevo: LlamadoEstado | any = {};
+  public selectMiembrosTribunal: MiembroTribunal[] = []
+  openNewModal: boolean = false;
+  allEstadosPosibles: LlamadoEstadoPosible[] = [];
+  selectedLlamadoEstadoPosible: LlamadoEstadoPosible | any = null;
+  submitted = false;
+
+  constructor(
+    public llamadoEPService: LlamadoEPService,
+    public messageService: MessageService,
+    public llamadoService: LlamadoService,
+  ) {}
+
+
+
+  ngOnInit(){
+    this.llamadoEPService
+    .getEstadosPosiblesPaged(500, 0 , "")
+    .subscribe((data: EstadoPosibleResponse) => {
+      this.allEstadosPosibles = data.list;
+    });
+  }
+
+  hideDialog() {
+    this.openNewModal = false;
+  }
+
+  handleCloseModal(){
+    if (this.toggleOpen) {
+      this.toggleOpen.emit(null);
+    }
+  }
+
+  handleSubmit() {
+    this.submitted = true;
+    const lus = new LoggedUserService();
+    lus.handleLoadUserInfo();
+    const userInfo = LoggedUserService.userInfo;
+
+    const llamadoEstadoPosibleInfo = this.allEstadosPosibles?.find((item) => item.id = this.selectedLlamadoEstadoPosible)
+
+    if (llamadoEstadoPosibleInfo) {
+      this.llamadoEstadoNuevo.activo = true;
+      this.llamadoEstadoNuevo.llamadoEstadoPosible = llamadoEstadoPosibleInfo;
+      this.llamadoEstadoNuevo.llamadoEstadoPosibleId = llamadoEstadoPosibleInfo.id;
+      this.llamadoEstadoNuevo.llamadoId = this.llamadoInfo.id;
+      this.llamadoEstadoNuevo.usuarioTransicion = userInfo?.email;
+      
+      this.llamadoService.createEstadoLlamado(this.llamadoEstadoNuevo).subscribe({
+        next: () => {
+          this.llamadoInfo.llamadoEstados?.push(this.llamadoEstadoNuevo);
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: '¡Error!',
+            detail: "Error agergando al historial de estados",
+            life: 2000,
+          });
+        },
+        complete: () => {
+          this.openNewModal = false;
+        }
+      })
+
+    }
+
+  }
+
+  openNew() {
+    this.openNewModal = true;
+  }
+}

@@ -43,6 +43,9 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { HomeComponent } from './components/home/home.component';
 import { LlamadoComponent } from './components/llamados/llamado.component';
+import { LlamadoEstadoModalComponent } from './components/llamado-estado-modal/llamado-estado-modal.component';
+import { CalendarModule } from 'primeng/calendar';
+import { LlamadoMiembroTribunalModal } from './components/llamado-miembros-tribunal-modal/llamado-miembros-tribunal-modal';
 
 
 @NgModule({
@@ -58,6 +61,8 @@ import { LlamadoComponent } from './components/llamados/llamado.component';
     ResetPasswordComponent,
     HomeComponent,
     LlamadoComponent,
+    LlamadoEstadoModalComponent,
+    LlamadoMiembroTribunalModal,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +80,7 @@ import { LlamadoComponent } from './components/llamados/llamado.component';
     ConfirmDialogModule,
     DynamicDialogModule,
     DropdownModule,
+    CalendarModule,
     InputMaskModule,
     InputSwitchModule,
     InputTextModule,

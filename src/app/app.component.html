@@ -309,7 +309,7 @@
   }
 
   .itemNav {
-    transition: all .3s ease;
+    transition: all 0.3s ease;
     width: 100% !important;
     color: white !important;
     font-size: 16px;
@@ -332,15 +332,15 @@
   }
 
   .itemNav.active {
-    transition: all .3s ease;
+    transition: all 0.3s ease;
     background-color: #2d2f39 !important;
     color: rgba(255, 255, 255, 0.584);
     cursor: pointer;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
   }
 
   .active .pi-chevron-down {
-    transition: all .3s ease;
+    transition: all 0.3s ease;
     transform: rotate(-90deg);
   }
 
@@ -367,7 +367,11 @@
     *ngIf="!isPublicPath; else noLayout"
   >
     <div
-      style="min-width: 300px;max-width: 300px!important; background-color: #161a23"
+      style="
+        min-width: 300px;
+        max-width: 300px !important;
+        background-color: #161a23;
+      "
       class="w-20rem min-w-[300px] p-5 flex flex-col items-center justify-start"
       role=""
     >
@@ -410,6 +414,16 @@
         class="h-auto w-full flex flex-col items-center justify-center gap-2"
       >
         <a
+          routerLink="/llamadosEP"
+          [ngClass]="[
+            'itemNav',
+            (activePath == '/llamadosEP' && 'active') || ''
+          ]"
+        >
+          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
+          <span>Llamados estados</span></a
+        >
+        <a
           routerLink="/usuarios"
           [ngClass]="['itemNav', (activePath == '/usuarios' && 'active') || '']"
         >
@@ -422,16 +436,6 @@
         >
           <i class="pi pi-chevron-down" style="font-size: 20px"></i>
           <span>Areas</span></a
-        >
-        <a
-          routerLink="/llamadosEP"
-          [ngClass]="[
-            'itemNav',
-            (activePath == '/llamadosEP' && 'active') || ''
-          ]"
-        >
-          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
-          <span>Llamados estados</span></a
         >
         <a
           routerLink="/llamados"

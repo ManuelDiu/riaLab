@@ -22,6 +22,9 @@ export class LlamadoComponent implements OnInit {
   isModifying: boolean = false;
 
   selectedLlamados: Llamado[] = [];
+  openLlamadosModal: boolean = false;
+  openMiembrosTribunalModal: boolean = false;
+  selectedLlamadoItem?: Llamado = undefined;
   
   selectedArea?: any;
   areas: Area[] = [];
@@ -115,6 +118,16 @@ export class LlamadoComponent implements OnInit {
     this.llamado = { ...llamado };
     this.selectedArea = llamado.areaId;
     this.areaModal = true;
+  }
+
+  toggleLlamadosModal(llamado?: Llamado) {
+    this.openLlamadosModal = !this.openLlamadosModal;
+    this.selectedLlamadoItem = llamado;
+  }
+
+  toggleTribunalesModal(llamado?: Llamado) {
+    this.openMiembrosTribunalModal = !this.openMiembrosTribunalModal;
+    this.selectedLlamadoItem = llamado;
   }
 
   deleteLlamado(llamado: Llamado) {
@@ -260,3 +273,5 @@ export class LlamadoComponent implements OnInit {
     this.visible = true;
   }
 }
+
+

@@ -70,14 +70,6 @@
             ></p-columnFilter>
           </th>
           <th class="" style="">
-            Identificador
-            <p-columnFilter
-              type="text"
-              field="activo"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="">
             Link Acta
             <p-columnFilter
               type="text"
@@ -86,7 +78,7 @@
             ></p-columnFilter>
           </th>
           <th class="" style="">
-            Minutos Entrevista
+            Min.Entrevista
             <p-columnFilter
               type="text"
               field="activo"
@@ -94,7 +86,7 @@
             ></p-columnFilter>
           </th>
           <th class="" style="">
-            Link Plan.Puntaje
+            Puntaje
             <p-columnFilter
               type="text"
               field="activo"
@@ -117,6 +109,14 @@
               display="menu"
             ></p-columnFilter>
           </th>
+          <th class="" style="">
+            Estado
+            <p-columnFilter
+              type="text"
+              field="ultimoEstado?.llamadoEstadoPosible?.nombre"
+              display="menu"
+            ></p-columnFilter>
+          </th>
           <th class="" style="text-align: right">Acciones</th>
         </tr>
       </ng-template>
@@ -126,13 +126,14 @@
             <p-tableCheckbox [value]="llamado"></p-tableCheckbox>
           </td>
           <td>{{ llamado.nombre }}</td>
-          <td>{{ llamado.identificador }}</td>
           <td><a style="color: green;" target="_blank" href="{{ llamado.linkActa }}">Link</a></td>
           <td>{{ llamado.minutosEntrevista }}</td>
           <td><a style="color: green;" target="_blank" href="{{ llamado.linkPlanillaPuntajes }}">Link</a></td>
           <td>{{ llamado.area.nombre }}</td>
 
           <td>{{ llamado.activo === true ? "Si" : "No" }}</td>
+          <td>{{ llamado?.ultimoEstado?.llamadoEstadoPosible?.nombre || "No tiene" }}</td>
+          
           <td style="justify-content: end; display: flex; gap: 5px">
             <button
               pButton
@@ -141,6 +142,22 @@
               class="p-button-rounded p-button-success mr-2"
               (click)="editLlamado(llamado)"
             ></button>
+
+            <button
+              pButton
+              pRipple
+              icon="pi pi-history"
+              class="p-button-rounded flex flex-row gap-2 font-semibold mr-2"
+              (click)="toggleLlamadosModal(llamado)"
+            >Estados</button>
+
+            <button
+            pButton
+            pRipple
+            icon="pi pi-user"
+            class="p-button-rounded flex p-button-warning flex-row gap-2 font-semibold mr-2"
+            (click)="toggleTribunalesModal(llamado)"
+          >Miembros</button>
           </td>
         </tr>
       </ng-template>
@@ -288,3 +305,12 @@
 </p-dialog>
 
 <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+
+<app-llamado-estado-modal [openModal]="openLlamadosModal" (toggleOpen)="this.toggleLlamadosModal($event)" [llamadoInfo]="selectedLlamadoItem">
+  
+</app-llamado-estado-modal>
+
+<lamado-miembros-tribunal-modal [openModal]="openMiembrosTribunalModal" (toggleOpen)="this.toggleTribunalesModal($event)" [llamadoInfo]="selectedLlamadoItem">
+  
+</lamado-miembros-tribunal-modal>
