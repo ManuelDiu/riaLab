@@ -1,7 +1,7 @@
 <p-dialog
   [(visible)]="this.openModal"
   [style]="{ width: '1000px' }"
-  header="Estados del llamado"
+  header="Miembros del tribunal"
   [modal]="true"
   styleClass="p-fluid"
   (onHide)="handleCloseModal()"
@@ -42,10 +42,13 @@
         <ng-template pTemplate="header">
           <tr>
             <th>
-              Nombre
+              Orden
+            </th>
+            <th>
+              Persona
               <p-columnFilter
                 type="text"
-                field="observacion"
+                field='persona.primerNombre + " " +  persona.primerApellido'
                 display="menu"
               ></p-columnFilter>
             </th>
@@ -53,7 +56,7 @@
               Documento
               <p-columnFilter
                 type="text"
-                field="fechaHora"
+                field="persona.documento"
                 display="menu"
               ></p-columnFilter>
             </th>
@@ -61,8 +64,8 @@
             <th>
               Renuncia
               <p-columnFilter
-                type="text"
-                field="usuarioTransicion"
+                type="boolean"
+                field="renuncia"
                 display="menu"
               ></p-columnFilter>
             </th>
@@ -71,17 +74,38 @@
               Tipo Integrante
               <p-columnFilter
                 type="text"
-                field="usuarioTransicion"
+                field="tipoDeIntegrante?.nombre"
                 display="menu"
               ></p-columnFilter>
             </th>
+            <th>
+              Acciones
+            </th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-llamadoEstado>
+        <ng-template pTemplate="body" let-miembroTribunal>
           <tr>
-            <td>{{ llamadoEstado.observacion }}</td>
-            <td>{{ llamadoEstado.fechaHora }}</td>
-            <td>{{ llamadoEstado.usuarioTransicion }}</td>
+            <td>{{ miembroTribunal.orden }}</td>
+            <td>{{ miembroTribunal.persona.primerNombre + " " +  miembroTribunal.persona.primerApellido }}</td>
+            <td>{{ miembroTribunal.persona.documento }}</td>
+            <td>{{ miembroTribunal.renuncia ? "Si -  \n Motivo: " + (miembroTribunal.motivoRenuncia || "No tiene")  : "No" }}</td>
+            <td>{{ miembroTribunal.tipoDeIntegrante?.nombre }}</td>
+            <td style="justify-content: center; display: flex; gap: 5px;">
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-success mr-2"
+                (click)="handleEdit(miembroTribunal)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                (click)="deleteMiembroTribunal(miembroTribunal)"
+              ></button>
+            </td>
           </tr>
         </ng-template>
       </p-table>
@@ -94,57 +118,80 @@
 <p-dialog
   [(visible)]="openNewModal"
   [style]="{ width: '450px' }"
-  header="Agregar estado al llamado"
+  [header]="isEdit ? 'Actualizar miembro del tribunal' : 'Agregar miembro al tribunal'"
   [modal]="true"
   styleClass="p-fluid"
 >
   <ng-template pTemplate="content" style="overflow: visible">
     <div class="field">
-      <label for="estado">Estado Posible</label>
+      <label for="persona">Persona</label>
       <p-dropdown
-        id="estado"
-        [options]="allEstadosPosibles"
+        id="persona"
+        [options]="allPersonas"
         optionValue="id"
-        [(ngModel)]="selectedLlamadoEstadoPosible"
-        optionLabel="nombre"
+        [(ngModel)]="selectedPersona"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="10"
+        optionLabel="completeNombre"
         inputId="float-label"
+        [disabled]="isEdit"
         [required]="true"
-        placeholder="Estado posible"
+        placeholder="Seleccionar Persona"
       ></p-dropdown>
-      <small class="p-error" *ngIf="submitted && !selectedLlamadoEstadoPosible"
-        >El estado es requerida.</small
+      <small class="p-error" *ngIf="submitted && !selectedPersona"
+        >La persona es requerida.</small
       >
     </div>
     <div class="field">
-      <label for="observ">Observacion</label>
+      <label for="tipoIntegrante">Tipo Integrante</label>
+      <p-dropdown
+        id="tipoIntegrante"
+        [options]="allTipoIntegrante"
+        optionValue="id"
+        [(ngModel)]="selectedTipoIntegrante"
+        [virtualScroll]="true"
+        [disabled]="isEdit"
+        [virtualScrollItemSize]="10"
+        optionLabel="completeItem"
+        inputId="float-label"
+        [required]="true"
+        placeholder="Seleccionar Tipo Integrante"
+      ></p-dropdown>
+      <small class="p-error" *ngIf="submitted && !selectedTipoIntegrante"
+        >El tipoIntegrante es requerido.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="orden">Orden</label>
+      <input
+        type="number"
+        pInputText
+        id="orden"
+        [(ngModel)]="miembroTribunalNuevo.orden"
+      />
+    </div>
+    <div *ngIf="isEdit" class="flex flex-row mt-4 gap-2 items-center max-h-5">
+      <p-checkbox
+        inputId="renuncia"
+        [binary]="true"
+        [(ngModel)]="miembroTribunalNuevo.renuncia"
+      ></p-checkbox>
+      <label for="renuncia">Renuncia</label>
+    </div>
+
+    <div *ngIf="isEdit && miembroTribunalNuevo.renuncia === true" class="field mt-2">
+      <label for="motRenuncia">Motivo Renuncia</label>
       <input
         type="text"
         pInputText
-        id="observ"
-        [(ngModel)]="llamadoEstadoNuevo.observacion"
-        required
-        autofocus
+        id="motRenuncia"
+        [(ngModel)]="miembroTribunalNuevo.motivoRenuncia"
       />
-      <small
-        class="p-error"
-        *ngIf="submitted && !llamadoEstadoNuevo.observacion"
-        >La observacion es requerida.</small
-      >
     </div>
 
-    <div class="field">
-      <label for="observ">Fecha y hora</label>
-      <p-calendar
-        [(ngModel)]="llamadoEstadoNuevo.fechaHora"
-        [showTime]="true"
-      ></p-calendar>
 
-      <small
-        class="p-error"
-        *ngIf="submitted && !llamadoEstadoNuevo.observacion"
-        >La fecha y hora es requerida.</small
-      >
-    </div>
+    <div style="margin-top: 140px; margin-bottom: 140px" class=""></div>
   </ng-template>
 
   <ng-template pTemplate="footer">
@@ -159,7 +206,7 @@
     <button
       pButton
       pRipple
-      label="Guardar"
+      [label]="isEdit ? 'Actualiar' : 'Guardar'"
       icon="pi pi-check"
       class="p-button-text"
       (click)="handleSubmit()"

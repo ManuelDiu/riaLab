@@ -7,6 +7,7 @@ import { AreaResponse } from 'src/app/types/AreaResponse';
 import { environment } from 'src/utils/environment';
 import { Llamado } from 'src/app/models/llamado/llamado';
 import { LlamadoEstado } from 'src/app/types/LlamadoPosible';
+import { MiembroTribunal } from 'src/app/types/MiembroTribunal';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,32 @@ export class LlamadoService {
     });
   }
 
+  createMiembroTribunal(miembroTrib: MiembroTribunal): Observable<any> {
+    const headers = { 'content-type': 'application/json' };
+    // console.log("areea: " + area);
+    const body = JSON.stringify(miembroTrib);
+    return this.http.post(this.baseURL + 'MiembrosTribunales', body, {
+      headers: headers,
+    });
+  }
+
+  deleteMiembroTribunal(miembroTrib: MiembroTribunal): Observable<any> {
+    const headers = { 'content-type': 'application/json' };
+    // console.log("areea: " + area);
+    const body = JSON.stringify(miembroTrib);
+    return this.http.delete(this.baseURL + 'MiembrosTribunales/' + miembroTrib.id , {
+      headers: headers,
+    });
+  }
+
+  updateMiembroTribunal(miembroTrib: MiembroTribunal): Observable<any> {
+    const headers = { 'content-type': 'application/json' };
+    // console.log("areea: " + area);
+    const body = JSON.stringify(miembroTrib);
+    return this.http.put(this.baseURL + 'MiembrosTribunales/' + miembroTrib.id, body , {
+      headers: headers,
+    });
+  }
 
   createEstadoLlamado(llamadoEstado: LlamadoEstado): Observable<any> {
     const headers = { 'content-type': 'application/json' };
@@ -38,7 +65,8 @@ export class LlamadoService {
   getLlamadosPaged(
     limit: number,
     offset: number,
-    query: string = ''
+    query: string = '',
+    personaTribunalId?: any,
   ): Observable<any> {
     // term = term.trim();
     const headers = { 'content-type': 'application/json' };
@@ -50,7 +78,7 @@ export class LlamadoService {
         activo: null,
         nombre: query,
         identificador: '',
-        personaTribunalId: 0,
+        personaTribunalId: personaTribunalId || 0,
         estadoId: 0,
       },
       orders: [''],

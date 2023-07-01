@@ -1,52 +1,73 @@
+<style>
+  .firstPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+  }
+</style>
+
 <div
   style="display: flex; flex-direction: column; align-items: center; margin: 0;"
 >
-  <h1>Responsabilidades</h1>
   <div
     class="flex flex-col justify-content-center m-5"
     style="
-      max-width: 100%;
-      width: 100%;
-      border: 1px solid rgb(219, 219, 219);
-      border-radius: 7px;
+   max-width: 100%;
+  width: 100%;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 7px;
+  padding: 8px;
     "
   >
-    <p-toast></p-toast>
-    <p-toolbar>
-      <ng-template pTemplate="left">
-        <div style="display: flex; gap: 1rem;">
-          <span class="p-input-icon-left mx-2">
-            <i class="pi pi-search"></i>
-            <input
-              placeholder="Buscar"
-              (keyup)="handleSearch($event)"
-              [value]="query"
-              type="text"
-              pInputText
-            />
-          </span>
-          <button
-            pButton
-            pRipple
-            label="Agregar"
-            icon="pi pi-plus"
-            class="p-button-success mr-2"
-            (click)="openNew()"
-          ></button>
-          <button
-            pButton
-            pRipple
-            label="Eliminar"
-            icon="pi pi-trash"
-            class="p-button-danger"
-            (click)="deleteSelectedResponsabilidades()"
-            [disabled]="!selectedResponsabilidades || !selectedResponsabilidades.length"
-          ></button>
+    <div class="firstPart">
+      <h1>Responsabilidades</h1>
+      <div class="gap1 py-2 flex-row">
+        <span class="p-input-icon-left mx-2">
+          <i class="pi pi-search"></i>
+          <input
+            placeholder="Buscar"
+            (keyup)="handleSearch($event)"
+            [value]="query"
+            type="text"
+            pInputText
+          />
+        </span>
+        <p-button
+          icon="pi pi-trash"
+          (onClick)="deleteSelectedResponsabilidades()"
+          styleClass="p-button-danger"
+        ></p-button>
+        <div>
+          <p-toast></p-toast>
+          <p-confirmDialog #cd [style]="{ width: '50vw' }">
+            <ng-template pTemplate="header">
+              <h3>Eliminar Responsabilidad</h3>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <button
+                type="button"
+                pButton
+                icon="pi pi-times"
+                label="No"
+                (click)="cd.reject()"
+              ></button>
+              <p-button
+                label="Yes"
+                icon="pi pi-check"
+                (onClick)="cd.accept()"
+                styleClass="p-button-danger"
+              ></p-button>
+            </ng-template>
+          </p-confirmDialog>
         </div>
-      </ng-template>
-    </p-toolbar>
+        <p-button (onClick)="openNew()" label="Agregar"></p-button>
+      </div>
+    </div>
 
-    <p-table
+    <div class="table"><p-table
       #dt
       [value]="responsabilidadesArray"
       [loading]="isLoading"
@@ -148,6 +169,8 @@
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
     ></p-paginator>
+    </div>
+    
   </div>
 </div>
 

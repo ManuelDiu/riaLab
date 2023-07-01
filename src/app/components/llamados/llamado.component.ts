@@ -4,6 +4,9 @@ import { Area } from 'src/app/models/area/area';
 import { Llamado } from 'src/app/models/llamado/llamado';
 import { AreaService } from 'src/app/services/areas/area.service';
 import { LlamadoService } from 'src/app/services/llamado/llamado.service';
+import { LoggedUserService } from 'src/app/services/usuario/loggedUserService';
+import { Persona } from 'src/app/types/Persona';
+import { PersonaService } from '../../services/personas/persona.service';
 
 let timeoutInterval: any = null;
 @Component({
@@ -20,11 +23,19 @@ export class LlamadoComponent implements OnInit {
   submitted: boolean = false;
   areaModal: boolean = false;
   isModifying: boolean = false;
+  isAdmin = false;
+  isTribunal = false;
+  isCordinador = false;
+  personaInfo: Persona | any = {}
 
   selectedLlamados: Llamado[] = [];
   openLlamadosModal: boolean = false;
   openMiembrosTribunalModal: boolean = false;
   selectedLlamadoItem?: Llamado = undefined;
+  selectedLlamadoInfoToView?: Llamado = undefined;
+  openInfoSelectedModal: boolean = false;
+  
+
   
   selectedArea?: any;
   areas: Area[] = [];
@@ -43,17 +54,33 @@ export class LlamadoComponent implements OnInit {
     public llamadoService: LlamadoService,
     public areaService: AreaService,
     public messageService: MessageService,
-    public confirmationService: ConfirmationService
+    public confirmationService: ConfirmationService,
+    public personaService: PersonaService,
   ) {}
 
   public handleLoad = (query: string = '') => {
     this.isLoading = true;
     this.llamadoService
-      .getLlamadosPaged(this.currentRows, this.first, query)
+      .getLlamadosPaged(this.currentRows, this.first, query, this.isAdmin ? null : LoggedUserService.userInfo?.id)
       .subscribe((data: any) => {
+
+        const documento = LoggedUserService.userInfo?.documento;
+
+        if (this.isTribunal) {
+          this.llamadosArr = data.list?.filter((item: Llamado) => {
+            const isMiembro = item?.miembrosTribunal?.find((item) => item?.persona?.documento == documento);
+            return isMiembro != null;
+          });
+          this.totalCount = data.totalCount;
+          this.isLoading = false;
+          return;
+        }
+
         this.llamadosArr = data.list;
         this.totalCount = data.totalCount;
         this.isLoading = false;
+
+      
       });
   };
 
@@ -68,8 +95,34 @@ export class LlamadoComponent implements OnInit {
   };
 
   ngOnInit() {
+    const userInfo = LoggedUserService.userInfo;
+    const roles = LoggedUserService.userInfo?.roles;
+    console.log(roles);
+    if(roles?.includes("ADMIN")){
+      this.isAdmin = true;
+    }
+    if(roles?.includes("TRIBUNAL")){
+      this.isTribunal = true;
+    }
+    if(roles?.includes("COORDINADOR")){
+      this.isCordinador = true;
+    }
+    this.personaService.getPersonaByDocumento(userInfo?.tipoDocumento?.id, userInfo?.documento).subscribe({
+      next: (resp)=> {
+        console.log("resp is", resp)
+      },
+      error: (err) => {
+        console.log("error", err)
+      }
+    })
+    
     this.handleLoad('');
     this.handleLoadAreas();
+  }
+
+  public verInfoLlamado(llamado: Llamado) {
+    this.selectedLlamadoInfoToView = llamado;
+    this.openInfoSelectedModal = true;
   }
 
   openNew() {
@@ -164,7 +217,7 @@ export class LlamadoComponent implements OnInit {
   refreshTable() {
     this.isLoading = true;
     this.llamadoService
-      .getLlamadosPaged(this.currentRows, this.first)
+      .getLlamadosPaged(this.currentRows, this.first, "", this.isAdmin ? null : LoggedUserService.userInfo?.id)
       .subscribe((data: any) => {
         this.llamadosArr = data?.list;
         this.totalCount = data?.totalCount;
@@ -250,7 +303,7 @@ export class LlamadoComponent implements OnInit {
   onPageChange(event: any) {
     this.isLoading = true;
     this.llamadoService
-      .getLlamadosPaged(event.rows, event.first)
+      .getLlamadosPaged(event.rows, event.first, "", this.isAdmin ? null : LoggedUserService.userInfo?.id)
       .subscribe((data: any) => {
         this.llamadosArr = data.list;
         this.totalCount = data.totalCount;

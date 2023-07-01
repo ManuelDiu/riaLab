@@ -9,6 +9,18 @@ export class LoggedUserService {
 
   public static userInfo: any = null;
 
+  public static isAdmin = (userData: any) => {
+    return userData?.roles.includes("ADMIN");
+  }
+
+  public static isCordinador = (userData: any) => {
+    return userData?.roles.includes("COORDINADOR");
+  }
+
+  public static isTribunal = (userData: any) => {
+    return userData?.roles.includes("TRIBUNAL");
+  }
+
   public handleSetUserInfo(data: any) {
     LoggedUserService.userInfo = data;
   }

@@ -57,7 +57,7 @@ export class AppComponent {
     if(this.userInfo?.roles?.includes("TRIBUNAL")){
       this.isTribunal = true;
     }
-    if(this.userInfo?.roles?.includes("CORDINADOR")){
+    if(this.userInfo?.roles?.includes("COORDINADOR")){
       this.isCordinador = true;
     }
     this.spinner.show();

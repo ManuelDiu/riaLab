@@ -379,7 +379,7 @@
         class="w-full h-auto py-5 flex flex-row items-start justify-start gap-3"
       >
         <img
-          style="background-color: white; min-width: 48px"
+          style="background-color: white; min-width: 48px;object-fit: cover;"
           [src]="
             userInfo?.imagen ||
             'https://img.freepik.com/free-icon/user_318-563642.jpg'
@@ -475,6 +475,19 @@
           <span>TipoIntergante</span></a
         >
       </div>
+      <div
+      *ngIf="isCordinador || isTribunal"
+      style="margin-top: 40px; min-width: 100% !important"
+      class="h-auto w-full flex flex-col items-center justify-center gap-2"
+    >
+      <a
+        routerLink="/llamados"
+        [ngClass]="['itemNav', (activePath == '/llamados' && 'active') || '']"
+      >
+        <i class="pi pi-chevron-down" style="font-size: 20px"></i>
+        <span>Llamados</span></a
+      >
+    </div>
 
       <div
         style="

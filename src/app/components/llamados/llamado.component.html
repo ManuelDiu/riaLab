@@ -6,7 +6,6 @@
     justify-content: space-between;
     margin-bottom: 20px;
   }
-  
 </style>
 
 <div
@@ -30,160 +29,155 @@
         </span>
         <p-button
           icon="pi pi-trash"
+          *ngIf="isAdmin"
           (onClick)="deleteselectedLlamados()"
           styleClass="p-button-danger"
         ></p-button>
-        <p-button (onClick)="openNew()" label="Agregar"></p-button>
+        <p-button *ngIf="isAdmin" (onClick)="openNew()" label="Agregar"></p-button>
       </div>
     </div>
 
     <div class="table">
       <p-table
-      #dt
-      [value]="llamadosArr"
-      [loading]="isLoading"
-      [globalFilterFields]="['nombre', 'estado']"
-      [tableStyle]="{ 'min-width': '100%' }"
-      [(selection)]="selectedLlamados"
-      [rowHover]="true"
-      dataKey="id"
-    >
-      <ng-template pTemplate="caption">
-        <div class="flex align-items-center justify-content-between">
-          <h5 class="m-0">Administrar Áreas</h5>
-          <!-- <span class="p-input-icon-left">
+        #dt
+        [value]="llamadosArr"
+        [loading]="isLoading"
+        [globalFilterFields]="['nombre', 'estado']"
+        [tableStyle]="{ 'min-width': '100%' }"
+        [(selection)]="selectedLlamados"
+        [rowHover]="true"
+        dataKey="id"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Administrar Áreas</h5>
+            <!-- <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
         </span> -->
-        </div>
-      </ng-template>
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 4rem">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
-          <th>
-            Nombre
-            <p-columnFilter
-              type="text"
-              field="nombre"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="">
-            Link Acta
-            <p-columnFilter
-              type="text"
-              field="activo"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="">
-            Min.Entrevista
-            <p-columnFilter
-              type="text"
-              field="activo"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="">
-            Puntaje
-            <p-columnFilter
-              type="text"
-              field="activo"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="">
-            Area
-            <p-columnFilter
-              type="text"
-              field="activo"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="">
-            Activo
-            <p-columnFilter
-              type="boolean"
-              field="activo"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="">
-            Estado
-            <p-columnFilter
-              type="text"
-              field="ultimoEstado?.llamadoEstadoPosible?.nombre"
-              display="menu"
-            ></p-columnFilter>
-          </th>
-          <th class="" style="text-align: right">Acciones</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-llamado>
-        <tr>
-          <td>
-            <p-tableCheckbox [value]="llamado"></p-tableCheckbox>
-          </td>
-          <td>{{ llamado.nombre }}</td>
-          <td><a style="color: green;" target="_blank" href="{{ llamado.linkActa }}">Link</a></td>
-          <td>{{ llamado.minutosEntrevista }}</td>
-          <td><a style="color: green;" target="_blank" href="{{ llamado.linkPlanillaPuntajes }}">Link</a></td>
-          <td>{{ llamado.area.nombre }}</td>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>
+              Nombre
+              <p-columnFilter
+                type="text"
+                field="nombre"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th class="" style="">
+              Area
+              <p-columnFilter
+                type="text"
+                field="activo"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th class="" style="">
+              Activo
+              <p-columnFilter
+                type="boolean"
+                field="activo"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th class="" style="">
+              Estado
+              <p-columnFilter
+                type="text"
+                field="ultimoEstado?.llamadoEstadoPosible?.nombre"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th class="" style="text-align: right">Acciones</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-llamado>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="llamado"></p-tableCheckbox>
+            </td>
+            <td>{{ llamado.nombre }}</td>
+            <td>{{ llamado.area.nombre }}</td>
 
-          <td>{{ llamado.activo === true ? "Si" : "No" }}</td>
-          <td>{{ llamado?.ultimoEstado?.llamadoEstadoPosible?.nombre || "No tiene" }}</td>
-          
-          <td style="justify-content: end; display: flex; gap: 5px">
-            <button
-              pButton
-              pRipple
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-success mr-2"
-              (click)="editLlamado(llamado)"
-            ></button>
+            <td>{{ llamado.activo === true ? "Si" : "No" }}</td>
+            <td>
+              {{
+                llamado?.ultimoEstado?.llamadoEstadoPosible?.nombre ||
+                  "No tiene"
+              }}
+            </td>
 
-            <button
-              pButton
-              pRipple
-              icon="pi pi-history"
-              class="p-button-rounded flex flex-row gap-2 font-semibold mr-2"
-              (click)="toggleLlamadosModal(llamado)"
-            >Estados</button>
+            <td style="justify-content: end; display: flex; gap: 5px">
+              <button
+                pButton
+                pRipple
+                icon="pi pi-info-circle"
+                class="p p-button-success p-button-rounded mr-2"
+                (click)="verInfoLlamado(llamado)"
+              ></button>
+              <button
+                *ngIf="isAdmin"
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-success mr-2"
+                (click)="editLlamado(llamado)"
+              ></button>
 
-            <button
-            pButton
-            pRipple
-            icon="pi pi-user"
-            class="p-button-rounded flex p-button-warning flex-row gap-2 font-semibold mr-2"
-            (click)="toggleTribunalesModal(llamado)"
-          >Miembros</button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <div
-      *ngIf="!isLoading && llamadosArr.length < 1"
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 5rem;
-        height: 5rem;
-      "
-    >
-      <h3>Lo sentimos, pero no contamos con áreas disponibles para listar.</h3>
-    </div>
-    <p-paginator
-      *ngIf="!isLoading && llamadosArr.length > 0"
-      (onPageChange)="onPageChange($event)"
-      [first]="first"
-      [rows]="currentRows"
-      [totalRecords]="totalCount"
-      [rowsPerPageOptions]="rowsPerPageOptions"
-      [showCurrentPageReport]="true"
-      currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
-    ></p-paginator>
+              <button
+                *ngIf="!isCordinador"
+                pButton
+                pRipple
+                icon="pi pi-history"
+                class="p-button-rounded flex flex-row gap-2 font-semibold mr-2"
+                (click)="toggleLlamadosModal(llamado)"
+              >
+                Estados
+              </button>
+
+              <button
+                *ngIf="isAdmin"
+                pButton
+                pRipple
+                icon="pi pi-user"
+                class="p-button-rounded flex p-button-warning flex-row gap-2 font-semibold mr-2"
+                (click)="toggleTribunalesModal(llamado)"
+              >
+                Miembros
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div
+        *ngIf="!isLoading && llamadosArr.length < 1"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 5rem;
+          height: 5rem;
+        "
+      >
+        <h3>
+          Lo sentimos, pero no contamos con áreas disponibles para listar.
+        </h3>
+      </div>
+      <p-paginator
+        *ngIf="!isLoading && llamadosArr.length > 0"
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="currentRows"
+        [totalRecords]="totalCount"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+      ></p-paginator>
     </div>
   </div>
 </div>
@@ -306,11 +300,75 @@
 
 <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
 
-
-<app-llamado-estado-modal [openModal]="openLlamadosModal" (toggleOpen)="this.toggleLlamadosModal($event)" [llamadoInfo]="selectedLlamadoItem">
-  
+<app-llamado-estado-modal
+  [openModal]="openLlamadosModal"
+  (toggleOpen)="this.toggleLlamadosModal($event)"
+  [llamadoInfo]="selectedLlamadoItem"
+>
 </app-llamado-estado-modal>
 
-<lamado-miembros-tribunal-modal [openModal]="openMiembrosTribunalModal" (toggleOpen)="this.toggleTribunalesModal($event)" [llamadoInfo]="selectedLlamadoItem">
-  
+<lamado-miembros-tribunal-modal
+  [openModal]="openMiembrosTribunalModal"
+  (toggleOpen)="this.toggleTribunalesModal($event)"
+  [llamadoInfo]="selectedLlamadoItem"
+>
 </lamado-miembros-tribunal-modal>
+
+<p-dialog
+  [(visible)]="openInfoSelectedModal"
+  [style]="{ width: '650px' }"
+  header="Detalles del Llamado"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content" style="overflow: visible">
+    <div class="flex flex flex-col gap-1 my-2">
+      <label style="font-weight: 600" for="linkActa">Estado</label>
+      <span>{{
+        selectedLlamadoInfoToView?.ultimoEstado?.llamadoEstadoPosible?.nombre ||
+          "No tiene"
+      }}</span>
+    </div>
+    <div class="field flex flex-col gap-1">
+      <label style="font-weight: 600" for="area">Area</label>
+      <span>{{ selectedLlamadoInfoToView?.area?.nombre }}</span>
+    </div>
+    <div class="field flex flex-col gap-1">
+      <label style="font-weight: 600" for="nombre">Nombre</label>
+      <span>{{ selectedLlamadoInfoToView?.nombre }}</span>
+    </div>
+    <div class="field flex flex-col gap-1">
+      <label style="font-weight: 600" for="identificador">Identificador</label>
+      <span>{{ selectedLlamadoInfoToView?.identificador }}</span>
+    </div>
+
+    <div class="field flex flex-col gap-1">
+      <label style="font-weight: 600" for="linkPlanillaPuntajes"
+        >Link Plantilla Puntaje</label
+      >
+      <a
+        style="color: green"
+        target="_blank"
+        href="{{ llamado.linkPlanillaPuntajes }}"
+        >Link</a
+      >
+    </div>
+
+    <div class="field flex flex-col gap-1">
+      <label style="font-weight: 600" for="linkActa">Link Acta</label>
+      <a style="color: green" target="_blank" href="{{ llamado.linkActa }}"
+        >Link</a
+      >
+    </div>
+
+    <div class="field flex flex-col gap-1">
+      <label style="font-weight: 600" for="linkActa">Minutos Entrevista</label>
+      <span>{{ selectedLlamadoInfoToView?.minutosEntrevista }}</span>
+    </div>
+
+    <div class="flex my-2 flex flex-col gap-1">
+      <label style="font-weight: 600" for="linkActa">Activo</label>
+      <span>{{ selectedLlamadoInfoToView?.activo ? "Si" : "No" }}</span>
+    </div>
+  </ng-template>
+</p-dialog>

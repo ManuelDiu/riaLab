@@ -33,9 +33,25 @@ export class LlamadoEstadoModalComponent {
 
 
   ngOnInit(){
+    const userInfo = LoggedUserService.userInfo;
+    const isAdmin = LoggedUserService.isAdmin(userInfo);
+    const isTribunal = LoggedUserService.isTribunal(userInfo);
+
     this.llamadoEPService
     .getEstadosPosiblesPaged(500, 0 , "")
     .subscribe((data: EstadoPosibleResponse) => {
+      if (isAdmin) {
+        this.allEstadosPosibles = data.list?.filter((item: any) => {
+          return item?.id !== 3 && item?.id !== 2;
+        })
+        return;
+      }
+      if (isTribunal) {
+        this.allEstadosPosibles = data.list?.filter((item: any) => {
+          return item?.id === 3 || item?.id === 2;
+        })
+        return;
+      }
       this.allEstadosPosibles = data.list;
     });
   }

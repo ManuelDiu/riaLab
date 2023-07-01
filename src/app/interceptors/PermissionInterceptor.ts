@@ -1,7 +1,9 @@
 import { inject } from "@angular/core";
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 
-const coordinadorPaths: string[] = []
+const coordinadorPaths: string[] = ["llamados"]
+const tribunalPaths: string[] = ["llamados"]
+
 
 export const permissionGuard = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const router = inject(Router);
@@ -25,8 +27,11 @@ export const permissionGuard = (route: ActivatedRouteSnapshot, state: RouterStat
     }
 
     if (userRoles.includes("TRIBUNAL")) {
-      // algo
-      return true;
+      if (tribunalPaths.includes(requestPath)) {
+        return true;
+      } else {
+        return false;
+      }
     }
     return false;
   } else {

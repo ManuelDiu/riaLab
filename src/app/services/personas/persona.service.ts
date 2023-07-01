@@ -3,7 +3,6 @@ import { Persona } from "src/app/types/Persona";
 import { Observable } from "rxjs";
 
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { PersonaResponse } from "src/app/types/PersonaResponse";
 import { environment } from "src/utils/environment";
 
 @Injectable({
@@ -14,7 +13,7 @@ export class PersonaService {
 
   constructor(private http: HttpClient) {}
 
-  getPersonasPaged(limit: number, offset: number): Observable<PersonaResponse> {
+  getPersonasPaged(limit: number, offset: number): Observable<any> {
     // term = term.trim();
     const headers = { "content-type": "application/json" };
     let body = {
@@ -22,7 +21,7 @@ export class PersonaService {
       offset: offset,
       id: 0,
       filters: {
-        activo: true,
+        activo: null,
         nombre: "",
       },
       orders: [""],
@@ -30,10 +29,18 @@ export class PersonaService {
 
     const bodyFormatted = JSON.stringify(body);
 
-    return this.http.post<PersonaResponse>(this.baseURL + "Personas/Paged", bodyFormatted, {
+    return this.http.post<any>(this.baseURL + "Personas/Paged", bodyFormatted, {
       headers: headers,
     });
   }
+
+  getPersonaByDocumento(tipoDocumento: string, documento: string): Observable<any> {
+    const headers = { "content-type": "application/json" };
+    return this.http.get<any>(this.baseURL + `Personas/${tipoDocumento}/${documento}` , {
+      headers: headers,
+    });
+  }
+
 
   updatePersona(id: number, persona: Persona): Observable<any> {
     const headers = { "content-type": "application/json" };
