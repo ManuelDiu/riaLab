@@ -31,12 +31,13 @@ export class LlamadoComponent implements OnInit {
   selectedLlamados: Llamado[] = [];
   openLlamadosModal: boolean = false;
   openMiembrosTribunalModal: boolean = false;
+  openPostulantesModal: boolean = false;
   selectedLlamadoItem?: Llamado = undefined;
   selectedLlamadoInfoToView?: Llamado = undefined;
   openInfoSelectedModal: boolean = false;
-  
 
-  
+
+
   selectedArea?: any;
   areas: Area[] = [];
 
@@ -80,7 +81,7 @@ export class LlamadoComponent implements OnInit {
         this.totalCount = data.totalCount;
         this.isLoading = false;
 
-      
+
       });
   };
 
@@ -97,7 +98,7 @@ export class LlamadoComponent implements OnInit {
   ngOnInit() {
     const userInfo = LoggedUserService.userInfo;
     const roles = LoggedUserService.userInfo?.roles;
-    console.log(roles);
+    // console.log(roles);
     if(roles?.includes("ADMIN")){
       this.isAdmin = true;
     }
@@ -109,13 +110,13 @@ export class LlamadoComponent implements OnInit {
     }
     this.personaService.getPersonaByDocumento(userInfo?.tipoDocumento?.id, userInfo?.documento).subscribe({
       next: (resp)=> {
-        console.log("resp is", resp)
+        // console.log("resp is", resp)
       },
       error: (err) => {
         console.log("error", err)
       }
     })
-    
+
     this.handleLoad('');
     this.handleLoadAreas();
   }
@@ -183,6 +184,11 @@ export class LlamadoComponent implements OnInit {
     this.selectedLlamadoItem = llamado;
   }
 
+  togglePostulantesModal(llamado?: Llamado) {
+    this.openPostulantesModal = !this.openPostulantesModal;
+    this.selectedLlamadoItem = llamado;
+  }
+
   deleteLlamado(llamado: Llamado) {
     this.confirmationService.confirm({
       message:
@@ -238,7 +244,7 @@ export class LlamadoComponent implements OnInit {
       return;
     }
     this.llamado.areaId = areaInfo?.id;
-    this.llamado.area = areaInfo;  
+    this.llamado.area = areaInfo;
     if (this.isModifying) {
       if (this.llamado?.nombre) {
         this.llamadoService

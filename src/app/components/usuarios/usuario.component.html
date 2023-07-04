@@ -352,6 +352,7 @@
               type="file"
               class="w-full p-3"
               pInputText
+              accept="image/*"
               id="imagen"
               (change)="imageToBase64($event)"
             />
@@ -388,12 +389,6 @@
     <div
       class="w-full h-auto flex flex-col align-items-center jsutify-content-center gap-4"
     >
-      <p-messages
-        [(value)]="alertsTypes"
-        [enableService]="false"
-        [closable]="true"
-        class="my-2 w-full"
-      ></p-messages>
       <div class="flex gap-4 w-full align-items-center">
         <span class="p-float-label">
           <p-dropdown

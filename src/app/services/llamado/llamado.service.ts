@@ -8,6 +8,7 @@ import { environment } from 'src/utils/environment';
 import { Llamado } from 'src/app/models/llamado/llamado';
 import { LlamadoEstado } from 'src/app/types/LlamadoPosible';
 import { MiembroTribunal } from 'src/app/types/MiembroTribunal';
+import { Postulante, PostulantesPagedResponse } from 'src/app/types/Postulante';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,6 @@ export class LlamadoService {
 
   createLlamado(llamado: Llamado): Observable<any> {
     const headers = { 'content-type': 'application/json' };
-    // console.log("areea: " + area);
     const body = JSON.stringify(llamado);
     return this.http.post(this.baseURL + 'Llamados', body, {
       headers: headers,
@@ -28,7 +28,6 @@ export class LlamadoService {
 
   createMiembroTribunal(miembroTrib: MiembroTribunal): Observable<any> {
     const headers = { 'content-type': 'application/json' };
-    // console.log("areea: " + area);
     const body = JSON.stringify(miembroTrib);
     return this.http.post(this.baseURL + 'MiembrosTribunales', body, {
       headers: headers,
@@ -37,7 +36,6 @@ export class LlamadoService {
 
   deleteMiembroTribunal(miembroTrib: MiembroTribunal): Observable<any> {
     const headers = { 'content-type': 'application/json' };
-    // console.log("areea: " + area);
     const body = JSON.stringify(miembroTrib);
     return this.http.delete(this.baseURL + 'MiembrosTribunales/' + miembroTrib.id , {
       headers: headers,
@@ -46,7 +44,6 @@ export class LlamadoService {
 
   updateMiembroTribunal(miembroTrib: MiembroTribunal): Observable<any> {
     const headers = { 'content-type': 'application/json' };
-    // console.log("areea: " + area);
     const body = JSON.stringify(miembroTrib);
     return this.http.put(this.baseURL + 'MiembrosTribunales/' + miembroTrib.id, body , {
       headers: headers,
@@ -55,7 +52,6 @@ export class LlamadoService {
 
   createEstadoLlamado(llamadoEstado: LlamadoEstado): Observable<any> {
     const headers = { 'content-type': 'application/json' };
-    // console.log("areea: " + area);
     const body = JSON.stringify(llamadoEstado);
     return this.http.post(this.baseURL + 'LlamadosEstados', body, {
       headers: headers,
@@ -68,7 +64,6 @@ export class LlamadoService {
     query: string = '',
     personaTribunalId?: any,
   ): Observable<any> {
-    // term = term.trim();
     const headers = { 'content-type': 'application/json' };
     let body = {
       limit: limit,
@@ -103,6 +98,54 @@ export class LlamadoService {
     const header = { 'content-type': 'application/json' };
     return this.http.delete(this.baseURL + 'Llamados/' + id, {
       headers: header,
+    });
+  }
+
+  // *** Postulantes ***
+  createPostulante(postulante: Postulante): Observable<Postulante> {
+    const headers = { 'content-type': 'application/json' };
+    const body = JSON.stringify(postulante);
+    return this.http.post<Postulante>(this.baseURL + 'Postulantes', body, {
+      headers: headers,
+    });
+  }
+
+  getPostulantesPaged(
+    limit: number,
+    offset: number,
+    query: string = '',
+  ): Observable<PostulantesPagedResponse> {
+    const headers = { 'content-type': 'application/json' };
+    let body = {
+      limit: limit,
+      offset: offset,
+      id: 0,
+      filters: {
+        activo: null,
+        nombre: query,
+      },
+      orders: [''],
+    };
+
+    const bodyFormatted = JSON.stringify(body);
+
+    return this.http.post<PostulantesPagedResponse>(this.baseURL + 'Postulantes/Paged', bodyFormatted, {
+      headers: headers,
+    });
+  }
+
+  updatePostulante(postulante: Postulante): Observable<Postulante> {
+    const headers = { 'content-type': 'application/json' };
+    const body = JSON.stringify(postulante);
+    return this.http.put<Postulante>(this.baseURL + 'Postulantes/' + postulante.id, body , {
+      headers: headers,
+    });
+  }
+
+  deletePostulante(id: number): Observable<any> {
+    const headers = { 'content-type': 'application/json' };
+    return this.http.delete(this.baseURL + 'Postulantes/' + id , {
+      headers: headers,
     });
   }
 }

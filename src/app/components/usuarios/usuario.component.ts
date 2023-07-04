@@ -107,7 +107,6 @@ export class UsuarioComponent implements OnInit {
       .getUsuariosPaged(this.currentRows, this.first, query)
       .subscribe((data: UsuarioResponse) => {
         this.usuariosArr = data.list;
-        console.log("RESSS", data.list[0].imagen);
         this.totalCount = data.totalCount;
         this.isUsuariosLoading = false;
       });
@@ -189,6 +188,7 @@ export class UsuarioComponent implements OnInit {
     this.isModifying = true;
     this.usuario = { ...user };
     this.registerModal = true;
+    this.submitted = false;
   }
 
   addRole() {
