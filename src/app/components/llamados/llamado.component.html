@@ -50,7 +50,7 @@
       >
         <ng-template pTemplate="caption">
           <div class="flex align-items-center justify-content-between">
-            <h5 class="m-0">Administrar Áreas</h5>
+            <h5 class="m-0">Administrar Llamados</h5>
             <!-- <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
         </span> -->
@@ -93,7 +93,7 @@
                 display="menu"
               ></p-columnFilter>
             </th>
-            <th class="" style="text-align: right">Acciones</th>
+            <th class="" style="text-align: center">Acciones</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-llamado>
@@ -149,6 +149,17 @@
                 (click)="toggleTribunalesModal(llamado)"
               >
                 Miembros
+              </button>
+
+              <button
+                *ngIf="isAdmin"
+                pButton
+                pRipple
+                icon="pi pi-user"
+                class="p-button-rounded flex p-button-info flex-row gap-2 font-semibold mr-2"
+                (click)="togglePostulantesModal(llamado)"
+              >
+                Postulantes
               </button>
             </td>
           </tr>
@@ -313,6 +324,13 @@
   [llamadoInfo]="selectedLlamadoItem"
 >
 </lamado-miembros-tribunal-modal>
+
+<llamado-postulantes-modal
+  [openModal]="openPostulantesModal"
+  (toggleOpen)="this.togglePostulantesModal($event)"
+  [llamadoInfo]="selectedLlamadoItem"
+>
+</llamado-postulantes-modal>
 
 <p-dialog
   [(visible)]="openInfoSelectedModal"

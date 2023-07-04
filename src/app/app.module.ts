@@ -47,6 +47,7 @@ import { LlamadoComponent } from './components/llamados/llamado.component';
 import { LlamadoEstadoModalComponent } from './components/llamado-estado-modal/llamado-estado-modal.component';
 import { CalendarModule } from 'primeng/calendar';
 import { LlamadoMiembroTribunalModal } from './components/llamado-miembros-tribunal-modal/llamado-miembros-tribunal-modal';
+import { LlamadoPostulantesModal } from './components/llamado-postulantes-modal/llamado-postulantes-modal';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { LlamadoMiembroTribunalModal } from './components/llamado-miembros-tribu
     LlamadoComponent,
     LlamadoEstadoModalComponent,
     LlamadoMiembroTribunalModal,
+    LlamadoPostulantesModal,
   ],
   imports: [
     BrowserModule,

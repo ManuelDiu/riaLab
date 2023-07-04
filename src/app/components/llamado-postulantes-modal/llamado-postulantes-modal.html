@@ -1,0 +1,273 @@
+<p-dialog
+  [(visible)]="this.openModal"
+  [style]="{ width: '1000px' }"
+  header="Postulantes"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="handleCloseModal()"
+>
+  <ng-template pTemplate="content" style="overflow: visible;">
+    <div class="w-full mb-4 flex flex-row items-center justify-content-between">
+      <h1
+        style="
+          color: black;
+          font-size: 24;
+          font-weight: 500;
+          margin-bottom: 14px;
+        "
+      >
+        Llamado: {{ llamadoInfo.nombre }}
+      </h1>
+      <div class="flex">
+        <span class="p-input-icon-left mx-2">
+          <i class="pi pi-search"></i>
+          <input
+            placeholder="Buscar"
+            id="search"
+            (keyup)="handleSearchPostulante($event)"
+            [value]="query"
+            type="text"
+            pInputText
+          />
+        </span>
+        <p-button (onClick)="openNew()" label="Agregar"></p-button>
+      </div>
+    </div>
+    <div style="max-height: 500px; overflow: auto;" class="w-full h-auto table">
+      <p-table
+        #dt
+        [value]="llamadoInfo?.postulantes"
+        [loading]="false"
+        [globalFilterFields]="['nombre', 'estado']"
+        [tableStyle]="{ 'min-width': '100%' }"
+        [(selection)]="selectPostulantes"
+        [rowHover]="true"
+        dataKey="id"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Postulantes al Llamado</h5>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              Persona
+              <p-columnFilter
+                type="text"
+                field='persona.primerNombre + " " +  persona.primerApellido'
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th>
+              Documento
+              <p-columnFilter
+                type="text"
+                field="persona.documento"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th>
+              Acciones
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-postulante>
+          <tr>
+            <td>
+              {{ postulante.persona.primerNombre + " " +
+              postulante.persona.primerApellido }}
+            </td>
+            <td>{{ postulante.persona.documento }}</td>
+            <td style="justify-content: center; display: flex; gap: 5px;">
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-success mr-2"
+                (click)="handleEdit(postulante)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                (click)="deleteMiembroTribunal(postulante)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer"> </ng-template>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="openNewModal"
+  [style]="{ width: '600px' }"
+  [header]="isModifying ? 'Actualizar postulante' : 'Agregar Postulante'"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content" style="overflow: visible;">
+    <div class="field">
+      <label for="tipoDocumento">Tipo Documento</label>
+      <p-dropdown
+        id="tipoDocumento"
+        [options]="allTipoDocumento"
+        [(ngModel)]="selectedTipoDocumento"
+        [virtualScroll]="true"
+        [disabled]="isModifying"
+        [virtualScrollItemSize]="10"
+        optionLabel="nombre"
+        inputId="float-label"
+        [required]="true"
+        placeholder="Seleccionar Tipo de Documento"
+      ></p-dropdown>
+      <small class="p-error" *ngIf="submitted && !selectedTipoDocumento"
+        >El tipoDocumento es requerido.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="doc">Documento <span class="text-red-500">*</span></label>
+      <input
+        type="text"
+        pInputText
+        id="doc"
+        [(ngModel)]="postulanteNuevo.persona.documento"
+        (keyup)="handleSearch($event)"
+        [disabled]="!selectedTipoDocumento || isModifying"
+        required
+      />
+      <small
+        class="p-error"
+        *ngIf="submitted && !postulanteNuevo.persona.documento"
+        >El documento es requerido.</small
+      >
+    </div>
+
+    <div class="flex gap-4 w-full align-items-center">
+      <div class="field">
+        <label for="primerNombre"
+          >Primer Nombre <span class="text-red-500">*</span></label
+        >
+        <input
+          type="text"
+          pInputText
+          id="primerNombre"
+          [disabled]="personaFound || !postulanteNuevo.persona.documento || isModifying"
+          [(ngModel)]="postulanteNuevo.persona.primerNombre"
+          required
+        />
+        <small
+          class="p-error"
+          *ngIf="submitted && !postulanteNuevo.persona.primerNombre"
+          >El primerNombre es requerido.</small
+        >
+      </div>
+      <div class="field">
+        <label for="segundoNombre">Segundo Nombre</label>
+        <input
+          type="text"
+          pInputText
+          id="segundoNombre"
+          [disabled]="personaFound || !postulanteNuevo.persona.documento || isModifying"
+          [(ngModel)]="postulanteNuevo.persona.segundoNombre"
+        />
+      </div>
+    </div>
+    <div class="flex gap-4 w-full align-items-center">
+      <div class="field">
+        <label for="primerApellido"
+          >Primer Apellido <span class="text-red-500">*</span></label
+        >
+        <input
+          type="text"
+          pInputText
+          id="primerApellido"
+          [disabled]="personaFound || !postulanteNuevo.persona.documento || isModifying"
+          [(ngModel)]="postulanteNuevo.persona.primerApellido"
+          required
+        />
+        <small
+          class="p-error"
+          *ngIf="submitted && !postulanteNuevo.persona.primerApellido"
+          >El primerApellido es requerido.</small
+        >
+      </div>
+      <div class="field">
+        <label for="segundoApellido">Segundo Apellido</label>
+        <input
+          type="text"
+          pInputText
+          id="segundoApellido"
+          [disabled]="personaFound || !postulanteNuevo.persona.documento || isModifying"
+          [(ngModel)]="postulanteNuevo.persona.segundoApellido"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="fh">Fecha y hora <span class="text-red-500">*</span></label>
+      <p-calendar
+        id="fh"
+        [(ngModel)]="postulanteNuevo.fechaHoraEntrevista"
+        [showTime]="true"
+        [required]="true"
+      ></p-calendar>
+
+      <small
+        class="p-error"
+        *ngIf="submitted && !postulanteNuevo.fechaHoraEntrevista"
+        >La fecha y hora es requerida.</small
+      >
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <span>
+        <p-checkbox
+          value="postulanteActivo"
+          inputId="postulanteActivo"
+          [(ngModel)]="postulanteNuevo.activo"
+          [binary]="true"
+        ></p-checkbox>
+        <label class="ml-2" for="postulanteActivo">Activo</label>
+      </span>
+
+      <span>
+        <p-checkbox
+          value="estudioMerito"
+          inputId="estudioMerito"
+          [(ngModel)]="postulanteNuevo.estudioMeritosRealizado"
+          [binary]="true"
+        ></p-checkbox>
+        <label class="ml-2" for="estudioMerito"
+          >Estudio de Méritos Realizado</label
+        >
+      </span>
+    </div>
+    <div style="margin-top: 140px; margin-bottom: 140px;" class=""></div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      [label]="isModifying ? 'Actualiar' : 'Guardar'"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="handleSubmit()"
+    ></button>
+  </ng-template>
+</p-dialog>
