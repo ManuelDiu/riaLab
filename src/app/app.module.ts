@@ -48,6 +48,7 @@ import { LlamadoEstadoModalComponent } from './components/llamado-estado-modal/l
 import { CalendarModule } from 'primeng/calendar';
 import { LlamadoMiembroTribunalModal } from './components/llamado-miembros-tribunal-modal/llamado-miembros-tribunal-modal';
 import { LlamadoPostulantesModal } from './components/llamado-postulantes-modal/llamado-postulantes-modal';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { LlamadoPostulantesModal } from './components/llamado-postulantes-modal/
     HttpClientModule,
     ButtonModule,
     DialogModule,
+    MenuModule,
     TableModule,
     ToastModule,
     ToolbarModule,

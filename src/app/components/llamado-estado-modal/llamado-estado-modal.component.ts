@@ -23,6 +23,7 @@ export class LlamadoEstadoModalComponent {
   allEstadosPosibles: LlamadoEstadoPosible[] = [];
   selectedLlamadoEstadoPosible: LlamadoEstadoPosible | any = null;
   submitted = false;
+  isCordinador = false;
 
   constructor(
     public llamadoEPService: LlamadoEPService,
@@ -35,7 +36,9 @@ export class LlamadoEstadoModalComponent {
   ngOnInit(){
     const userInfo = LoggedUserService.userInfo;
     const isAdmin = LoggedUserService.isAdmin(userInfo);
+    const isCordinador = LoggedUserService.isCordinador(userInfo);
     const isTribunal = LoggedUserService.isTribunal(userInfo);
+    this.isCordinador = isCordinador;
 
     this.llamadoEPService
     .getEstadosPosiblesPaged(500, 0 , "")

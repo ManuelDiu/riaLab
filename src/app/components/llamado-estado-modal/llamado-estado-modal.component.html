@@ -1,6 +1,6 @@
 <p-dialog
   [(visible)]="this.openModal"
-  [style]="{ width: '1000px' }"
+  class="modalExpanded"
   header="Estados del llamado"
   [modal]="true"
   styleClass="p-fluid"
@@ -18,7 +18,7 @@
       >
         Llamado: {{ llamadoInfo.nombre }}
       </h1>
-      <p-button (onClick)="openNew()" label="Agregar"></p-button>
+      <p-button *ngIf="!isCordinador" (onClick)="openNew()" label="Agregar"></p-button>
     </div>
     <div style="max-height: 500px; overflow: auto" class="w-full h-auto table">
       <p-table
@@ -26,7 +26,7 @@
         [value]="llamadoInfo?.llamadoEstados"
         [loading]="false"
         [globalFilterFields]="['nombre', 'estado']"
-        [tableStyle]="{ 'min-width': '100%' }"
+        [tableStyle]="{ 'min-width': '100%', 'width': '100%', 'max-width': '100%' }"
         [(selection)]="selectedLlamadoEstados"
         [rowHover]="true"
         dataKey="id"

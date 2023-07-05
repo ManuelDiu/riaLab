@@ -117,7 +117,7 @@
                 pButton
                 pRipple
                 icon="pi pi-info-circle"
-                class="p p-button-success p-button-rounded mr-2"
+                class="p p-button-help p-button-rounded mr-2"
                 (click)="verInfoLlamado(llamado)"
               ></button>
               <button
@@ -130,7 +130,6 @@
               ></button>
 
               <button
-                *ngIf="!isCordinador"
                 pButton
                 pRipple
                 icon="pi pi-history"
@@ -141,7 +140,6 @@
               </button>
 
               <button
-                *ngIf="isAdmin"
                 pButton
                 pRipple
                 icon="pi pi-user"
@@ -152,11 +150,10 @@
               </button>
 
               <button
-                *ngIf="isAdmin"
                 pButton
                 pRipple
                 icon="pi pi-user"
-                class="p-button-rounded flex p-button-info flex-row gap-2 font-semibold mr-2"
+                class="p-button-rounded flex p-button-secondary flex-row gap-2 font-semibold mr-2"
                 (click)="togglePostulantesModal(llamado)"
               >
                 Postulantes

@@ -33,6 +33,7 @@ export class LlamadoMiembroTribunalModal {
   selectedLlamadoEstadoPosible: LlamadoEstadoPosible | any = null;
   submitted = false;
   isEdit = false;
+  isAdmin = false;
 
   constructor(
     public llamadoEPService: LlamadoEPService,
@@ -43,6 +44,8 @@ export class LlamadoMiembroTribunalModal {
   ) {}
 
   ngOnInit() {
+    const userInfo = LoggedUserService.userInfo;
+    this.isAdmin = LoggedUserService.isAdmin(userInfo);
     this.personasService.getPersonasPaged(500, 0).subscribe({
       next: (data: any) => {
         this.allPersonas = data?.list?.map((item: Persona) => {

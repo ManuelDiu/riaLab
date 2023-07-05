@@ -1,33 +1,36 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Llamado } from "src/app/models/llamado/llamado";
-import { LlamadoEstado } from "src/app/types/LlamadoPosible";
-import { LlamadoEstadoPosible } from "../../models/llamadoEP/estadoPosible";
-import { LlamadoEPService } from "src/app/services/llamadosEP/llamadoEP.service";
-import { LlamadoService } from "src/app/services/llamado/llamado.service";
-import { MessageService } from "primeng/api";
-import { MiembroTribunal } from "src/app/types/MiembroTribunal";
-import { Persona } from "src/app/types/Persona";
-import { PersonaService } from "src/app/services/personas/persona.service";
-import { TipoDocumentoService } from "src/app/services/TipoDocumento/tipo-documento-service";
-import { TipoDocumento } from "src/app/types/tipoDocumento";
-import { Postulante } from "src/app/types/Postulante";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Llamado } from 'src/app/models/llamado/llamado';
+import { LlamadoEstado } from 'src/app/types/LlamadoPosible';
+import { LlamadoEstadoPosible } from '../../models/llamadoEP/estadoPosible';
+import { LlamadoEPService } from 'src/app/services/llamadosEP/llamadoEP.service';
+import { LlamadoService } from 'src/app/services/llamado/llamado.service';
+import { MessageService } from 'primeng/api';
+import { MiembroTribunal } from 'src/app/types/MiembroTribunal';
+import { Persona } from 'src/app/types/Persona';
+import { PersonaService } from 'src/app/services/personas/persona.service';
+import { TipoDocumentoService } from 'src/app/services/TipoDocumento/tipo-documento-service';
+import { TipoDocumento } from 'src/app/types/tipoDocumento';
+import { Postulante } from 'src/app/types/Postulante';
+import { LoggedUserService } from 'src/app/services/usuario/loggedUserService';
 
 let timeoutInterval: any = null;
 @Component({
-  selector: "llamado-postulantes-modal",
-  templateUrl: "./llamado-postulantes-modal.html",
-  styleUrls: ["./llamado-postulantes-modal.scss"],
+  selector: 'llamado-postulantes-modal',
+  templateUrl: './llamado-postulantes-modal.html',
+  styleUrls: ['./llamado-postulantes-modal.scss'],
 })
 export class LlamadoPostulantesModal {
   @Input() llamadoInfo: Llamado | any = null;
   @Input() openModal: boolean = false;
   @Output() toggleOpen = new EventEmitter();
-  query = "";
+  query = '';
+  isAdmin = false;
+  isTribunal = false;
 
   public postulanteNuevo: Postulante | any = {
     id: 0,
     activo: false,
-    fechaHoraEntrevista: "",
+    fechaHoraEntrevista: '',
     estudioMeritosRealizado: false,
     entrevistaRealizada: false,
     llamadoId: this.llamadoInfo?.id,
@@ -53,7 +56,7 @@ export class LlamadoPostulantesModal {
     public tipoDocumentoService: TipoDocumentoService
   ) {}
 
-  public handleLoad = (query: string = "") => {
+  public handleLoad = (query: string = '') => {
     this.llamadoService.getPostulantesPaged(500, 0).subscribe({
       next: (data: any) => {
         this.allPostulantes = data?.list?.map((item: Postulante) => {
@@ -69,11 +72,11 @@ export class LlamadoPostulantesModal {
 
   public handleSearchPersona = (
     tipoDocumento: number,
-    documento: string = ""
+    documento: string = ''
   ) => {
     if (
       this.selectedTipoDocumento &&
-      this.postulanteNuevo.persona.documento !== ""
+      this.postulanteNuevo.persona.documento !== ''
     ) {
       this.personasService
         .getPersonaByDocumento(tipoDocumento, documento)
@@ -87,10 +90,10 @@ export class LlamadoPostulantesModal {
                   activo: true,
                   tipoDeDocumento: this.selectedTipoDocumento,
                   documento: this.postulanteNuevo.persona.documento,
-                  primerNombre: "",
-                  segundoNombre: "",
-                  primerApellido: "",
-                  segundoApellido: "",
+                  primerNombre: '',
+                  segundoNombre: '',
+                  primerApellido: '',
+                  segundoApellido: '',
                 });
           },
           complete: () => {},
@@ -101,24 +104,27 @@ export class LlamadoPostulantesModal {
         },
         complete: () => {},
       }); */
-    } else if (this.postulanteNuevo.persona.documento === "") {
+    } else if (this.postulanteNuevo.persona.documento === '') {
       this.postulanteNuevo.persona = {
         id: 0,
         activo: true,
         tipoDeDocumento: this.selectedTipoDocumento,
         documento: this.postulanteNuevo.persona.documento,
-        primerNombre: "",
-        segundoNombre: "",
-        primerApellido: "",
-        segundoApellido: "",
+        primerNombre: '',
+        segundoNombre: '',
+        primerApellido: '',
+        segundoApellido: '',
       };
       this.personaFound = null;
     }
   };
 
   ngOnInit() {
-    this.handleLoad("");
-    this.tipoDocumentoService.getTipoDocumentos(500, 0, "").subscribe({
+    const userInfo = LoggedUserService.userInfo;
+    this.isAdmin = LoggedUserService.isAdmin(userInfo);
+    this.isTribunal = LoggedUserService.isTribunal(userInfo);
+    this.handleLoad('');
+    this.tipoDocumentoService.getTipoDocumentos(500, 0, '').subscribe({
       next: (data: any) => {
         this.allTipoDocumento = data.body?.list;
       },
@@ -137,13 +143,16 @@ export class LlamadoPostulantesModal {
   }
 
   validateFields(): boolean {
+    console.log( (this.postulanteNuevo.entrevistaRealizada &&
+      this.postulanteNuevo.fechaHoraEntrevista === ''))
     if (
       !this.postulanteNuevo ||
       !this.selectedTipoDocumento ||
       !this.postulanteNuevo.persona.documento ||
       !this.postulanteNuevo.persona.primerNombre ||
       !this.postulanteNuevo.persona.primerApellido ||
-      this.postulanteNuevo.fechaHoraEntrevista === ""
+      (this.postulanteNuevo.entrevistaRealizada &&
+        this.postulanteNuevo.fechaHoraEntrevista === '')
     ) {
       return false;
     } else {
@@ -170,8 +179,8 @@ export class LlamadoPostulantesModal {
             }
           );
           this.messageService.add({
-            severity: "success",
-            summary: "¡Éxito!",
+            severity: 'success',
+            summary: '¡Éxito!',
             detail:
               'Postulante "' +
               this.postulanteNuevo?.persona?.primerNombre +
@@ -186,6 +195,10 @@ export class LlamadoPostulantesModal {
       return;
     }
 
+    if (this.postulanteNuevo.fechaHoraEntrevista === "") {
+      this.postulanteNuevo.fechaHoraEntrevista = null;
+    }
+
     if (this.personaFound) {
       // Ingresó un documento existente para una persona X, solo la agregamos como postulante.
       this.postulanteNuevo.personaId = this.postulanteNuevo.persona.id;
@@ -198,8 +211,8 @@ export class LlamadoPostulantesModal {
 
       if (personaAlreadyExists) {
         this.messageService.add({
-          severity: "error",
-          summary: "Error!",
+          severity: 'error',
+          summary: 'Error!',
           detail:
             'La persona "' +
             this.postulanteNuevo?.persona?.primerNombre +
@@ -209,14 +222,15 @@ export class LlamadoPostulantesModal {
         return;
       }
 
+      // this.postulanteNuevo.id = 0;
       this.llamadoService
         .createPostulante(this.postulanteNuevo as Postulante)
         .subscribe({
           next: (data: any) => {
             this.messageService.add({
-              severity: "success",
-              summary: "Agegado!",
-              detail: "Postulante agregado correctamente",
+              severity: 'success',
+              summary: 'Agegado!',
+              detail: 'Postulante agregado correctamente',
               life: 3000,
             });
             this.llamadoInfo.postulantes.push({
@@ -225,7 +239,7 @@ export class LlamadoPostulantesModal {
             });
           },
           error: (err) => {
-            console.log("Error al crear el postulante: ", err);
+            console.log('Error al crear el postulante: ', err);
           },
           complete: () => {
             this.hideDialog();
@@ -246,9 +260,9 @@ export class LlamadoPostulantesModal {
               .subscribe({
                 next: (data: any) => {
                   this.messageService.add({
-                    severity: "success",
-                    summary: "Agegado!",
-                    detail: "Postulante agregado correctamente",
+                    severity: 'success',
+                    summary: 'Agegado!',
+                    detail: 'Postulante agregado correctamente',
                     life: 3000,
                   });
                   this.llamadoInfo.postulantes.push({
@@ -257,7 +271,7 @@ export class LlamadoPostulantesModal {
                   });
                 },
                 error: (err) => {
-                  console.log("Error al crear el postulante: ", err);
+                  console.log('Error al crear el postulante: ', err);
                 },
                 complete: () => {
                   this.hideDialog();
@@ -272,7 +286,7 @@ export class LlamadoPostulantesModal {
             });
           },
           error: (err) => {
-            console.log("Error al crear la persona ", err);
+            console.log('Error al crear la persona ', err);
           },
           complete: () => {},
         });
@@ -313,7 +327,7 @@ export class LlamadoPostulantesModal {
     this.postulanteNuevo = {
       id: 0,
       activo: false,
-      fechaHoraEntrevista: "",
+      fechaHoraEntrevista: '',
       estudioMeritosRealizado: false,
       entrevistaRealizada: false,
       llamadoId: this.llamadoInfo?.id,
@@ -324,13 +338,13 @@ export class LlamadoPostulantesModal {
         tipoDeDocumento: {
           id: 0,
           activo: true,
-          nombre: "",
+          nombre: '',
         },
-        documento: "",
-        primerNombre: "",
-        segundoNombre: "",
-        primerApellido: "",
-        segundoApellido: "",
+        documento: '',
+        primerNombre: '',
+        segundoNombre: '',
+        primerApellido: '',
+        segundoApellido: '',
       },
     };
     this.selectedTipoDocumento = null;
@@ -353,9 +367,9 @@ export class LlamadoPostulantesModal {
     this.llamadoService.deletePostulante(postul.id).subscribe({
       next: () => {
         this.messageService.add({
-          severity: "success",
-          summary: "Eliminado!",
-          detail: "Postulante eliminado correctamente",
+          severity: 'success',
+          summary: 'Eliminado!',
+          detail: 'Postulante eliminado correctamente',
           life: 2000,
         });
         this.llamadoInfo.postulantes = this.llamadoInfo.postulantes?.filter(
@@ -366,9 +380,9 @@ export class LlamadoPostulantesModal {
       },
       error: () => {
         this.messageService.add({
-          severity: "error",
-          summary: "Error!",
-          detail: "Error al borrar este usuario del tribunal",
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Error al borrar este usuario del tribunal',
           life: 2000,
         });
       },

@@ -1,6 +1,5 @@
 <p-dialog
   [(visible)]="this.openModal"
-  [style]="{ width: '1000px' }"
   header="Postulantes"
   [modal]="true"
   styleClass="p-fluid"
@@ -30,7 +29,7 @@
             pInputText
           />
         </span>
-        <p-button (onClick)="openNew()" label="Agregar"></p-button>
+        <p-button *ngIf="isAdmin" (onClick)="openNew()" label="Agregar"></p-button>
       </div>
     </div>
     <div style="max-height: 500px; overflow: auto;" class="w-full h-auto table">
@@ -82,6 +81,7 @@
             <td style="justify-content: center; display: flex; gap: 5px;">
               <button
                 pButton
+                *ngIf="isTribunal || isAdmin"
                 pRipple
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
@@ -89,6 +89,7 @@
               ></button>
               <button
                 pButton
+                *ngIf="isAdmin"
                 pRipple
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger"
@@ -149,8 +150,8 @@
       >
     </div>
 
-    <div class="flex gap-4 w-full align-items-center">
-      <div class="field">
+    <div class="flex gap-4 w-full align-items-start">
+      <div style="width: 50%;" class="field flex-grow">
         <label for="primerNombre"
           >Primer Nombre <span class="text-red-500">*</span></label
         >
@@ -168,7 +169,7 @@
           >El primerNombre es requerido.</small
         >
       </div>
-      <div class="field">
+      <div style="width: 50%;" class="field flex-grow">
         <label for="segundoNombre">Segundo Nombre</label>
         <input
           type="text"
@@ -179,8 +180,8 @@
         />
       </div>
     </div>
-    <div class="flex gap-4 w-full align-items-center">
-      <div class="field">
+    <div class="flex gap-4 w-full align-items-start">
+      <div style="width: 50%;" class="field flex-grow">
         <label for="primerApellido"
           >Primer Apellido <span class="text-red-500">*</span></label
         >
@@ -198,7 +199,7 @@
           >El primerApellido es requerido.</small
         >
       </div>
-      <div class="field">
+      <div style="width: 50%;" class="field flex-grow">
         <label for="segundoApellido">Segundo Apellido</label>
         <input
           type="text"
@@ -208,22 +209,6 @@
           [(ngModel)]="postulanteNuevo.persona.segundoApellido"
         />
       </div>
-    </div>
-
-    <div class="field">
-      <label for="fh">Fecha y hora <span class="text-red-500">*</span></label>
-      <p-calendar
-        id="fh"
-        [(ngModel)]="postulanteNuevo.fechaHoraEntrevista"
-        [showTime]="true"
-        [required]="true"
-      ></p-calendar>
-
-      <small
-        class="p-error"
-        *ngIf="submitted && !postulanteNuevo.fechaHoraEntrevista"
-        >La fecha y hora es requerida.</small
-      >
     </div>
 
     <div class="flex flex-col gap-3">
@@ -248,6 +233,36 @@
           >Estudio de Méritos Realizado</label
         >
       </span>
+
+      <div>
+        <p-checkbox
+          value="entrevistaRealizada"
+          inputId="entrevistaRealizada"
+          [(ngModel)]="postulanteNuevo.entrevistaRealizada"
+          [binary]="true"
+        ></p-checkbox>
+        <label class="ml-2" for="estudioMerito"
+          >Entrevistas realizadas</label
+        >
+      </div>
+
+      <div *ngIf="postulanteNuevo.entrevistaRealizada" class="field">
+        <label for="fh">Fecha y hora de entrevista <span class="text-red-500">*</span></label>
+        <p-calendar
+          id="fh"
+          [(ngModel)]="postulanteNuevo.fechaHoraEntrevista"
+          [showTime]="true"
+          [required]="true"
+        ></p-calendar>
+  
+        <small
+          class="p-error"
+          *ngIf="submitted && !postulanteNuevo.fechaHoraEntrevista"
+          >La fecha y hora es requerida.</small
+        >
+      </div>
+  
+
     </div>
     <div style="margin-top: 140px; margin-bottom: 140px;" class=""></div>
   </ng-template>

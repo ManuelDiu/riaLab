@@ -21,7 +21,7 @@
       width: 100%;
     "
   >
-  <div class="firstPart">
+  <div id="firstPart" class="firstPart">
     <h1>Usuarios</h1>
     <div class="gap1 py-2 flex-row">
       <span class="p-input-icon-left mx-2">
@@ -182,7 +182,6 @@
 
 <p-dialog
   [(visible)]="registerModal"
-  [style]="{ width: '1000px' }"
   header="Detalles del Usuario"
   [modal]="true"
   styleClass="p-fluid"
@@ -374,7 +373,6 @@
 
 <p-dialog
   [(visible)]="roleModal"
-  [style]="{ width: '1000px' }"
   header="Gestión de Roles"
   [modal]="true"
   styleClass="p-fluid"

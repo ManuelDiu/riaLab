@@ -1,6 +1,5 @@
 <p-dialog
   [(visible)]="this.openModal"
-  [style]="{ width: '1000px' }"
   header="Miembros del tribunal"
   [modal]="true"
   styleClass="p-fluid"
@@ -18,7 +17,7 @@
       >
         Llamado: {{ llamadoInfo.nombre }}
       </h1>
-      <p-button (onClick)="openNew()" label="Agregar"></p-button>
+      <p-button (onClick)="openNew()" *ngIf="isAdmin" label="Agregar"></p-button>
     </div>
     <div style="max-height: 500px; overflow: auto" class="w-full h-auto table">
       <p-table
@@ -94,6 +93,7 @@
               <button
                 pButton
                 pRipple
+                *ngIf="isAdmin"
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
                 (click)="handleEdit(miembroTribunal)"
@@ -101,6 +101,7 @@
               <button
                 pButton
                 pRipple
+                *ngIf="isAdmin"
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger"
                 (click)="deleteMiembroTribunal(miembroTribunal)"

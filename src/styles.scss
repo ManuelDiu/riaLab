@@ -64,4 +64,48 @@
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.165);
     border-radius: 10px;
     transition: all .3s ease;
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
 }
+
+
+
+.firstPart {
+    display: flex!important;
+    flex-direction: row!important;
+  }
+
+  .firstPart div {
+    display: flex!important;
+    flex-direction: row!important;
+    flex-wrap: wrap!important;
+     justify-content: center;
+     gap: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .firstPart {
+      flex-direction: column!important;
+    }
+  }
+
+
+  .modalExpanded{
+    width: 800px!important;
+  }
+
+
+  @media (max-width: 768px) {
+    .modalExpanded{
+        width: 95%!important;
+
+    }
+  }
+
+ 
+
+  .p-datatable {
+    width: 100%;
+    min-width: 100%;
+  }

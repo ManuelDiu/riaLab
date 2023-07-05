@@ -30,7 +30,7 @@
 
   .ng-star-inserted {
     width: 100% !important;
-    min-width: 500px !important;
+    min-width: 100px !important;
   }
 
   p {
@@ -354,6 +354,7 @@
   #buttonOptions {
     color: white !important;
   }
+
 </style>
 <div *ngIf="isChecking; else noChecking">
   <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
@@ -372,14 +373,15 @@
         max-width: 300px !important;
         background-color: #161a23;
       "
-      class="w-20rem min-w-[300px] p-5 flex flex-col items-center justify-start"
+      id="sidebar"
+      class="w-20rem min-w-[300px] p-5 flex-col items-center justify-start"
       role=""
     >
       <div
         class="w-full h-auto py-5 flex flex-row items-start justify-start gap-3"
       >
         <img
-          style="background-color: white; min-width: 48px;object-fit: cover;"
+          style="background-color: white; min-width: 48px; object-fit: cover"
           [src]="
             userInfo?.imagen ||
             'https://img.freepik.com/free-icon/user_318-563642.jpg'
@@ -476,18 +478,18 @@
         >
       </div>
       <div
-      *ngIf="isCordinador || isTribunal"
-      style="margin-top: 40px; min-width: 100% !important"
-      class="h-auto w-full flex flex-col items-center justify-center gap-2"
-    >
-      <a
-        routerLink="/llamados"
-        [ngClass]="['itemNav', (activePath == '/llamados' && 'active') || '']"
+        *ngIf="isCordinador || isTribunal"
+        style="margin-top: 40px; min-width: 100% !important"
+        class="h-auto w-full flex flex-col items-center justify-center gap-2"
       >
-        <i class="pi pi-chevron-down" style="font-size: 20px"></i>
-        <span>Llamados</span></a
-      >
-    </div>
+        <a
+          routerLink="/llamados"
+          [ngClass]="['itemNav', (activePath == '/llamados' && 'active') || '']"
+        >
+          <i class="pi pi-chevron-down" style="font-size: 20px"></i>
+          <span>Llamados</span></a
+        >
+      </div>
 
       <div
         style="
@@ -532,6 +534,33 @@
         </div>
       </div>
     </div>
+
+
+    <div
+    style="
+      background-color: #161a23;
+      height: 70px;
+      position: fixed;
+      top: 0;
+      z-index: 333;
+      left: 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    "
+    id="mobileNavbar"
+    class="w-full flex flex-row items-center justify-center"
+    role=""
+  >
+
+      <p-toast></p-toast>
+      <p-menu #menu [model]="items" [popup]="true"></p-menu>
+      <button style="" class="p-button-text" pButton type="button" (click)="menu.toggle($event)" icon="pi pi-bars"></button>
+</div>
+
+
     <div
       class="content"
       role="main"
