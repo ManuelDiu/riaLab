@@ -5,10 +5,8 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-
   }
 </style>
-
 
 <div *ngIf="isLoading; else notIsLoadingData">
   <img
@@ -19,161 +17,177 @@
 </div>
 
 <div
-class="flex flex-col justify-content-center m-5"
-style="
-  max-width: 100%;
-  width: 100%;
-  border: 1px solid rgb(219, 219, 219);
-  border-radius: 7px;
-"
+  class="flex flex-col justify-content-center m-5"
+  style="max-width: 100%; width: 100%; border-radius: 7px;"
 >
-<ng-template #notIsLoadingData>
-  <div class="firstPart">
-    <h1>Tipo Documento</h1>
-    <div class="gap1 flex-row py-2">
-      <span class="p-input-icon-left mx-2">
-        <i class="pi pi-search"></i>
-        <input
-          placeholder="Buscar"
-          (keyup)="handleSearch($event)"
-          [value]="query"
-          type="text"
-          pInputText
-        />
-      </span>
-      <p-button
-        icon="pi pi-trash"
-        (onClick)="confirmDelete()"
-        styleClass="p-button-danger"
-      ></p-button>
-      <div>
-        <p-toast></p-toast>
-        <p-confirmDialog #cd [style]="{ width: '50vw' }">
-          <ng-template pTemplate="header">
-            <h3>Eliminar TipoDocumento</h3>
-          </ng-template>
-          <ng-template pTemplate="footer">
-            <button
-              type="button"
-              pButton
-              icon="pi pi-times"
-              label="No"
-              (click)="cd.reject()"
-            ></button>
-            <p-button
-              label="Yes"
-              icon="pi pi-check"
-              (onClick)="cd.accept()"
-              styleClass="p-button-danger"
-            ></p-button>
-          </ng-template>
-        </p-confirmDialog>
+  <ng-template #notIsLoadingData>
+    <div class="firstPart">
+      <h1>Tipo Documento</h1>
+      <div class="gap1 flex-row py-2">
+        <span class="p-input-icon-left mx-2">
+          <i class="pi pi-search"></i>
+          <input
+            placeholder="Buscar"
+            (keyup)="handleSearch($event)"
+            [value]="query"
+            type="text"
+            pInputText
+          />
+        </span>
+        <p-button
+          icon="pi pi-trash"
+          (onClick)="confirmDelete()"
+          styleClass="p-button-danger"
+        ></p-button>
+        <div>
+          <p-toast></p-toast>
+          <p-confirmDialog #cd [style]="{ width: '50vw' }">
+            <ng-template pTemplate="header">
+              <h3>Eliminar TipoDocumento</h3>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <button
+                type="button"
+                pButton
+                icon="pi pi-times"
+                label="No"
+                (click)="cd.reject()"
+              ></button>
+              <p-button
+                label="Yes"
+                icon="pi pi-check"
+                (onClick)="cd.accept()"
+                styleClass="p-button-danger"
+              ></p-button>
+            </ng-template>
+          </p-confirmDialog>
+        </div>
+        <p-button (onClick)="showDialog()" label="Agregar"></p-button>
       </div>
-      <p-button (onClick)="showDialog()" label="Agregar"></p-button>
     </div>
-  </div>
 
-  <p-messages
-    [(value)]="alertsTypes"
-    [enableService]="false"
-    [closable]="true"
-  ></p-messages>
+    <p-messages
+      [(value)]="alertsTypes"
+      [enableService]="false"
+      [closable]="true"
+    ></p-messages>
 
-  <div class="table">
-
-  <p-table
-    [(selection)]="selectedItemsToDelete"
-    styleClass="p-datatable-striped"
-    [value]="tipoDocumentos"
-    [tableStyle]="{ 'min-width': '100%' }"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 4rem">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th>Id</th>
-        <th>Nombre
-          <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
-
-        </th>
-        <th>Activo
-          <p-columnFilter type="boolean" field="activo" display="menu"></p-columnFilter>
-        </th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-tipoDocumento>
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="tipoDocumento"></p-tableCheckbox>
-        </td>
-        <td>{{ tipoDocumento.id }}</td>
-        <td>{{ tipoDocumento.nombre }}</td>
-        <td>{{ tipoDocumento.activo === true ? "Si" : "No" }}</td>
-        <td class="flex-row justify-end">
-          <p-button
-            icon="pi pi-pencil"
-            styleClass="p-button-success p-button-rounded"
-            (onClick)="activeToEditItem(tipoDocumento)"
-          ></p-button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <p-paginator
-  *ngIf="!isLoading && tipoDocumentos.length > 0"
-  (onPageChange)="onPageChange($event)"
-  [first]="first"
-  [rows]="currentRows"
-  [totalRecords]="totalCount"
-  [rowsPerPageOptions]="rowsPerPageOptions"
-  [showCurrentPageReport]="true"
-  currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
-></p-paginator>
-  </div>
-  <p-dialog
-    (onHide)="onHide()"
-    header="Agregar Tipo Documento"
-    [(visible)]="showAddDialog"
-    [modal]="true"
-    [style]="{ width: '650px' }"
-    [draggable]="false"
-    [resizable]="false"
-  >
-    <div class="flex-col gap1">
-      <label htmlFor="username">Nombre</label>
-      <input
-        (keyup)="onChangeNombre($event)"
-        pInputText
-        id="Nombre"
-        [value]="selectedItemToEdit ? selectedItemToEdit.nombre : ''"
-        aria-describedby="username-help"
-      />
-      <small id="username-help"
-        >Digita un numero tipo de documento valido</small
+    <div class="table">
+      <p-table
+        [(selection)]="selectedItemsToDelete"
+        styleClass="p-datatable-striped"
+        [value]="tipoDocumentos"
+        [tableStyle]="{ 'min-width': '100%' }"
       >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem;">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>Id</th>
+            <th>
+              Nombre
+              <p-columnFilter
+                type="text"
+                field="nombre"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th>
+              Activo
+              <p-columnFilter
+                type="boolean"
+                field="activo"
+                display="menu"
+              ></p-columnFilter>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tipoDocumento>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="tipoDocumento"></p-tableCheckbox>
+            </td>
+            <td>{{ tipoDocumento.id }}</td>
+            <td>{{ tipoDocumento.nombre }}</td>
+            <td>{{ tipoDocumento.activo === true ? "Si" : "No" }}</td>
+            <td class="flex-row justify-end">
+              <p-button
+                icon="pi pi-pencil"
+                styleClass="p-button-success p-button-rounded"
+                (onClick)="activeToEditItem(tipoDocumento)"
+              ></p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div
+        *ngIf="!isLoading && tipoDocumentos.length < 1"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 5rem;
+          height: 5rem;
+        "
+      >
+        <h3>
+          Lo sentimos, pero no contamos con registros para listar.
+        </h3>
+      </div>
+      <p-paginator
+        *ngIf="!isLoading && tipoDocumentos.length > 0"
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="currentRows"
+        [totalRecords]="totalCount"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+      ></p-paginator>
     </div>
-    <div class="mt2" style="margin-top: 20px">
-      <p-button
-        [loading]="isLoadingCreate"
-        (onClick)="handleCreateTipoDocumento()"
-        label="Guardar"
-        [style]="{ width: '100%' }"
-        styleClass="p-button-outlined"
-      ></p-button>
-    </div>
-    <div class="flex flex-row mt-4 gap-2 items-center">
-      <p-checkbox
-        (onChange)="handleChangeEstado($event)"
-        inputId="estado"
-        [value]="estadoTipodocumento"
-        [binary]="true"
-        [(ngModel)]="estadoTipodocumento"
-      ></p-checkbox>
-      <label for="estado">Activo</label>
-    </div>
-  </p-dialog>
-</ng-template>
-
+    <p-dialog
+      (onHide)="onHide()"
+      header="Agregar Tipo Documento"
+      [(visible)]="showAddDialog"
+      [modal]="true"
+      [style]="{ width: '650px' }"
+      [draggable]="false"
+      [resizable]="false"
+    >
+      <div class="flex-col gap1">
+        <label htmlFor="username">Nombre</label>
+        <input
+          (keyup)="onChangeNombre($event)"
+          pInputText
+          id="Nombre"
+          [value]="selectedItemToEdit ? selectedItemToEdit.nombre : ''"
+          aria-describedby="username-help"
+        />
+        <small id="username-help"
+          >Digita un numero tipo de documento valido</small
+        >
+      </div>
+      <div class="mt2" style="margin-top: 20px;">
+        <p-button
+          [loading]="isLoadingCreate"
+          (onClick)="handleCreateTipoDocumento()"
+          label="Guardar"
+          [style]="{ width: '100%' }"
+          styleClass="p-button-outlined"
+        ></p-button>
+      </div>
+      <div class="flex flex-row mt-4 gap-2 items-center">
+        <p-checkbox
+          (onChange)="handleChangeEstado($event)"
+          inputId="estado"
+          [value]="estadoTipodocumento"
+          [binary]="true"
+          [(ngModel)]="estadoTipodocumento"
+        ></p-checkbox>
+        <label for="estado">Activo</label>
+      </div>
+    </p-dialog>
+  </ng-template>
 </div>

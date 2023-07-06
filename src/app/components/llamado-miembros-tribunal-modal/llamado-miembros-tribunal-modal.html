@@ -4,8 +4,9 @@
   [modal]="true"
   styleClass="p-fluid"
   (onHide)="handleCloseModal()"
+  [style]="{ width: '95%' }"
 >
-  <ng-template pTemplate="content" style="overflow: visible">
+  <ng-template pTemplate="content" style="overflow: visible;">
     <div class="w-full mb-4 flex flex-row items-center justify-content-between">
       <h1
         style="
@@ -17,9 +18,13 @@
       >
         Llamado: {{ llamadoInfo.nombre }}
       </h1>
-      <p-button (onClick)="openNew()" *ngIf="isAdmin" label="Agregar"></p-button>
+      <p-button
+        (onClick)="openNew()"
+        *ngIf="isAdmin"
+        label="Agregar"
+      ></p-button>
     </div>
-    <div style="max-height: 500px; overflow: auto" class="w-full h-auto table">
+    <div style="max-height: 500px; overflow: auto;" class="w-full h-auto table">
       <p-table
         #dt
         [value]="llamadoInfo?.miembrosTribunal"
@@ -85,9 +90,15 @@
         <ng-template pTemplate="body" let-miembroTribunal>
           <tr>
             <td>{{ miembroTribunal.orden }}</td>
-            <td>{{ miembroTribunal.persona.primerNombre + " " +  miembroTribunal.persona.primerApellido }}</td>
+            <td>
+              {{ miembroTribunal.persona.primerNombre + " " +
+              miembroTribunal.persona.primerApellido }}
+            </td>
             <td>{{ miembroTribunal.persona.documento }}</td>
-            <td>{{ miembroTribunal.renuncia ? "Si -  \n Motivo: " + (miembroTribunal.motivoRenuncia || "No tiene")  : "No" }}</td>
+            <td>
+              {{ miembroTribunal.renuncia ? "Si - \n Motivo: " +
+              (miembroTribunal.motivoRenuncia || "No tiene") : "No" }}
+            </td>
             <td>{{ miembroTribunal.tipoDeIntegrante?.nombre }}</td>
             <td style="justify-content: center; display: flex; gap: 5px;">
               <button
@@ -110,6 +121,20 @@
           </tr>
         </ng-template>
       </p-table>
+      <div
+        *ngIf="!llamadoInfo?.miembrosTribunal.length"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 5rem;
+          height: 5rem;
+        "
+      >
+        <h3>
+          Lo sentimos, pero no contamos con miembros disponibles para listar.
+        </h3>
+      </div>
     </div>
   </ng-template>
 
@@ -123,7 +148,7 @@
   [modal]="true"
   styleClass="p-fluid"
 >
-  <ng-template pTemplate="content" style="overflow: visible">
+  <ng-template pTemplate="content" style="overflow: visible;">
     <div class="field">
       <label for="persona">Persona</label>
       <p-dropdown
@@ -181,7 +206,10 @@
       <label for="renuncia">Renuncia</label>
     </div>
 
-    <div *ngIf="isEdit && miembroTribunalNuevo.renuncia === true" class="field mt-2">
+    <div
+      *ngIf="isEdit && miembroTribunalNuevo.renuncia === true"
+      class="field mt-2"
+    >
       <label for="motRenuncia">Motivo Renuncia</label>
       <input
         type="text"
@@ -191,8 +219,7 @@
       />
     </div>
 
-
-    <div style="margin-top: 140px; margin-bottom: 140px" class=""></div>
+    <div style="margin-top: 140px; margin-bottom: 140px;" class=""></div>
   </ng-template>
 
   <ng-template pTemplate="footer">

@@ -5,6 +5,7 @@
   [modal]="true"
   styleClass="p-fluid"
   (onHide)="handleCloseModal()"
+  [style]="{ width: '95%' }"
 >
   <ng-template pTemplate="content" style="overflow: visible">
     <div class="w-full mb-4 flex flex-row items-center justify-content-between">
@@ -82,6 +83,20 @@
           </tr>
         </ng-template>
       </p-table>
+      <div
+      *ngIf="!llamadoInfo?.llamadoEstados.length"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 5rem;
+        height: 5rem;
+      "
+    >
+      <h3>
+        Lo sentimos, pero no contamos con usuarios disponibles para listar.
+      </h3>
+    </div>
     </div>
   </ng-template>
 

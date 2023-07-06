@@ -83,7 +83,7 @@
      justify-content: center;
      gap: 10px;
   }
-  
+
   @media (max-width: 768px) {
     .firstPart {
       flex-direction: column!important;
@@ -103,7 +103,17 @@
     }
   }
 
- 
+  .mobileFlexCol {
+    display: flex !important;
+    flex-direction: row;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .mobileFlexCol {
+      display: flex !important;
+      flex-direction: column;
+    }
+  }
 
   .p-datatable {
     width: 100%;

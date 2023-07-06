@@ -110,7 +110,20 @@
       </tr>
     </ng-template>
   </p-table>
-
+  <div
+      *ngIf="!isLoading && tipoIntegrantes.length < 1"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 5rem;
+        height: 5rem;
+      "
+    >
+      <h3>
+        Lo sentimos, pero no contamos con registros disponibles para listar.
+      </h3>
+    </div>
   <p-paginator
     *ngIf="!isLoading && tipoIntegrantes.length > 0"
     (onPageChange)="onPageChange($event)"

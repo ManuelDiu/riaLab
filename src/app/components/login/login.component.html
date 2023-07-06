@@ -4,16 +4,16 @@
 >
   <div
     style="width: 50%;"
-    class="flex-grow-1 h-12 h-full flex flex-row align-items-center justify-content-center"
+    class="mobileImg flex-grow-1 h-12 h-full flex flex-row align-items-center justify-content-center"
   >
     <img src="../../../assets//LoginImage.png" class="w-[] h-auto" />
   </div>
   <div
     class="flex-grow-1 h-12 p-7 w-full gap-6 h-full bg-white flex flex-col align-items-center justify-content-center"
   >
-    <span class="text-3xl text-black font-semibold">Login</span>
-    <span class="text-xl text-black font-semibold text-left"
-      >Accede Con tus credenciales para iniciar sesion</span
+    <span class="text-3xl text-black font-semibold">Inicio de Sesión</span>
+    <span class="text-xl text-black font-semibold text-center"
+      >Accede con tus credenciales para iniciar sesión</span
     >
     <div
       class="w-full h-auto flex flex-col align-items-center jsutify-content-center gap-6"
@@ -42,7 +42,7 @@
           id="password"
           [(ngModel)]="password"
         />
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">Contraseña</label>
       </span>
 
       <button
@@ -50,13 +50,13 @@
         style="background-color: #003443"
         pButton
         pRipple
-        label="Iniciar Sesion"
+        label="Iniciar Sesión"
         class="p-button-success w-full py-3"
         loadingIcon="pi pi-spinner pi-spin"
         [loading]="isLoading"
       ></button>
 
-      <p-button (onClick)="handleGoingToResetPassword()" label="Olvidaste tu contraseña?" styleClass="p-button-link"></p-button>
+      <p-button (onClick)="handleGoingToResetPassword()" label="¿Olvidaste tu contraseña?" styleClass="p-button-link"></p-button>
 
     </div>
   </div>

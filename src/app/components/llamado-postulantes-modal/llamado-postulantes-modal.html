@@ -4,9 +4,10 @@
   [modal]="true"
   styleClass="p-fluid"
   (onHide)="handleCloseModal()"
+  [style]="{ width: '95%' }"
 >
   <ng-template pTemplate="content" style="overflow: visible;">
-    <div class="w-full mb-4 flex flex-row items-center justify-content-between">
+    <div class="w-full mb-4 items-center justify-content-between mobileFlexCol">
       <h1
         style="
           color: black;
@@ -29,7 +30,11 @@
             pInputText
           />
         </span>
-        <p-button *ngIf="isAdmin" (onClick)="openNew()" label="Agregar"></p-button>
+        <p-button
+          *ngIf="isAdmin"
+          (onClick)="openNew()"
+          label="Agregar"
+        ></p-button>
       </div>
     </div>
     <div style="max-height: 500px; overflow: auto;" class="w-full h-auto table">
@@ -99,6 +104,20 @@
           </tr>
         </ng-template>
       </p-table>
+      <div
+        *ngIf="!llamadoInfo?.postulantes.length"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 5rem;
+          height: 5rem;
+        "
+      >
+        <h3>
+          Lo sentimos, pero no contamos con postulantes disponibles para listar.
+        </h3>
+      </div>
     </div>
   </ng-template>
 
@@ -241,28 +260,26 @@
           [(ngModel)]="postulanteNuevo.entrevistaRealizada"
           [binary]="true"
         ></p-checkbox>
-        <label class="ml-2" for="estudioMerito"
-          >Entrevistas realizadas</label
-        >
+        <label class="ml-2" for="estudioMerito">Entrevistas realizadas</label>
       </div>
 
       <div *ngIf="postulanteNuevo.entrevistaRealizada" class="field">
-        <label for="fh">Fecha y hora de entrevista <span class="text-red-500">*</span></label>
+        <label for="fh"
+          >Fecha y hora de entrevista <span class="text-red-500">*</span></label
+        >
         <p-calendar
           id="fh"
           [(ngModel)]="postulanteNuevo.fechaHoraEntrevista"
           [showTime]="true"
           [required]="true"
         ></p-calendar>
-  
+
         <small
           class="p-error"
           *ngIf="submitted && !postulanteNuevo.fechaHoraEntrevista"
           >La fecha y hora es requerida.</small
         >
       </div>
-  
-
     </div>
     <div style="margin-top: 140px; margin-bottom: 140px;" class=""></div>
   </ng-template>
