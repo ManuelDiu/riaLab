@@ -124,6 +124,7 @@
         Lo sentimos, pero no contamos con registros disponibles para listar.
       </h3>
     </div>
+  </div>
   <p-paginator
     *ngIf="!isLoading && tipoIntegrantes.length > 0"
     (onPageChange)="onPageChange($event)"
@@ -134,7 +135,6 @@
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
   ></p-paginator>
-  </div>
 
   <p-dialog
     (onHide)="onHide()"

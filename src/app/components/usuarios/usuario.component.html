@@ -13,7 +13,7 @@
   style="display: flex; flex-direction: column; align-items: center; margin: 0;"
 >
   <div
-    class="flex flex-col justify-content-center m-5 mb-2"
+    class="flex flex-col justify-content-center"
     style="
       border-radius: 7px;
       min-width: 100%;
@@ -165,17 +165,17 @@
         Lo sentimos, pero no contamos con usuarios disponibles para listar.
       </h3>
     </div>
-    <p-paginator
-      *ngIf="!isUsuariosLoading && usuariosArr.length > 0"
-      (onPageChange)="onPageChange($event)"
-      [first]="first"
-      [rows]="currentRows"
-      [totalRecords]="totalCount"
-      [rowsPerPageOptions]="rowsPerPageOptions"
-      [showCurrentPageReport]="true"
-      currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
-    ></p-paginator>
-    </div>
+  </div>
+  <p-paginator
+    *ngIf="!isUsuariosLoading && usuariosArr.length > 0"
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="currentRows"
+    [totalRecords]="totalCount"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+  ></p-paginator>
   </div>
 </div>
 

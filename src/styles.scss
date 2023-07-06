@@ -56,19 +56,26 @@
 
 
 
-
+p-dropdown { 
+  
+}
 .table {
     width: 100%;
     height: auto;
-    overflow: hidden;
+    overflow-y: hidden;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.165);
-    border-radius: 10px;
+    border-radius: 10px 10px 0px 0px;
     transition: all .3s ease;
     overflow-x: auto;
     width: 100%;
     max-width: 100%;
 }
 
+.p-paginator {
+  border-radius: 0px 0px 10px 10px!important;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.165);
+
+}
 
 
 .firstPart {

@@ -93,17 +93,17 @@
         Lo sentimos, pero no contamos con estados disponibles para listar.
       </h3>
     </div>
-    <p-paginator
-      *ngIf="!isLoading && estadosArray.length > 0"
-      (onPageChange)="onPageChange($event)"
-      [first]="first"
-      [rows]="currentRows"
-      [totalRecords]="totalCount"
-      [rowsPerPageOptions]="rowsPerPageOptions"
-      [showCurrentPageReport]="true"
-      currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
-    ></p-paginator>
-    </div>
+  </div>
+  <p-paginator
+    *ngIf="!isLoading && estadosArray.length > 0"
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="currentRows"
+    [totalRecords]="totalCount"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+  ></p-paginator>
   </div>
 </div>
 

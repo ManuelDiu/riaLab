@@ -136,17 +136,17 @@
           Lo sentimos, pero no contamos con registros para listar.
         </h3>
       </div>
-      <p-paginator
-        *ngIf="!isLoading && tipoDocumentos.length > 0"
-        (onPageChange)="onPageChange($event)"
-        [first]="first"
-        [rows]="currentRows"
-        [totalRecords]="totalCount"
-        [rowsPerPageOptions]="rowsPerPageOptions"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
-      ></p-paginator>
     </div>
+    <p-paginator
+      *ngIf="!isLoading && tipoDocumentos.length > 0"
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="currentRows"
+      [totalRecords]="totalCount"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}"
+    ></p-paginator>
     <p-dialog
       (onHide)="onHide()"
       header="Agregar Tipo Documento"
